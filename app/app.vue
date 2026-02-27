@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { Analytics } from '@vercel/analytics/nuxt'
+
 interface Project {
   title: string;
   imageUrl?: string;
@@ -111,6 +113,8 @@ const scrollToTop = () => {
 
 <template>
   <div class="min-h-screen bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 transition-colors duration-300">
+    <Analytics />
+    
     <!-- Sanity Error Banner -->
     <Transition name="slide-down">
       <div 
