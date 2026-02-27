@@ -69,7 +69,7 @@ onMounted(() => {
           isCounterVisible.value = true
           animateCounter(1, yearsExp, 1500)
           animateCounter(props.projects?.length || 3, projectsCount, 2000)
-          animateCounter(10, techCount, 2500)
+          animateCounter(18, techCount, 2500)
         }
       })
     },

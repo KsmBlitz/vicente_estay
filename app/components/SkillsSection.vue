@@ -95,7 +95,7 @@ onMounted(() => {
         }
       })
     },
-    { threshold: 0.2 }
+    { threshold: 0, rootMargin: '0px 0px -50px 0px' }
   )
 
   const section = document.querySelector('#skills')
@@ -218,7 +218,7 @@ onMounted(() => {
         >
           Habilidades
         </h3>
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
           <div 
             v-for="(skill, index) in softSkills" 
             :key="skill.name"
