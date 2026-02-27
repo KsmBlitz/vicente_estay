@@ -6,6 +6,7 @@ interface Skill {
   color: string
   logo: string
   url: string
+  darkClass?: string
 }
 
 interface LearningItem {
@@ -21,7 +22,7 @@ const languages: Skill[] = [
   { name: 'TypeScript', color: '#3178c6', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg', url: 'https://www.typescriptlang.org' },
   { name: 'SQL',        color: '#4169e1', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/azuresqldatabase/azuresqldatabase-original.svg', url: 'https://www.postgresql.org/docs/current/sql.html' },
   { name: 'Dart',       color: '#0175c2', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dart/dart-original.svg',             url: 'https://dart.dev' },
-  { name: 'Bash',       color: '#4eaa25', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg',             url: 'https://www.gnu.org/software/bash/' },
+  { name: 'Bash',       color: '#4eaa25', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg',             url: 'https://www.gnu.org/software/bash/', darkClass: 'dark:invert' },
 ]
 
 // ── Frameworks & Librerías ─────────────────────────────────────────────────
@@ -157,9 +158,9 @@ const getWaveDelay = (index: number, cols: number, baseDelay: number = 0) => {
       </div>
 
       <!-- Lenguajes -->
-      <div class="mb-8">
+      <div class="mb-10">
         <h3
-          class="text-xs font-semibold tracking-widest uppercase text-slate-400 dark:text-slate-500 mb-3 transition-[opacity,transform] duration-500"
+          class="text-xs font-semibold tracking-widest uppercase text-slate-400 dark:text-slate-500 mb-4 pl-3 border-l-2 border-slate-300 dark:border-slate-600 transition-[opacity,transform] duration-500"
           :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
           style="transition-delay: 350ms"
         >
@@ -169,12 +170,12 @@ const getWaveDelay = (index: number, cols: number, baseDelay: number = 0) => {
           <a
             v-for="(skill, index) in languages" :key="skill.name"
             :href="skill.url" target="_blank" rel="noopener noreferrer"
-            class="group flex items-center gap-3 px-4 py-3 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
+            class="group flex items-center gap-3 px-4 py-3 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 hover:shadow-md hover:-translate-y-0.5 transition-[transform,box-shadow,border-color,opacity] duration-300"
             :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'"
-            :style="{ transitionDuration: '0.5s', transitionDelay: `${getWaveDelay(index, 5, 400)}ms` }"
+            :style="{ transitionDelay: `${getWaveDelay(index, 5, 400)}ms` }"
           >
             <div class="w-9 h-9 rounded-lg flex items-center justify-center p-1.5 flex-shrink-0" :style="{ backgroundColor: skill.color + '18' }">
-              <img :src="skill.logo" :alt="skill.name" class="w-full h-full object-contain" />
+              <img :src="skill.logo" :alt="skill.name" class="w-full h-full object-contain" :class="skill.darkClass" />
             </div>
             <span class="text-sm font-medium text-slate-700 dark:text-slate-300 truncate">{{ skill.name }}</span>
           </a>
@@ -182,9 +183,10 @@ const getWaveDelay = (index: number, cols: number, baseDelay: number = 0) => {
       </div>
 
       <!-- Frameworks & Librerías -->
-      <div class="mb-8">
+      <div class="mb-10">
+        <div class="w-full h-px bg-gradient-to-r from-transparent via-slate-200 dark:via-slate-700/70 to-transparent mb-10 transition-opacity duration-500" :class="isVisible ? 'opacity-100' : 'opacity-0'" style="transition-delay: 500ms"></div>
         <h3
-          class="text-xs font-semibold tracking-widest uppercase text-slate-400 dark:text-slate-500 mb-3 transition-[opacity,transform] duration-500"
+          class="text-xs font-semibold tracking-widest uppercase text-slate-400 dark:text-slate-500 mb-4 pl-3 border-l-2 border-slate-300 dark:border-slate-600 transition-[opacity,transform] duration-500"
           :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
           style="transition-delay: 520ms"
         >
@@ -194,12 +196,12 @@ const getWaveDelay = (index: number, cols: number, baseDelay: number = 0) => {
           <a
             v-for="(skill, index) in frameworks" :key="skill.name"
             :href="skill.url" target="_blank" rel="noopener noreferrer"
-            class="group flex items-center gap-3 px-4 py-3 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
+            class="group flex items-center gap-3 px-4 py-3 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 hover:shadow-md hover:-translate-y-0.5 transition-[transform,box-shadow,border-color,opacity] duration-300"
             :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'"
-            :style="{ transitionDuration: '0.5s', transitionDelay: `${getWaveDelay(index, 3, 570)}ms` }"
+            :style="{ transitionDelay: `${getWaveDelay(index, 3, 570)}ms` }"
           >
             <div class="w-9 h-9 rounded-lg flex items-center justify-center p-1.5 flex-shrink-0" :style="{ backgroundColor: skill.color + '18' }">
-              <img :src="skill.logo" :alt="skill.name" class="w-full h-full object-contain" />
+              <img :src="skill.logo" :alt="skill.name" class="w-full h-full object-contain" :class="skill.darkClass" />
             </div>
             <span class="text-sm font-medium text-slate-700 dark:text-slate-300 truncate">{{ skill.name }}</span>
           </a>
@@ -207,9 +209,10 @@ const getWaveDelay = (index: number, cols: number, baseDelay: number = 0) => {
       </div>
 
       <!-- Bases de Datos -->
-      <div class="mb-8">
+      <div class="mb-10">
+        <div class="w-full h-px bg-gradient-to-r from-transparent via-slate-200 dark:via-slate-700/70 to-transparent mb-10 transition-opacity duration-500" :class="isVisible ? 'opacity-100' : 'opacity-0'" style="transition-delay: 630ms"></div>
         <h3
-          class="text-xs font-semibold tracking-widest uppercase text-slate-400 dark:text-slate-500 mb-3 transition-[opacity,transform] duration-500"
+          class="text-xs font-semibold tracking-widest uppercase text-slate-400 dark:text-slate-500 mb-4 pl-3 border-l-2 border-slate-300 dark:border-slate-600 transition-[opacity,transform] duration-500"
           :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
           style="transition-delay: 650ms"
         >
@@ -219,12 +222,12 @@ const getWaveDelay = (index: number, cols: number, baseDelay: number = 0) => {
           <a
             v-for="(skill, index) in databases" :key="skill.name"
             :href="skill.url" target="_blank" rel="noopener noreferrer"
-            class="group flex items-center gap-3 px-4 py-3 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
+            class="group flex items-center gap-3 px-4 py-3 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 hover:shadow-md hover:-translate-y-0.5 transition-[transform,box-shadow,border-color,opacity] duration-300"
             :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'"
-            :style="{ transitionDuration: '0.5s', transitionDelay: `${getWaveDelay(index, 4, 700)}ms` }"
+            :style="{ transitionDelay: `${getWaveDelay(index, 4, 700)}ms` }"
           >
             <div class="w-9 h-9 rounded-lg flex items-center justify-center p-1.5 flex-shrink-0" :style="{ backgroundColor: skill.color + '18' }">
-              <img :src="skill.logo" :alt="skill.name" class="w-full h-full object-contain" />
+              <img :src="skill.logo" :alt="skill.name" class="w-full h-full object-contain" :class="skill.darkClass" />
             </div>
             <span class="text-sm font-medium text-slate-700 dark:text-slate-300 truncate">{{ skill.name }}</span>
           </a>
@@ -232,9 +235,10 @@ const getWaveDelay = (index: number, cols: number, baseDelay: number = 0) => {
       </div>
 
       <!-- Cloud & DevOps -->
-      <div class="mb-8">
+      <div class="mb-10">
+        <div class="w-full h-px bg-gradient-to-r from-transparent via-slate-200 dark:via-slate-700/70 to-transparent mb-10 transition-opacity duration-500" :class="isVisible ? 'opacity-100' : 'opacity-0'" style="transition-delay: 780ms"></div>
         <h3
-          class="text-xs font-semibold tracking-widest uppercase text-slate-400 dark:text-slate-500 mb-3 transition-[opacity,transform] duration-500"
+          class="text-xs font-semibold tracking-widest uppercase text-slate-400 dark:text-slate-500 mb-4 pl-3 border-l-2 border-slate-300 dark:border-slate-600 transition-[opacity,transform] duration-500"
           :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
           style="transition-delay: 800ms"
         >
@@ -244,12 +248,12 @@ const getWaveDelay = (index: number, cols: number, baseDelay: number = 0) => {
           <a
             v-for="(skill, index) in devops" :key="skill.name"
             :href="skill.url" target="_blank" rel="noopener noreferrer"
-            class="group flex items-center gap-3 px-4 py-3 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
+            class="group flex items-center gap-3 px-4 py-3 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 hover:shadow-md hover:-translate-y-0.5 transition-[transform,box-shadow,border-color,opacity] duration-300"
             :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'"
-            :style="{ transitionDuration: '0.5s', transitionDelay: `${getWaveDelay(index, 6, 850)}ms` }"
+            :style="{ transitionDelay: `${getWaveDelay(index, 6, 850)}ms` }"
           >
             <div class="w-9 h-9 rounded-lg flex items-center justify-center p-1.5 flex-shrink-0" :style="{ backgroundColor: skill.color + '18' }">
-              <img :src="skill.logo" :alt="skill.name" class="w-full h-full object-contain" />
+              <img :src="skill.logo" :alt="skill.name" class="w-full h-full object-contain" :class="skill.darkClass" />
             </div>
             <span class="text-sm font-medium text-slate-700 dark:text-slate-300 truncate">{{ skill.name }}</span>
           </a>
@@ -257,9 +261,10 @@ const getWaveDelay = (index: number, cols: number, baseDelay: number = 0) => {
       </div>
 
       <!-- Herramientas -->
-      <div class="mb-8">
+      <div class="mb-10">
+        <div class="w-full h-px bg-gradient-to-r from-transparent via-slate-200 dark:via-slate-700/70 to-transparent mb-10 transition-opacity duration-500" :class="isVisible ? 'opacity-100' : 'opacity-0'" style="transition-delay: 930ms"></div>
         <h3
-          class="text-xs font-semibold tracking-widest uppercase text-slate-400 dark:text-slate-500 mb-3 transition-[opacity,transform] duration-500"
+          class="text-xs font-semibold tracking-widest uppercase text-slate-400 dark:text-slate-500 mb-4 pl-3 border-l-2 border-slate-300 dark:border-slate-600 transition-[opacity,transform] duration-500"
           :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
           style="transition-delay: 950ms"
         >
@@ -269,12 +274,12 @@ const getWaveDelay = (index: number, cols: number, baseDelay: number = 0) => {
           <a
             v-for="(skill, index) in tools" :key="skill.name"
             :href="skill.url" target="_blank" rel="noopener noreferrer"
-            class="group flex items-center gap-3 px-4 py-3 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
+            class="group flex items-center gap-3 px-4 py-3 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 hover:shadow-md hover:-translate-y-0.5 transition-[transform,box-shadow,border-color,opacity] duration-300"
             :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'"
-            :style="{ transitionDuration: '0.5s', transitionDelay: `${getWaveDelay(index, 4, 1000)}ms` }"
+            :style="{ transitionDelay: `${getWaveDelay(index, 4, 1000)}ms` }"
           >
             <div class="w-9 h-9 rounded-lg flex items-center justify-center p-1.5 flex-shrink-0" :style="{ backgroundColor: skill.color + '18' }">
-              <img :src="skill.logo" :alt="skill.name" class="w-full h-full object-contain" />
+              <img :src="skill.logo" :alt="skill.name" class="w-full h-full object-contain" :class="skill.darkClass" />
             </div>
             <span class="text-sm font-medium text-slate-700 dark:text-slate-300 truncate">{{ skill.name }}</span>
           </a>
@@ -283,8 +288,9 @@ const getWaveDelay = (index: number, cols: number, baseDelay: number = 0) => {
 
       <!-- Habilidades Blandas -->
       <div class="mb-12">
+        <div class="w-full h-px bg-gradient-to-r from-transparent via-slate-200 dark:via-slate-700/70 to-transparent mb-10 transition-opacity duration-500" :class="isVisible ? 'opacity-100' : 'opacity-0'" style="transition-delay: 1080ms"></div>
         <h3
-          class="text-xs font-semibold tracking-widest uppercase text-slate-400 dark:text-slate-500 mb-3 transition-[opacity,transform] duration-500"
+          class="text-xs font-semibold tracking-widest uppercase text-slate-400 dark:text-slate-500 mb-4 pl-3 border-l-2 border-slate-300 dark:border-slate-600 transition-[opacity,transform] duration-500"
           :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
           style="transition-delay: 1100ms"
         >
@@ -293,9 +299,9 @@ const getWaveDelay = (index: number, cols: number, baseDelay: number = 0) => {
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
           <div
             v-for="(skill, index) in softSkills" :key="skill.name"
-            class="group flex flex-col items-center gap-2 px-4 py-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 cursor-default text-center"
+            class="group flex flex-col items-center gap-2 px-4 py-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 hover:shadow-md hover:-translate-y-0.5 transition-[transform,box-shadow,border-color,opacity] duration-300 cursor-default text-center"
             :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'"
-            :style="{ transitionDuration: '0.5s', transitionDelay: `${getWaveDelay(index, 6, 1150)}ms` }"
+            :style="{ transitionDelay: `${getWaveDelay(index, 6, 1150)}ms` }"
           >
             <div class="w-8 h-8 transition-transform group-hover:scale-110 duration-300" :style="{ color: skill.color }" v-html="skill.svg"></div>
             <span class="text-xs font-medium text-slate-600 dark:text-slate-400 leading-tight">{{ skill.name }}</span>
@@ -305,9 +311,10 @@ const getWaveDelay = (index: number, cols: number, baseDelay: number = 0) => {
 
       <!-- Aprendiendo actualmente -->
       <div>
+        <div class="w-full h-px bg-gradient-to-r from-transparent via-slate-200 dark:via-slate-700/70 to-transparent mb-10 transition-opacity duration-500" :class="isVisible ? 'opacity-100' : 'opacity-0'" style="transition-delay: 1280ms"></div>
         <div class="flex items-center gap-3 mb-4"
           :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
-          :style="{ transition: 'all 0.5s ease', transitionDelay: '1300ms' }"
+          :style="{ transition: 'opacity 0.5s ease, transform 0.5s ease', transitionDelay: '1300ms' }"
         >
           <h3 class="text-xs font-semibold tracking-widest uppercase text-slate-400 dark:text-slate-500">
             Aprendiendo actualmente
@@ -320,9 +327,9 @@ const getWaveDelay = (index: number, cols: number, baseDelay: number = 0) => {
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           <div
             v-for="(item, index) in learning" :key="item.name"
-            class="group flex flex-col gap-3 px-4 py-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
+            class="group flex flex-col gap-3 px-4 py-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 hover:shadow-md hover:-translate-y-0.5 transition-[transform,box-shadow,border-color,opacity] duration-300"
             :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'"
-            :style="{ transitionDuration: '0.5s', transitionDelay: `${getWaveDelay(index, 4, 1350)}ms` }"
+            :style="{ transitionDelay: `${getWaveDelay(index, 4, 1350)}ms` }"
           >
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110 duration-300"

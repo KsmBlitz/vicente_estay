@@ -25,6 +25,15 @@ interface Profile {
   linkedin?: string;
 }
 
+interface Certification {
+  name: string;
+  institution: string;
+  hours?: number;
+  issueDate?: string;
+  inProgress?: boolean;
+  fileUrl?: string;
+}
+
 // Query proyectos
 const projectsQuery = `*[_type == "project"]{
   title,
@@ -51,8 +60,19 @@ const profileQuery = `*[_type == "profile"][0]{
   linkedin
 }`
 
+// Query certificaciones
+const certificationsQuery = `*[_type == "certification"] | order(inProgress desc, issueDate desc) {
+  name,
+  institution,
+  hours,
+  issueDate,
+  inProgress,
+  "fileUrl": certificate.asset->url
+}`
+
 const { data: projects } = await useSanityQuery<Project[]>(projectsQuery, 'projects')
 const { data: profile } = await useSanityQuery<Profile>(profileQuery, 'profile')
+const { data: certifications } = await useSanityQuery<Certification[]>(certificationsQuery, 'certifications')
 
 // Error handling for Sanity
 const sanityError = ref(false)
@@ -159,6 +179,9 @@ const scrollToTop = () => {
 
     <!-- Projects Section -->
     <ProjectsSection :projects="projects ?? null" />
+
+    <!-- Certifications Section -->
+    <CertificationsSection :certifications="certifications ?? null" />
 
     <!-- Contact Section -->
     <ContactSection :profile="profile" />

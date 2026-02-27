@@ -92,20 +92,19 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <section id="contact" ref="sectionRef" class="py-24 md:py-32 bg-slate-50 dark:bg-slate-900/50 relative overflow-hidden">
-    <!-- Animated background -->
+  <section id="contact" ref="sectionRef" class="py-24 md:py-32 bg-slate-50 dark:bg-slate-900 relative overflow-hidden">
+    <!-- Animated background — partículas y orbs muy sutiles -->
     <div class="absolute inset-0 pointer-events-none">
       <div class="particles-container">
         <div v-for="(style, i) in particleStyles" :key="i" class="particle" :style="style"></div>
       </div>
-      <div class="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.02)_1px,transparent_1px)] dark:bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
-      <div class="absolute -top-32 -right-32 w-96 h-96 bg-blue-200/30 dark:bg-blue-500/10 rounded-full blur-3xl animate-orb-float"></div>
-      <div class="absolute -bottom-32 -left-32 w-[400px] h-[400px] bg-slate-300/40 dark:bg-slate-600/15 rounded-full blur-3xl animate-orb-float animation-delay-2000"></div>
+      <div class="absolute -top-32 -right-32 w-96 h-96 bg-blue-100/20 dark:bg-blue-500/5 rounded-full blur-3xl animate-orb-float"></div>
+      <div class="absolute -bottom-32 -left-32 w-[400px] h-[400px] bg-slate-200/30 dark:bg-slate-700/8 rounded-full blur-3xl animate-orb-float animation-delay-2000"></div>
     </div>
 
     <!-- Section number -->
     <div class="absolute right-6 bottom-6 text-[160px] font-black text-slate-200 dark:text-slate-700/80 select-none leading-none pointer-events-none">
-      04
+      05
     </div>
 
     <div class="max-w-5xl mx-auto px-6 relative z-10">

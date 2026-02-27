@@ -17,6 +17,7 @@ const navLinks = [
   { name: 'Sobre Mí', href: '#about', id: 'about' },
   { name: 'Habilidades', href: '#skills', id: 'skills' },
   { name: 'Proyectos', href: '#projects', id: 'projects' },
+  { name: 'Certificaciones', href: '#certifications', id: 'certifications' },
   { name: 'Contacto', href: '#contact', id: 'contact' }
 ]
 
