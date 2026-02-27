@@ -98,21 +98,38 @@ useHead({
 // Scroll to top button
 const showScrollTop = ref(false)
 
+// Scroll progress bar
+const scrollProgress = ref(0)
+
 onMounted(() => {
   const handleScroll = () => {
     showScrollTop.value = window.scrollY > 500
+    const doc = document.documentElement
+    scrollProgress.value = (window.scrollY / (doc.scrollHeight - doc.clientHeight)) * 100
   }
-  window.addEventListener('scroll', handleScroll)
+  window.addEventListener('scroll', handleScroll, { passive: true })
   onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 })
 
 const scrollToTop = () => {
-  window.scrollTo({ top: 0, behavior: 'smooth' })
+  const nuxtApp = useNuxtApp() as Record<string, unknown>
+  const lenis = nuxtApp.$lenis as { scrollTo: (target: unknown) => void } | undefined
+  if (lenis) {
+    lenis.scrollTo(0)
+  } else {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 }
 </script>
 
 <template>
-  <div class="min-h-screen bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 transition-colors duration-300">
+  <div class="min-h-screen bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 transition-colors duration-150">
+    <!-- Scroll progress bar -->
+    <div
+      class="fixed top-0 left-0 z-[200] h-[2px] bg-slate-900 dark:bg-white origin-left"
+      :style="{ transform: `scaleX(${scrollProgress / 100})` }"
+    ></div>
+
     <Analytics />
     
     <!-- Sanity Error Banner -->
@@ -166,9 +183,9 @@ const scrollToTop = () => {
 </template>
 
 <style>
-/* Smooth scrolling for the entire page */
+/* Lenis handles smooth scrolling */
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
 }
 
 /* Custom scrollbar - minimal */

@@ -15,24 +15,7 @@ const props = defineProps<{
   projects?: Project[] | null
 }>()
 
-const scrollToProjects = () => {
-  const element = document.querySelector('#projects')
-  if (element) {
-    element.scrollIntoView({ behavior: 'smooth' })
-  }
-}
-
-const scrollToContact = () => {
-  const element = document.querySelector('#contact')
-  if (element) {
-    element.scrollIntoView({ behavior: 'smooth' })
-  }
-}
-
-const downloadCV = () => {
-  // Link al CV - puedes subirlo a /public/cv.pdf o usar un link externo
-  window.open('/cv.pdf', '_blank')
-}
+const { scrollTo } = useScrollTo()
 
 // Animated counter
 const yearsExp = ref(0)
@@ -42,22 +25,15 @@ const isCounterVisible = ref(false)
 
 const animateCounter = (target: number, current: Ref<number>, duration: number = 2000) => {
   const startTime = Date.now()
-  const endTime = startTime + duration
-  
+
   const updateCounter = () => {
-    const now = Date.now()
-    const progress = Math.min((now - startTime) / duration, 1)
-    const easeOutQuart = 1 - Math.pow(1 - progress, 4)
-    
-    current.value = Math.floor(easeOutQuart * target)
-    
-    if (progress < 1) {
-      requestAnimationFrame(updateCounter)
-    } else {
-      current.value = target
-    }
+    const progress = Math.min((Date.now() - startTime) / duration, 1)
+    const easeOut = 1 - Math.pow(1 - progress, 4)
+    current.value = Math.floor(easeOut * target)
+    if (progress < 1) requestAnimationFrame(updateCounter)
+    else current.value = target
   }
-  
+
   requestAnimationFrame(updateCounter)
 }
 
@@ -75,52 +51,78 @@ onMounted(() => {
     },
     { threshold: 0.5 }
   )
-
-  const statsElement = document.querySelector('#stats')
-  if (statsElement) observer.observe(statsElement)
+  const statsEl = document.querySelector('#stats')
+  if (statsEl) observer.observe(statsEl)
 })
 
 // Typing effect
 const displayedTitle = ref('')
 const fullTitle = computed(() => props.profile?.title || 'Desarrollador Full Stack')
 const isTyping = ref(false)
-const isAnimating = ref(true) // Control para animaciones pesadas
+const isAnimating = ref(true)
 
 onMounted(() => {
   setTimeout(() => {
     isTyping.value = true
     let index = 0
-    const typingInterval = setInterval(() => {
+    const interval = setInterval(() => {
       if (index < fullTitle.value.length) {
         displayedTitle.value += fullTitle.value[index]
         index++
       } else {
-        clearInterval(typingInterval)
-        // Dar tiempo para que termine el contador antes de reactivar animaciones de fondo
-        setTimeout(() => {
-          isAnimating.value = false
-        }, 2500)
+        clearInterval(interval)
+        setTimeout(() => { isAnimating.value = false }, 2500)
       }
     }, 80)
   }, 500)
 })
 
-// Generate random styles for particles
-const getParticleStyle = (index: number) => {
-  const left = Math.random() * 100
-  const duration = 6 + Math.random() * 10
-  const delay = Math.random() * 8
-  const size = 3 + Math.random() * 6
-  const opacity = 0.3 + Math.random() * 0.4
-  
-  return {
-    left: `${left}%`,
-    width: `${size}px`,
-    height: `${size}px`,
-    animationDuration: `${duration}s`,
-    animationDelay: `${delay}s`,
-    '--particle-opacity': opacity
+// Precomputed particle styles (fix Math.random in template)
+interface ParticleStyle {
+  left: string
+  width: string
+  height: string
+  animationDuration: string
+  animationDelay: string
+  '--particle-opacity': number
+}
+const particleStyles = ref<ParticleStyle[]>([])
+
+onMounted(() => {
+  particleStyles.value = Array.from({ length: 30 }, () => ({
+    left: `${Math.random() * 100}%`,
+    width: `${3 + Math.random() * 6}px`,
+    height: `${3 + Math.random() * 6}px`,
+    animationDuration: `${6 + Math.random() * 10}s`,
+    animationDelay: `${Math.random() * 8}s`,
+    '--particle-opacity': 0.3 + Math.random() * 0.4,
+  }))
+})
+
+// Parallax on hero photo
+const parallaxOffset = ref(0)
+onMounted(() => {
+  const onScroll = () => {
+    parallaxOffset.value = window.scrollY * 0.18
   }
+  window.addEventListener('scroll', onScroll, { passive: true })
+  onUnmounted(() => window.removeEventListener('scroll', onScroll))
+})
+
+// Magnetic buttons
+const handleMagneticMove = (e: MouseEvent) => {
+  const btn = e.currentTarget as HTMLElement
+  const rect = btn.getBoundingClientRect()
+  const x = (e.clientX - (rect.left + rect.width / 2)) * 0.35
+  const y = (e.clientY - (rect.top + rect.height / 2)) * 0.35
+  btn.style.transform = `translate(${x}px, ${y}px)`
+  btn.style.transition = 'transform 0.1s ease'
+}
+
+const handleMagneticLeave = (e: MouseEvent) => {
+  const btn = e.currentTarget as HTMLElement
+  btn.style.transform = 'translate(0, 0)'
+  btn.style.transition = 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)'
 }
 </script>
 
@@ -128,21 +130,26 @@ const getParticleStyle = (index: number) => {
   <section id="hero" class="min-h-screen flex items-center justify-center relative pt-20 overflow-hidden">
     <!-- Animated background -->
     <div class="absolute inset-0 bg-white dark:bg-slate-900">
-      <!-- Rising particles - ocultas durante animaciones pesadas -->
+      <!-- Particles (precomputed, rendered after mount) -->
       <Transition name="fade-particles">
-        <div v-show="!isAnimating" class="particles-container">
-          <div v-for="i in 30" :key="i" class="particle" :style="getParticleStyle(i)"></div>
+        <div v-show="!isAnimating && particleStyles.length > 0" class="particles-container">
+          <div
+            v-for="(style, i) in particleStyles"
+            :key="i"
+            class="particle"
+            :style="style"
+          ></div>
         </div>
       </Transition>
-      
-      <!-- Decorative grid lines -->
+
+      <!-- Grid lines -->
       <div class="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
-      
-      <!-- Animated gradient orbs -->
+
+      <!-- Gradient orbs -->
       <div class="absolute top-20 left-10 w-96 h-96 bg-blue-300/30 dark:bg-blue-500/10 rounded-full blur-3xl animate-orb-float"></div>
       <div class="absolute bottom-20 right-10 w-[500px] h-[500px] bg-slate-300/40 dark:bg-slate-600/15 rounded-full blur-3xl animate-orb-float animation-delay-2000"></div>
       <div class="absolute top-1/2 left-1/3 w-80 h-80 bg-indigo-200/20 dark:bg-indigo-500/5 rounded-full blur-3xl animate-orb-pulse"></div>
-      
+
       <!-- Floating geometric shapes -->
       <div class="absolute top-1/4 right-1/4 w-4 h-4 border-2 border-slate-300 dark:border-slate-600 rotate-45 animate-float-slow opacity-40"></div>
       <div class="absolute bottom-1/3 left-1/5 w-6 h-6 border-2 border-slate-300 dark:border-slate-600 rounded-full animate-float-slow animation-delay-1000 opacity-30"></div>
@@ -163,7 +170,7 @@ const getParticleStyle = (index: number) => {
             {{ profile?.name || 'Vicente Estay' }}
           </h1>
 
-          <!-- Title with gradient and typing effect -->
+          <!-- Title with typing effect -->
           <h2 class="text-2xl md:text-3xl lg:text-4xl font-semibold bg-gradient-to-r from-slate-600 via-slate-500 to-slate-400 dark:from-slate-300 dark:via-slate-400 dark:to-slate-500 bg-clip-text text-transparent mb-8 animate-fade-in-up animation-delay-200 min-h-[3rem] flex items-center">
             <span>{{ displayedTitle }}</span>
             <span v-if="isTyping && displayedTitle.length < fullTitle.length" class="inline-block w-0.5 h-8 bg-slate-500 dark:bg-slate-400 ml-1 animate-blink"></span>
@@ -174,11 +181,14 @@ const getParticleStyle = (index: number) => {
             {{ profile?.shortBio || 'Construyo aplicaciones web modernas con foco en rendimiento, accesibilidad y experiencia de usuario.' }}
           </p>
 
-          <!-- CTA Buttons -->
+          <!-- CTA Buttons — magnetic effect -->
           <div class="flex flex-wrap gap-4 animate-fade-in-up animation-delay-400">
-            <button 
-              @click="scrollToProjects"
-              class="group px-6 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-sm font-medium rounded-lg hover:bg-slate-800 dark:hover:bg-slate-100 transition-all hover:shadow-lg hover:shadow-slate-900/20 dark:hover:shadow-white/20"
+            <button
+              @click="scrollTo('#projects')"
+              @mousemove="handleMagneticMove"
+              @mouseleave="handleMagneticLeave"
+              class="group px-6 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-sm font-medium rounded-lg hover:bg-slate-800 dark:hover:bg-slate-100 hover:shadow-lg hover:shadow-slate-900/20 dark:hover:shadow-white/20 will-change-transform"
+              style="transition: background-color 0.2s, box-shadow 0.2s"
             >
               <span class="flex items-center gap-2">
                 Ver proyectos
@@ -187,9 +197,14 @@ const getParticleStyle = (index: number) => {
                 </svg>
               </span>
             </button>
-            <button 
-              @click="downloadCV"
-              class="group px-6 py-3 text-slate-900 dark:text-white text-sm font-medium rounded-lg border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all"
+
+            <a
+              href="/cv.pdf"
+              download="Vicente_Estay_CV.pdf"
+              @mousemove="handleMagneticMove"
+              @mouseleave="handleMagneticLeave"
+              class="group inline-block px-6 py-3 text-slate-900 dark:text-white text-sm font-medium rounded-lg border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800/50 will-change-transform"
+              style="transition: background-color 0.2s, border-color 0.2s"
             >
               <span class="flex items-center gap-2">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -197,16 +212,20 @@ const getParticleStyle = (index: number) => {
                 </svg>
                 Descargar CV
               </span>
-            </button>
-            <button 
-              @click="scrollToContact"
-              class="px-6 py-3 text-slate-600 dark:text-slate-400 text-sm font-medium rounded-lg border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all"
+            </a>
+
+            <button
+              @click="scrollTo('#contact')"
+              @mousemove="handleMagneticMove"
+              @mouseleave="handleMagneticLeave"
+              class="px-6 py-3 text-slate-600 dark:text-slate-400 text-sm font-medium rounded-lg border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800/50 will-change-transform"
+              style="transition: background-color 0.2s, border-color 0.2s"
             >
               Contacto
             </button>
           </div>
 
-          <!-- Quick stats with animated counter -->
+          <!-- Quick stats -->
           <div id="stats" class="flex gap-10 lg:gap-12 mt-12 pt-10 border-t border-slate-200 dark:border-slate-800 animate-fade-in-up animation-delay-400">
             <div>
               <div class="text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white">{{ yearsExp }}</div>
@@ -223,19 +242,22 @@ const getParticleStyle = (index: number) => {
           </div>
         </div>
 
-        <!-- Photo/Visual -->
+        <!-- Photo / Visual -->
         <div class="order-1 lg:order-2 flex justify-center animate-fade-in animation-delay-200">
           <div class="relative">
-            <!-- Decorative elements -->
+            <!-- Decorative blur blobs -->
             <div class="absolute -inset-8 bg-gradient-to-br from-slate-200 via-slate-100 to-transparent dark:from-slate-700 dark:via-slate-800 dark:to-transparent rounded-3xl blur-3xl opacity-60"></div>
             <div class="absolute -top-8 -right-8 w-32 h-32 bg-slate-200/50 dark:bg-slate-700/30 rounded-full blur-xl animate-pulse-slow"></div>
             <div class="absolute -bottom-8 -left-8 w-40 h-40 bg-slate-300/40 dark:bg-slate-600/20 rounded-full blur-xl animate-pulse-slow animation-delay-1000"></div>
-            
-            <!-- Photo container -->
-            <div class="relative w-80 h-80 md:w-96 md:h-96 lg:w-[400px] lg:h-[400px] xl:w-[450px] xl:h-[450px] rounded-2xl overflow-hidden border-2 border-slate-200 dark:border-slate-700 shadow-2xl shadow-slate-900/10 dark:shadow-black/30">
-              <img 
-                v-if="profile?.photoUrl" 
-                :src="profile.photoUrl" 
+
+            <!-- Photo container with parallax -->
+            <div
+              class="relative w-80 h-80 md:w-96 md:h-96 lg:w-[400px] lg:h-[400px] xl:w-[450px] xl:h-[450px] rounded-2xl overflow-hidden border-2 border-slate-200 dark:border-slate-700 shadow-2xl shadow-slate-900/10 dark:shadow-black/30"
+              :style="{ transform: `translateY(${parallaxOffset}px)` }"
+            >
+              <img
+                v-if="profile?.photoUrl"
+                :src="profile.photoUrl"
                 :alt="profile.name"
                 class="w-full h-full object-cover"
               />
@@ -280,37 +302,18 @@ const getParticleStyle = (index: number) => {
 }
 
 @keyframes fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
 
-.animate-fade-in {
-  animation: fade-in 0.6s ease-out forwards;
-}
-
-.animate-fade-in-up {
-  opacity: 0;
-  animation: fade-in-up 0.6s ease-out forwards;
-}
-
-.animate-float {
-  animation: float 3s ease-in-out infinite;
-}
+.animate-fade-in { animation: fade-in 0.6s ease-out forwards; }
+.animate-fade-in-up { opacity: 0; animation: fade-in-up 0.6s ease-out forwards; }
+.animate-float { animation: float 3s ease-in-out infinite; }
 
 /* Particles */
 .particles-container {
@@ -326,102 +329,53 @@ const getParticleStyle = (index: number) => {
   opacity: var(--particle-opacity, 0.4);
   animation: rise linear infinite;
   box-shadow: 0 0 6px currentColor;
-}
-
-@keyframes rise {
-  0% {
-    transform: translateY(100vh) translateX(0) scale(0.5);
-    opacity: 0;
-  }
-  15% {
-    opacity: var(--particle-opacity, 0.5);
-    transform: translateY(80vh) translateX(10px) scale(1);
-  }
-  85% {
-    opacity: var(--particle-opacity, 0.5);
-  }
-  100% {
-    transform: translateY(-50px) translateX(30px) scale(0.8);
-    opacity: 0;
-  }
-}
-
-@keyframes orb-float {
-  0%, 100% {
-    transform: translateY(0) translateX(0) scale(1);
-  }
-  33% {
-    transform: translateY(-30px) translateX(20px) scale(1.05);
-  }
-  66% {
-    transform: translateY(20px) translateX(-15px) scale(0.95);
-  }
-}
-
-@keyframes orb-pulse {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 0.3;
-  }
-  50% {
-    transform: scale(1.2);
-    opacity: 0.5;
-  }
-}
-
-@keyframes float-slow {
-  0%, 100% {
-    transform: translateY(0) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-20px) rotate(180deg);
-  }
-}
-
-.animate-orb-float {
-  animation: orb-float 12s ease-in-out infinite;
-}
-
-.animate-orb-pulse {
-  animation: orb-pulse 8s ease-in-out infinite;
-}
-
-.animate-float-slow {
-  animation: float-slow 6s ease-in-out infinite;
-}
-
-@keyframes pulse-slow {
-  0%, 100% {
-    opacity: 0.4;
-  }
-  50% {
-    opacity: 0.7;
-  }
-}
-
-.animate-pulse-slow {
-  animation: pulse-slow 4s ease-in-out infinite;
-}
-
-.dark .particle {
-  color: rgba(148, 163, 184, 0.7);
-}
-
-.particle {
-  color: rgba(100, 116, 139, 0.5);
   will-change: transform, opacity;
 }
 
-/* Smooth fade for particles */
-.fade-particles-enter-active,
-.fade-particles-leave-active {
-  transition: opacity 1.5s ease;
+.dark .particle { color: rgba(148, 163, 184, 0.7); }
+.particle { color: rgba(100, 116, 139, 0.5); }
+
+@keyframes rise {
+  0% { transform: translateY(100vh) translateX(0) scale(0.5); opacity: 0; }
+  15% { opacity: var(--particle-opacity, 0.5); transform: translateY(80vh) translateX(10px) scale(1); }
+  85% { opacity: var(--particle-opacity, 0.5); }
+  100% { transform: translateY(-50px) translateX(30px) scale(0.8); opacity: 0; }
 }
 
-.fade-particles-enter-from,
-.fade-particles-leave-to {
-  opacity: 0;
+@keyframes orb-float {
+  0%, 100% { transform: translateY(0) translateX(0) scale(1); }
+  33% { transform: translateY(-30px) translateX(20px) scale(1.05); }
+  66% { transform: translateY(20px) translateX(-15px) scale(0.95); }
 }
+
+@keyframes orb-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.3; }
+  50% { transform: scale(1.2); opacity: 0.5; }
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(180deg); }
+}
+
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.animate-orb-float { animation: orb-float 12s ease-in-out infinite; }
+.animate-orb-pulse { animation: orb-pulse 8s ease-in-out infinite; }
+.animate-float-slow { animation: float-slow 6s ease-in-out infinite; }
+.animate-pulse-slow { animation: pulse-slow 4s ease-in-out infinite; }
+.animate-blink { animation: blink 1s step-end infinite; }
+
+.fade-particles-enter-active, .fade-particles-leave-active { transition: opacity 1.5s ease; }
+.fade-particles-enter-from, .fade-particles-leave-to { opacity: 0; }
 
 .animation-delay-100 { animation-delay: 0.1s; }
 .animation-delay-200 { animation-delay: 0.2s; }
@@ -430,14 +384,4 @@ const getParticleStyle = (index: number) => {
 .animation-delay-1000 { animation-delay: 1s; }
 .animation-delay-2000 { animation-delay: 2s; }
 .animation-delay-3000 { animation-delay: 3s; }
-
-/* Typing cursor blink */
-@keyframes blink {
-  0%, 50% { opacity: 1; }
-  51%, 100% { opacity: 0; }
-}
-
-.animate-blink {
-  animation: blink 1s step-end infinite;
-}
 </style>
