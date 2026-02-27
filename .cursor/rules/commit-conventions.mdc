@@ -1,0 +1,55 @@
+---
+description: Convención de commits para este proyecto (estilo Gentleman.Dots)
+alwaysApply: true
+---
+
+# Formato de Commits
+
+Seguir **Conventional Commits con scope obligatorio**, igual al estilo de [Gentleman.Dots](https://github.com/Gentleman-Programming/Gentleman.Dots):
+
+```
+type(scope): descripción en minúsculas
+```
+
+## Tipos permitidos
+
+| Tipo | Cuándo usarlo |
+|------|---------------|
+| `feat` | Nueva funcionalidad |
+| `fix` | Corrección de bug |
+| `docs` | Solo documentación |
+| `chore` | Mantenimiento, dependencias, config |
+| `refactor` | Refactor sin cambio de comportamiento |
+| `style` | Cambios de estilos CSS/Tailwind |
+
+## Scopes de este proyecto
+
+| Scope | Archivo/área |
+|-------|-------------|
+| `hero` | HeroSection.vue |
+| `skills` | SkillsSection.vue |
+| `projects` | ProjectsSection.vue |
+| `about` | AboutSection.vue |
+| `contact` | ContactSection.vue |
+| `nav` | NavBar.vue |
+| `footer` | FooterSection.vue |
+| `app` | app.vue, nuxt.config.ts |
+| `deps` | package.json, package-lock.json |
+| `sanity` | Archivos en /sanity |
+
+## Ejemplos
+
+```
+feat(projects): agregar filtro por tecnología
+fix(hero): corregir contador de tecnologías a 18
+fix(skills): mejorar IntersectionObserver con rootMargin
+style(nav): ajustar color de hover en mobile
+chore(deps): actualizar rollup a 4.59.0
+```
+
+## Reglas
+
+- Descripción siempre en **minúsculas**
+- Sin punto al final
+- En español está bien
+- Si toca más de un scope, hacer commits separados o usar el scope más relevante
