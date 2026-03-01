@@ -4,16 +4,18 @@ export function useScrollReveal(options?: {
 }) {
   const isVisible = ref(false)
   const sectionRef = ref<HTMLElement | null>(null)
+  let observer: IntersectionObserver | null = null
 
   onMounted(() => {
     if (!sectionRef.value) return
 
-    const observer = new IntersectionObserver(
+    observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             isVisible.value = true
-            observer.disconnect()
+            observer?.disconnect()
+            observer = null
           }
         })
       },
@@ -24,6 +26,11 @@ export function useScrollReveal(options?: {
     )
 
     observer.observe(sectionRef.value)
+  })
+
+  onUnmounted(() => {
+    observer?.disconnect()
+    observer = null
   })
 
   return { isVisible, sectionRef }

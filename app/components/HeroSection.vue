@@ -1,14 +1,5 @@
 <script setup lang="ts">
-interface Profile {
-  name: string;
-  title?: string;
-  photoUrl?: string;
-  shortBio?: string;
-}
-
-interface Project {
-  title: string;
-}
+import type { Profile, Project } from '~/types'
 
 const props = defineProps<{
   profile?: Profile | null,
@@ -77,37 +68,19 @@ onMounted(() => {
   }, 500)
 })
 
-// Precomputed particle styles (fix Math.random in template)
-interface ParticleStyle {
-  left: string
-  width: string
-  height: string
-  animationDuration: string
-  animationDelay: string
-  '--particle-opacity': number
-}
-const particleStyles = ref<ParticleStyle[]>([])
-
-onMounted(() => {
-  particleStyles.value = Array.from({ length: 30 }, () => ({
-    left: `${Math.random() * 100}%`,
-    width: `${3 + Math.random() * 6}px`,
-    height: `${3 + Math.random() * 6}px`,
-    animationDuration: `${6 + Math.random() * 10}s`,
-    animationDelay: `${Math.random() * 8}s`,
-    '--particle-opacity': 0.3 + Math.random() * 0.4,
-  }))
+// Partículas — generadas vía composable
+const { particleStyles } = useParticles(30, {
+  minSize: 3, maxSize: 9,
+  minDuration: 6, maxDuration: 16,
+  minDelay: 0, maxDelay: 8,
+  minOpacity: 0.3, maxOpacity: 0.7,
 })
 
 // Parallax on hero photo
 const parallaxOffset = ref(0)
-onMounted(() => {
-  const onScroll = () => {
-    parallaxOffset.value = window.scrollY * 0.18
-  }
-  window.addEventListener('scroll', onScroll, { passive: true })
-  onUnmounted(() => window.removeEventListener('scroll', onScroll))
-})
+const onParallaxScroll = () => { parallaxOffset.value = window.scrollY * 0.18 }
+onMounted(() => window.addEventListener('scroll', onParallaxScroll, { passive: true }))
+onUnmounted(() => window.removeEventListener('scroll', onParallaxScroll))
 
 // Magnetic buttons
 const handleMagneticMove = (e: MouseEvent) => {

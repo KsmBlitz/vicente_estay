@@ -1,15 +1,5 @@
 <script setup lang="ts">
-interface Profile {
-  name: string;
-  aboutPhotoUrl?: string;
-  longBio?: string;
-  yearsExperience?: number;
-  projectsCompleted?: number;
-}
-
-interface Project {
-  title: string;
-}
+import type { Profile, Project } from '~/types'
 
 defineProps<{
   profile?: Profile | null,

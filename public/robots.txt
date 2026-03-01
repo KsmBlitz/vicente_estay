@@ -1,2 +1,4 @@
 User-Agent: *
 Disallow:
+
+Sitemap: https://vicenteestay.vercel.app/sitemap.xml

@@ -1,12 +1,5 @@
 <script setup lang="ts">
-interface Certification {
-  name: string
-  institution: string
-  hours?: number
-  issueDate?: string
-  inProgress?: boolean
-  fileUrl?: string
-}
+import type { Certification } from '~/types'
 
 defineProps<{
   certifications: Certification[] | null
@@ -159,15 +152,7 @@ const getFileName = (cert: Certification) =>
       </div>
 
       <!-- Loading State -->
-      <div v-else-if="!certifications" class="text-center py-20">
-        <div class="inline-flex flex-col items-center gap-4">
-          <div class="relative w-16 h-16">
-            <div class="absolute inset-0 border-4 border-slate-200 dark:border-slate-700 rounded-full"></div>
-            <div class="absolute inset-0 border-4 border-slate-600 dark:border-slate-400 border-t-transparent rounded-full animate-spin"></div>
-          </div>
-          <p class="text-slate-500 dark:text-slate-400 font-medium">Cargando certificaciones...</p>
-        </div>
-      </div>
+      <LoadingSpinner v-else-if="!certifications" label="Cargando certificaciones..." />
 
       <!-- Empty State -->
       <div v-else class="text-center py-20">

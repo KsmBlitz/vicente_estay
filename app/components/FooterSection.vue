@@ -1,20 +1,13 @@
 <script setup lang="ts">
-interface Profile {
-  name: string;
-  github?: string;
-  linkedin?: string;
-  email?: string;
-}
+import type { Profile } from '~/types'
 
 const props = defineProps<{
   profile?: Profile | null
 }>()
 
 const currentYear = new Date().getFullYear()
-
-const scrollToTop = () => {
-  window.scrollTo({ top: 0, behavior: 'smooth' })
-}
+const { scrollTo } = useScrollTo()
+const scrollToTop = () => scrollTo(0)
 
 const socialLinks = computed(() => [
   { 

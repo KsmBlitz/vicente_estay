@@ -175,7 +175,7 @@ const getWaveDelay = (index: number, cols: number, baseDelay: number = 0) => {
             :style="{ transitionDelay: `${getWaveDelay(index, 5, 400)}ms` }"
           >
             <div class="w-9 h-9 rounded-lg flex items-center justify-center p-1.5 flex-shrink-0" :style="{ backgroundColor: skill.color + '18' }">
-              <img :src="skill.logo" :alt="skill.name" class="w-full h-full object-contain" :class="skill.darkClass" />
+              <img :src="skill.logo" :alt="skill.name" class="w-full h-full object-contain" :class="skill.darkClass" loading="lazy" />
             </div>
             <span class="text-sm font-medium text-slate-700 dark:text-slate-300 truncate">{{ skill.name }}</span>
           </a>
@@ -201,7 +201,7 @@ const getWaveDelay = (index: number, cols: number, baseDelay: number = 0) => {
             :style="{ transitionDelay: `${getWaveDelay(index, 3, 570)}ms` }"
           >
             <div class="w-9 h-9 rounded-lg flex items-center justify-center p-1.5 flex-shrink-0" :style="{ backgroundColor: skill.color + '18' }">
-              <img :src="skill.logo" :alt="skill.name" class="w-full h-full object-contain" :class="skill.darkClass" />
+              <img :src="skill.logo" :alt="skill.name" class="w-full h-full object-contain" :class="skill.darkClass" loading="lazy" />
             </div>
             <span class="text-sm font-medium text-slate-700 dark:text-slate-300 truncate">{{ skill.name }}</span>
           </a>
@@ -227,7 +227,7 @@ const getWaveDelay = (index: number, cols: number, baseDelay: number = 0) => {
             :style="{ transitionDelay: `${getWaveDelay(index, 4, 700)}ms` }"
           >
             <div class="w-9 h-9 rounded-lg flex items-center justify-center p-1.5 flex-shrink-0" :style="{ backgroundColor: skill.color + '18' }">
-              <img :src="skill.logo" :alt="skill.name" class="w-full h-full object-contain" :class="skill.darkClass" />
+              <img :src="skill.logo" :alt="skill.name" class="w-full h-full object-contain" :class="skill.darkClass" loading="lazy" />
             </div>
             <span class="text-sm font-medium text-slate-700 dark:text-slate-300 truncate">{{ skill.name }}</span>
           </a>
@@ -253,7 +253,7 @@ const getWaveDelay = (index: number, cols: number, baseDelay: number = 0) => {
             :style="{ transitionDelay: `${getWaveDelay(index, 6, 850)}ms` }"
           >
             <div class="w-9 h-9 rounded-lg flex items-center justify-center p-1.5 flex-shrink-0" :style="{ backgroundColor: skill.color + '18' }">
-              <img :src="skill.logo" :alt="skill.name" class="w-full h-full object-contain" :class="skill.darkClass" />
+              <img :src="skill.logo" :alt="skill.name" class="w-full h-full object-contain" :class="skill.darkClass" loading="lazy" />
             </div>
             <span class="text-sm font-medium text-slate-700 dark:text-slate-300 truncate">{{ skill.name }}</span>
           </a>
@@ -279,7 +279,7 @@ const getWaveDelay = (index: number, cols: number, baseDelay: number = 0) => {
             :style="{ transitionDelay: `${getWaveDelay(index, 4, 1000)}ms` }"
           >
             <div class="w-9 h-9 rounded-lg flex items-center justify-center p-1.5 flex-shrink-0" :style="{ backgroundColor: skill.color + '18' }">
-              <img :src="skill.logo" :alt="skill.name" class="w-full h-full object-contain" :class="skill.darkClass" />
+              <img :src="skill.logo" :alt="skill.name" class="w-full h-full object-contain" :class="skill.darkClass" loading="lazy" />
             </div>
             <span class="text-sm font-medium text-slate-700 dark:text-slate-300 truncate">{{ skill.name }}</span>
           </a>

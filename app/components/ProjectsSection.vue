@@ -1,12 +1,5 @@
 <script setup lang="ts">
-interface Project {
-  title: string;
-  imageUrl?: string;
-  description?: string;
-  technologies?: string[];
-  link?: string;
-  github?: string;
-}
+import type { Project } from '~/types'
 
 defineProps<{
   projects: Project[] | null
@@ -190,15 +183,7 @@ const handleCardLeave = (e: MouseEvent) => {
       </div>
 
       <!-- Loading State -->
-      <div v-else-if="!projects" class="text-center py-20">
-        <div class="inline-flex flex-col items-center gap-4">
-          <div class="relative w-16 h-16">
-            <div class="absolute inset-0 border-4 border-slate-200 dark:border-slate-700 rounded-full"></div>
-            <div class="absolute inset-0 border-4 border-slate-600 dark:border-slate-400 border-t-transparent rounded-full animate-spin"></div>
-          </div>
-          <p class="text-slate-500 dark:text-slate-400 font-medium">Cargando proyectos...</p>
-        </div>
-      </div>
+      <LoadingSpinner v-else-if="!projects" label="Cargando proyectos..." />
 
       <!-- Empty State -->
       <div v-else class="text-center py-20">

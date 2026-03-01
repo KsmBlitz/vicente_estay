@@ -2,10 +2,9 @@
 export default defineNuxtConfig({
   modules: ['@nuxtjs/tailwindcss', '@nuxtjs/color-mode'],
 
-  // 1. Configuración de Tailwind INCRUSTADA (Infalible)
   tailwindcss: {
     config: {
-      darkMode: 'class', // <--- Esto obliga a usar el botón, no el sistema
+      darkMode: 'class',
       content: [
         './components/**/*.{js,vue,ts}',
         './layouts/**/*.vue',
@@ -17,28 +16,25 @@ export default defineNuxtConfig({
     }
   },
 
-  // 2. Configuración del Color Mode
   colorMode: {
     classSuffix: '',
-    preference: 'light', // Forzamos que empiece en claro para sincronizar
+    preference: 'light',
     fallback: 'light',
     storageKey: 'nuxt-color-mode'
   },
 
-  // 3. Configuración de Sanity (variables de entorno en runtime)
   runtimeConfig: {
     public: {
       sanityProjectId: '2il0jzpa',
       sanityDataset: 'production',
-      sanityApiVersion: '2024-03-20'
+      sanityApiVersion: '2024-03-20',
+      // Sobreescribir con NUXT_PUBLIC_SITE_URL en producción
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://vicenteestay.vercel.app',
+      // Sobreescribir con NUXT_PUBLIC_FORMSPREE_URL en producción
+      formspreeUrl: process.env.NUXT_PUBLIC_FORMSPREE_URL || 'https://formspree.io/f/xqezorqo',
     }
   },
-
-  ssr: false, // Forzamos modo estático/SPA
-  
- 
 
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true }
 })
-

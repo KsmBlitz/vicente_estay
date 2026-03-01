@@ -1,38 +1,5 @@
 <script setup lang="ts">
-import { Analytics } from '@vercel/analytics/nuxt'
-
-interface Project {
-  title: string;
-  imageUrl?: string;
-  description?: string;
-  technologies?: string[];
-  link?: string;
-  github?: string;
-}
-
-interface Profile {
-  name: string;
-  title?: string;
-  photoUrl?: string;
-  aboutPhotoUrl?: string;
-  shortBio?: string;
-  longBio?: string;
-  yearsExperience?: number;
-  projectsCompleted?: number;
-  location?: string;
-  email?: string;
-  github?: string;
-  linkedin?: string;
-}
-
-interface Certification {
-  name: string;
-  institution: string;
-  hours?: number;
-  issueDate?: string;
-  inProgress?: boolean;
-  fileUrl?: string;
-}
+import type { Project, Profile, Certification } from '~/types'
 
 // Query proyectos
 const projectsQuery = `*[_type == "project"]{
@@ -90,28 +57,37 @@ onMounted(() => {
   checkSanityConnection()
 })
 
+const { public: { siteUrl } } = useRuntimeConfig()
+
+const siteTitle = computed(() => `${profile.value?.name || 'Vicente Estay'} - ${profile.value?.title || 'Desarrollador Full Stack'}`)
+const siteDescription = computed(() => profile.value?.shortBio || 'Portafolio de Vicente Estay, Desarrollador Full Stack especializado en Vue.js, Python y tecnologías modernas.')
+const ogImage = computed(() => profile.value?.photoUrl || `${siteUrl}/icon.png`)
+
 // SEO Meta Tags
 useHead({
-  title: () => `${profile.value?.name || 'Vicente Estay'} - ${profile.value?.title || 'Desarrollador Full Stack'}`,
+  title: () => siteTitle.value,
   meta: [
-    { name: 'description', content: () => profile.value?.shortBio || 'Portafolio de Vicente Estay, Desarrollador Full Stack especializado en Vue.js, Python y tecnologías modernas.' },
+    { name: 'description', content: () => siteDescription.value },
     { name: 'author', content: () => profile.value?.name || 'Vicente Estay' },
     { name: 'keywords', content: 'Vue.js, Nuxt, Python, FastAPI, TypeScript, Desarrollador Full Stack, Portfolio' },
-    
+
     // Open Graph
     { property: 'og:type', content: 'website' },
-    { property: 'og:title', content: () => `${profile.value?.name || 'Vicente Estay'} - Portfolio` },
-    { property: 'og:description', content: () => profile.value?.shortBio || 'Portafolio de Vicente Estay, Desarrollador Full Stack' },
-    { property: 'og:image', content: () => profile.value?.photoUrl || '' },
-    
+    { property: 'og:url', content: siteUrl },
+    { property: 'og:title', content: () => siteTitle.value },
+    { property: 'og:description', content: () => siteDescription.value },
+    { property: 'og:image', content: () => ogImage.value },
+
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: () => `${profile.value?.name || 'Vicente Estay'} - Portfolio` },
-    { name: 'twitter:description', content: () => profile.value?.shortBio || 'Portafolio de Vicente Estay' },
-    { name: 'twitter:image', content: () => profile.value?.photoUrl || '' },
+    { name: 'twitter:url', content: siteUrl },
+    { name: 'twitter:title', content: () => siteTitle.value },
+    { name: 'twitter:description', content: () => siteDescription.value },
+    { name: 'twitter:image', content: () => ogImage.value },
   ],
   link: [
-    { rel: 'icon', type: 'image/png', href: '/icon.png' }
+    { rel: 'icon', type: 'image/png', href: '/icon.png' },
+    { rel: 'canonical', href: siteUrl },
   ]
 })
 
@@ -121,25 +97,17 @@ const showScrollTop = ref(false)
 // Scroll progress bar
 const scrollProgress = ref(0)
 
-onMounted(() => {
-  const handleScroll = () => {
-    showScrollTop.value = window.scrollY > 500
-    const doc = document.documentElement
-    scrollProgress.value = (window.scrollY / (doc.scrollHeight - doc.clientHeight)) * 100
-  }
-  window.addEventListener('scroll', handleScroll, { passive: true })
-  onUnmounted(() => window.removeEventListener('scroll', handleScroll))
-})
-
-const scrollToTop = () => {
-  const nuxtApp = useNuxtApp() as Record<string, unknown>
-  const lenis = nuxtApp.$lenis as { scrollTo: (target: unknown) => void } | undefined
-  if (lenis) {
-    lenis.scrollTo(0)
-  } else {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
+const handleScroll = () => {
+  showScrollTop.value = window.scrollY > 500
+  const doc = document.documentElement
+  scrollProgress.value = (window.scrollY / (doc.scrollHeight - doc.clientHeight)) * 100
 }
+
+onMounted(() => window.addEventListener('scroll', handleScroll, { passive: true }))
+onUnmounted(() => window.removeEventListener('scroll', handleScroll))
+
+const { scrollTo } = useScrollTo()
+const scrollToTop = () => scrollTo(0)
 </script>
 
 <template>
@@ -150,7 +118,6 @@ const scrollToTop = () => {
       :style="{ transform: `scaleX(${scrollProgress / 100})` }"
     ></div>
 
-    <Analytics />
     
     <!-- Sanity Error Banner -->
     <Transition name="slide-down">

@@ -1,15 +1,11 @@
 <script setup lang="ts">
-interface Profile {
-  location?: string;
-  email?: string;
-  github?: string;
-  linkedin?: string;
-}
+import type { Profile } from '~/types'
 
 const props = defineProps<{
   profile?: Profile | null
 }>()
 
+const { public: { formspreeUrl } } = useRuntimeConfig()
 const { isVisible, sectionRef } = useScrollReveal({ threshold: 0.15 })
 
 const formState = ref({ name: '', email: '', message: '' })
@@ -40,33 +36,18 @@ const socialLinks = computed(() => [
   }
 ])
 
-// Precomputed particle styles
-interface ParticleStyle {
-  left: string
-  width: string
-  height: string
-  animationDuration: string
-  animationDelay: string
-  '--particle-opacity': number
-}
-const particleStyles = ref<ParticleStyle[]>([])
-
-onMounted(() => {
-  particleStyles.value = Array.from({ length: 40 }, () => ({
-    left: `${Math.random() * 100}%`,
-    width: `${2 + Math.random() * 5}px`,
-    height: `${2 + Math.random() * 5}px`,
-    animationDuration: `${8 + Math.random() * 12}s`,
-    animationDelay: `${Math.random() * 6}s`,
-    '--particle-opacity': 0.15 + Math.random() * 0.25,
-  }))
+const { particleStyles } = useParticles(40, {
+  minSize: 2, maxSize: 7,
+  minDuration: 8, maxDuration: 20,
+  minDelay: 0, maxDelay: 6,
+  minOpacity: 0.15, maxOpacity: 0.4,
 })
 
 const handleSubmit = async () => {
   isSubmitting.value = true
 
   try {
-    const response = await fetch('https://formspree.io/f/xqezorqo', {
+    const response = await fetch(formspreeUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formState.value)
