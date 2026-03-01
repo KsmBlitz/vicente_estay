@@ -90,6 +90,13 @@ const handleScroll = () => {
 }
 
 const updateActiveSection = () => {
+  // Si el usuario llegó al fondo, activar siempre la última sección
+  const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4
+  if (atBottom) {
+    activeSection.value = navLinks.value[navLinks.value.length - 1].id
+    return
+  }
+
   const sections = navLinks.value.map(link => document.querySelector(link.href) as HTMLElement | null)
   const scrollPosition = window.scrollY + 100
 
