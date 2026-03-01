@@ -68,13 +68,10 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <section id="contact" ref="sectionRef" class="py-24 md:py-32 bg-slate-50 dark:bg-slate-900 relative overflow-hidden">
-    <!-- Fondo: líneas diagonales animadas -->
+  <section id="contact" ref="sectionRef" class="py-24 md:py-32 bg-white dark:bg-slate-900 relative overflow-hidden">
+    <!-- Fondo: mesh gradient sutil -->
     <div class="absolute inset-0 pointer-events-none overflow-hidden">
-      <!-- Stripes que se deslizan suavemente -->
-      <div class="contact-stripes absolute inset-0"></div>
-      <!-- Vignette radial para enfocar el contenido central -->
-      <div class="absolute inset-0 bg-radial-vignette"></div>
+      <div class="contact-mesh absolute inset-0"></div>
     </div>
 
     <!-- Section number -->
@@ -261,41 +258,19 @@ const handleSubmit = async () => {
 </template>
 
 <style scoped>
-/* Líneas diagonales animadas */
-.contact-stripes {
-  background-image: repeating-linear-gradient(
-    -55deg,
-    transparent 0px,
-    transparent 34px,
-    rgba(0, 0, 0, 0.04) 34px,
-    rgba(0, 0, 0, 0.04) 35px
-  );
-  background-size: 50px 50px;
-  animation: stripe-drift 30s linear infinite;
+/* Mesh gradient — suave y profesional */
+.contact-mesh {
+  background:
+    radial-gradient(ellipse 60% 50% at 10% 20%, rgba(99, 102, 241, 0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 90% 80%, rgba(100, 116, 139, 0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 40% at 50% 100%, rgba(148, 163, 184, 0.05) 0%, transparent 50%);
 }
 
-:global(.dark) .contact-stripes {
-  background-image: repeating-linear-gradient(
-    -55deg,
-    transparent 0px,
-    transparent 34px,
-    rgba(255, 255, 255, 0.04) 34px,
-    rgba(255, 255, 255, 0.04) 35px
-  );
-}
-
-@keyframes stripe-drift {
-  from { background-position: 0 0; }
-  to   { background-position: 50px 50px; }
-}
-
-/* Viñeta radial para enfocar el centro */
-.bg-radial-vignette {
-  background: radial-gradient(ellipse 75% 85% at 50% 50%, transparent 35%, rgb(248 250 252) 90%);
-}
-
-:global(.dark) .bg-radial-vignette {
-  background: radial-gradient(ellipse 75% 85% at 50% 50%, transparent 35%, rgb(15 23 42) 90%);
+:global(.dark) .contact-mesh {
+  background:
+    radial-gradient(ellipse 60% 50% at 10% 20%, rgba(99, 102, 241, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 90% 80%, rgba(71, 85, 105, 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 40% at 50% 100%, rgba(51, 65, 85, 0.15) 0%, transparent 50%);
 }
 
 /* Toast transition */
