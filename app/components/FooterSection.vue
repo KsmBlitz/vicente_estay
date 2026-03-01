@@ -8,6 +8,7 @@ const props = defineProps<{
 const currentYear = new Date().getFullYear()
 const { scrollTo } = useScrollTo()
 const scrollToTop = () => scrollTo(0)
+const { t } = useI18n()
 
 const socialLinks = computed(() => [
   { 
@@ -35,7 +36,7 @@ const socialLinks = computed(() => [
         <!-- Logo & tagline -->
         <div class="text-center md:text-left flex flex-col items-center md:items-start">
           <img src="/icon.png" alt="VE" class="h-12 w-12 mb-2" />
-          <p class="text-sm text-slate-500 dark:text-slate-400">Construyendo el futuro digital</p>
+          <p class="text-sm text-slate-500 dark:text-slate-400">{{ t('footer.tagline') }}</p>
         </div>
 
         <!-- Social Links -->
@@ -66,9 +67,9 @@ const socialLinks = computed(() => [
           <button 
             @click="scrollToTop"
             class="inline-flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors mb-2"
-            aria-label="Volver arriba"
+            :aria-label="t('footer.back_to_top')"
           >
-            Volver arriba
+            {{ t('footer.back_to_top') }}
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
             </svg>

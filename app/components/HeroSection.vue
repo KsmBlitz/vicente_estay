@@ -7,6 +7,8 @@ const props = defineProps<{
 }>()
 
 const { scrollTo } = useScrollTo()
+const { t } = useI18n()
+const { lf } = useLocaleField()
 
 // Animated counter
 const yearsExp = ref(0)
@@ -48,7 +50,7 @@ onMounted(() => {
 
 // Typing effect
 const displayedTitle = ref('')
-const fullTitle = computed(() => props.profile?.title || 'Desarrollador Full Stack')
+const fullTitle = computed(() => lf(props.profile, 'title') || 'Desarrollador Full Stack')
 const isTyping = ref(false)
 const isAnimating = ref(true)
 
@@ -135,7 +137,7 @@ const handleMagneticLeave = (e: MouseEvent) => {
         <div class="animate-fade-in order-2 lg:order-1">
           <div class="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-800 rounded-full mb-8 animate-fade-in-up">
             <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
-            <span class="text-sm font-medium text-slate-600 dark:text-slate-400">Disponible para trabajar</span>
+            <span class="text-sm font-medium text-slate-600 dark:text-slate-400">{{ t('hero.badge') }}</span>
           </div>
 
           <!-- Name -->
@@ -151,7 +153,7 @@ const handleMagneticLeave = (e: MouseEvent) => {
 
           <!-- Description -->
           <p class="text-lg lg:text-xl text-slate-600 dark:text-slate-400 max-w-2xl mb-10 leading-relaxed animate-fade-in-up animation-delay-300">
-            {{ profile?.shortBio || 'Construyo aplicaciones web modernas con foco en rendimiento, accesibilidad y experiencia de usuario.' }}
+            {{ lf(profile, 'shortBio') || 'Construyo aplicaciones web modernas con foco en rendimiento, accesibilidad y experiencia de usuario.' }}
           </p>
 
           <!-- CTA Buttons — magnetic effect -->
@@ -164,7 +166,7 @@ const handleMagneticLeave = (e: MouseEvent) => {
               style="transition: background-color 0.2s, box-shadow 0.2s"
             >
               <span class="flex items-center gap-2">
-                Ver proyectos
+                {{ t('hero.cta_projects') }}
                 <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
@@ -183,7 +185,7 @@ const handleMagneticLeave = (e: MouseEvent) => {
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
-                Descargar CV
+                {{ t('hero.cta_cv') }}
               </span>
             </a>
 
@@ -194,7 +196,7 @@ const handleMagneticLeave = (e: MouseEvent) => {
               class="px-6 py-3 text-slate-600 dark:text-slate-400 text-sm font-medium rounded-lg border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800/50 will-change-transform"
               style="transition: background-color 0.2s, border-color 0.2s"
             >
-              Contacto
+              {{ t('hero.cta_contact') }}
             </button>
           </div>
 
@@ -202,15 +204,15 @@ const handleMagneticLeave = (e: MouseEvent) => {
           <div id="stats" class="flex gap-10 lg:gap-12 mt-12 pt-10 border-t border-slate-200 dark:border-slate-800 animate-fade-in-up animation-delay-400">
             <div>
               <div class="text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white">{{ yearsExp }}</div>
-              <div class="text-sm lg:text-base text-slate-500 dark:text-slate-400">Años exp.</div>
+              <div class="text-sm lg:text-base text-slate-500 dark:text-slate-400">{{ t('hero.stat_years') }}</div>
             </div>
             <div>
               <div class="text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white">{{ projectsCount }}</div>
-              <div class="text-sm lg:text-base text-slate-500 dark:text-slate-400">Proyectos</div>
+              <div class="text-sm lg:text-base text-slate-500 dark:text-slate-400">{{ t('hero.stat_projects') }}</div>
             </div>
             <div>
               <div class="text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white">{{ techCount }}</div>
-              <div class="text-sm lg:text-base text-slate-500 dark:text-slate-400">Tecnologías</div>
+              <div class="text-sm lg:text-base text-slate-500 dark:text-slate-400">{{ t('hero.stat_tech') }}</div>
             </div>
           </div>
         </div>

@@ -1,0 +1,115 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "skills": "Skills",
+    "projects": "Projects",
+    "certifications": "Certifications",
+    "contact": "Contact"
+  },
+  "hero": {
+    "badge": "Available for work",
+    "cta_projects": "View projects",
+    "cta_cv": "Download CV",
+    "cta_contact": "Contact",
+    "stat_years": "Years exp.",
+    "stat_projects": "Projects",
+    "stat_tech": "Technologies"
+  },
+  "about": {
+    "eyebrow": "Get to know me",
+    "heading": "About Me",
+    "subtitle": "Learn more about who I am and what I do",
+    "years_label": "Years Exp.",
+    "projects_label": "Projects"
+  },
+  "skills": {
+    "eyebrow": "What I use",
+    "heading": "Tech Stack",
+    "subtitle": "Technologies, tools and skills I work with",
+    "cat": {
+      "languages": "Languages",
+      "frameworks": "Frameworks & Libraries",
+      "databases": "Databases",
+      "devops": "Cloud & DevOps",
+      "tools": "Tools",
+      "skills": "Skills"
+    },
+    "learning": {
+      "title": "Currently learning",
+      "badge": "In progress",
+      "ai": {
+        "name": "Artificial Intelligence",
+        "desc": "LLMs, embeddings and generative models applied to real products."
+      },
+      "agents": {
+        "name": "AI Agents",
+        "desc": "Design of autonomous agents with tools, memory and multi-step reasoning."
+      },
+      "rag": {
+        "name": "RAG",
+        "desc": "Retrieval-Augmented Generation: semantic search and vectors to enrich LLM responses."
+      },
+      "security": {
+        "name": "Cybersecurity",
+        "desc": "Fundamentals of offensive and defensive security, vulnerability analysis and hardening."
+      }
+    },
+    "soft": {
+      "teamwork": "Teamwork",
+      "problem_solving": "Problem Solving",
+      "it_maintenance": "IT Maintenance",
+      "networking": "Networking",
+      "responsibility": "Responsibility",
+      "time_management": "Time Management"
+    }
+  },
+  "projects": {
+    "eyebrow": "My work",
+    "heading": "Projects",
+    "demo": "View demo",
+    "code": "View code",
+    "loading": "Loading projects...",
+    "empty": "No projects available"
+  },
+  "certifications": {
+    "eyebrow": "Education",
+    "heading": "Certifications",
+    "subtitle": "Completed courses and certifications. Download the certificate directly.",
+    "download": "Download certificate",
+    "in_progress_badge": "In progress",
+    "in_progress_btn": "Certificate pending",
+    "no_file": "No file attached",
+    "loading": "Loading certifications...",
+    "empty": "No certifications available",
+    "hours": "hours"
+  },
+  "contact": {
+    "eyebrow": "Let's talk",
+    "heading": "Let's Work Together",
+    "subtitle": "Have a project in mind or an opportunity to share?",
+    "intro": "Tell me about your project, idea or position. I review every message and respond in less than 24 hours.",
+    "email_label": "Email",
+    "location_label": "Location",
+    "name_placeholder": "Name",
+    "email_placeholder": "Email",
+    "message_placeholder": "Message",
+    "submit": "Send message",
+    "submitting": "Sending...",
+    "success": "Message sent! I'll get back to you soon.",
+    "error": "Error sending message. Please try again."
+  },
+  "footer": {
+    "tagline": "Building the digital future",
+    "back_to_top": "Back to top"
+  },
+  "common": {
+    "sanity_error": "Error connecting to Sanity. Showing fallback content.",
+    "scroll_to_top": "Back to top",
+    "theme_light": "Switch to light mode",
+    "theme_dark": "Switch to dark mode",
+    "mode_light": "Light Mode",
+    "mode_dark": "Dark Mode",
+    "lang_label": "Language"
+  }
+}

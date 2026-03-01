@@ -1,0 +1,115 @@
+{
+  "nav": {
+    "home": "Start",
+    "about": "Über mich",
+    "skills": "Skills",
+    "projects": "Projekte",
+    "certifications": "Zertifikate",
+    "contact": "Kontakt"
+  },
+  "hero": {
+    "badge": "Verfügbar für Arbeit",
+    "cta_projects": "Projekte ansehen",
+    "cta_cv": "Lebenslauf laden",
+    "cta_contact": "Kontakt",
+    "stat_years": "Jahre Erfahrung",
+    "stat_projects": "Projekte",
+    "stat_tech": "Technologien"
+  },
+  "about": {
+    "eyebrow": "Kennenlernen",
+    "heading": "Über Mich",
+    "subtitle": "Erfahre mehr darüber, wer ich bin und was ich mache",
+    "years_label": "Jahre Erfahrung",
+    "projects_label": "Projekte"
+  },
+  "skills": {
+    "eyebrow": "Was ich benutze",
+    "heading": "Tech-Stack",
+    "subtitle": "Technologien, Werkzeuge und Fähigkeiten, die ich einsetze",
+    "cat": {
+      "languages": "Sprachen",
+      "frameworks": "Frameworks & Bibliotheken",
+      "databases": "Datenbanken",
+      "devops": "Cloud & DevOps",
+      "tools": "Werkzeuge",
+      "skills": "Fähigkeiten"
+    },
+    "learning": {
+      "title": "Aktuell in Lernphase",
+      "badge": "Aktiv",
+      "ai": {
+        "name": "Künstliche Intelligenz",
+        "desc": "LLMs, Embeddings und generative Modelle in echten Produkten eingesetzt."
+      },
+      "agents": {
+        "name": "KI-Agenten",
+        "desc": "Entwurf autonomer Agenten mit Werkzeugen, Gedächtnis und mehrstufigem Reasoning."
+      },
+      "rag": {
+        "name": "RAG",
+        "desc": "Retrieval-Augmented Generation: semantische Suche und Vektoren zur Anreicherung von LLM-Antworten."
+      },
+      "security": {
+        "name": "Cybersicherheit",
+        "desc": "Grundlagen offensiver und defensiver Sicherheit, Schwachstellenanalyse und Härtung."
+      }
+    },
+    "soft": {
+      "teamwork": "Teamarbeit",
+      "problem_solving": "Problemlösung",
+      "it_maintenance": "IT-Wartung",
+      "networking": "Netzwerke",
+      "responsibility": "Verantwortung",
+      "time_management": "Zeitmanagement"
+    }
+  },
+  "projects": {
+    "eyebrow": "Meine Arbeit",
+    "heading": "Projekte",
+    "demo": "Demo ansehen",
+    "code": "Code ansehen",
+    "loading": "Projekte werden geladen...",
+    "empty": "Keine Projekte verfügbar"
+  },
+  "certifications": {
+    "eyebrow": "Ausbildung",
+    "heading": "Zertifikate",
+    "subtitle": "Abgeschlossene Kurse und Zertifikate. Direkt zum Download.",
+    "download": "Zertifikat herunterladen",
+    "in_progress_badge": "Aktiv",
+    "in_progress_btn": "Zertifikat ausstehend",
+    "no_file": "Keine Datei angehängt",
+    "loading": "Zertifikate werden geladen...",
+    "empty": "Keine Zertifikate verfügbar",
+    "hours": "Stunden"
+  },
+  "contact": {
+    "eyebrow": "Kontakt aufnehmen",
+    "heading": "Zusammenarbeiten",
+    "subtitle": "Haben Sie ein Projekt oder eine Gelegenheit zu teilen?",
+    "intro": "Erzählen Sie mir von Ihrem Projekt, Ihrer Idee oder Position. Ich lese jede Nachricht und antworte in weniger als 24 Stunden.",
+    "email_label": "E-Mail",
+    "location_label": "Standort",
+    "name_placeholder": "Name",
+    "email_placeholder": "E-Mail",
+    "message_placeholder": "Nachricht",
+    "submit": "Nachricht senden",
+    "submitting": "Wird gesendet...",
+    "success": "Nachricht gesendet! Ich melde mich bald.",
+    "error": "Fehler beim Senden. Bitte erneut versuchen."
+  },
+  "footer": {
+    "tagline": "Die digitale Zukunft gestalten",
+    "back_to_top": "Nach oben"
+  },
+  "common": {
+    "sanity_error": "Verbindung zu Sanity fehlgeschlagen. Fallback-Inhalt wird angezeigt.",
+    "scroll_to_top": "Nach oben",
+    "theme_light": "Zum hellen Modus wechseln",
+    "theme_dark": "Zum dunklen Modus wechseln",
+    "mode_light": "Heller Modus",
+    "mode_dark": "Dunkler Modus",
+    "lang_label": "Sprache"
+  }
+}

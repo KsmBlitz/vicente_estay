@@ -13,9 +13,21 @@ export const profile = defineType({
     }),
     defineField({
       name: 'title',
-      title: 'Título Profesional',
+      title: 'Título Profesional (ES)',
       type: 'string',
       description: 'Ej: Desarrollador Full Stack, Ingeniero de Software, etc.'
+    }),
+    defineField({
+      name: 'title_en',
+      title: 'Título Profesional (EN)',
+      type: 'string',
+      description: 'E.g.: Full Stack Developer, Software Engineer, etc.'
+    }),
+    defineField({
+      name: 'title_de',
+      title: 'Berufstitel (DE)',
+      type: 'string',
+      description: 'z.B.: Full-Stack-Entwickler, Software-Ingenieur, usw.'
     }),
     defineField({
       name: 'photo',
@@ -35,17 +47,45 @@ export const profile = defineType({
     }),
     defineField({
       name: 'shortBio',
-      title: 'Biografía Corta (Hero)',
+      title: 'Biografía Corta – Hero (ES)',
       type: 'text',
       rows: 2,
       description: 'Descripción corta para la sección principal'
     }),
     defineField({
+      name: 'shortBio_en',
+      title: 'Short Bio – Hero (EN)',
+      type: 'text',
+      rows: 2,
+      description: 'Short description for the hero section in English'
+    }),
+    defineField({
+      name: 'shortBio_de',
+      title: 'Kurzbeschreibung – Hero (DE)',
+      type: 'text',
+      rows: 2,
+      description: 'Kurze Beschreibung für den Hero-Bereich auf Deutsch'
+    }),
+    defineField({
       name: 'longBio',
-      title: 'Biografía Larga (Sobre Mí)',
+      title: 'Biografía Larga – Sobre Mí (ES)',
       type: 'text',
       rows: 4,
       description: 'Descripción más detallada para la sección Sobre Mí'
+    }),
+    defineField({
+      name: 'longBio_en',
+      title: 'Long Bio – About Me (EN)',
+      type: 'text',
+      rows: 4,
+      description: 'Detailed description for the About Me section in English'
+    }),
+    defineField({
+      name: 'longBio_de',
+      title: 'Ausführliche Biografie – Über mich (DE)',
+      type: 'text',
+      rows: 4,
+      description: 'Ausführliche Beschreibung für den Über-mich-Bereich auf Deutsch'
     }),
     defineField({
       name: 'yearsExperience',

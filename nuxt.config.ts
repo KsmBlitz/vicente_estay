@@ -1,6 +1,25 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/color-mode'],
+  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/color-mode', '@nuxtjs/i18n'],
+
+  i18n: {
+    locales: [
+      { code: 'es', language: 'es-CL', name: 'Español', file: 'es.json' },
+      { code: 'en', language: 'en-US', name: 'English', file: 'en.json' },
+      { code: 'de', language: 'de-DE', name: 'Deutsch', file: 'de.json' },
+    ],
+    defaultLocale: 'es',
+    strategy: 'prefix_except_default',
+    lazy: true,
+    langDir: 'locales/',
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'i18n_locale',
+      redirectOn: 'root',
+      alwaysRedirect: false,
+      cookieCrossOrigin: false,
+    },
+  },
 
   tailwindcss: {
     config: {

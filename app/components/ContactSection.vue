@@ -7,6 +7,7 @@ const props = defineProps<{
 
 const { public: { formspreeUrl } } = useRuntimeConfig()
 const { isVisible, sectionRef } = useScrollReveal({ threshold: 0.15 })
+const { t } = useI18n()
 
 const formState = ref({ name: '', email: '', message: '' })
 const isSubmitting = ref(false)
@@ -36,12 +37,6 @@ const socialLinks = computed(() => [
   }
 ])
 
-const { particleStyles } = useParticles(40, {
-  minSize: 2, maxSize: 7,
-  minDuration: 8, maxDuration: 20,
-  minDelay: 0, maxDelay: 6,
-  minOpacity: 0.15, maxOpacity: 0.4,
-})
 
 const handleSubmit = async () => {
   isSubmitting.value = true
@@ -57,13 +52,13 @@ const handleSubmit = async () => {
       isSubmitted.value = true
       formState.value = { name: '', email: '', message: '' }
       toastType.value = 'success'
-      toastMessage.value = '¡Mensaje enviado! Te responderé pronto.'
+      toastMessage.value = t('contact.success')
     } else {
       throw new Error('Error al enviar')
     }
   } catch {
     toastType.value = 'error'
-    toastMessage.value = 'Hubo un error al enviar. Intenta nuevamente.'
+    toastMessage.value = t('contact.error')
   } finally {
     isSubmitting.value = false
     showToast.value = true
@@ -74,13 +69,12 @@ const handleSubmit = async () => {
 
 <template>
   <section id="contact" ref="sectionRef" class="py-24 md:py-32 bg-slate-50 dark:bg-slate-900 relative overflow-hidden">
-    <!-- Animated background — partículas y orbs muy sutiles -->
-    <div class="absolute inset-0 pointer-events-none">
-      <div class="particles-container">
-        <div v-for="(style, i) in particleStyles" :key="i" class="particle" :style="style"></div>
-      </div>
-      <div class="absolute -top-32 -right-32 w-96 h-96 bg-blue-100/20 dark:bg-blue-500/5 rounded-full blur-3xl animate-orb-float"></div>
-      <div class="absolute -bottom-32 -left-32 w-[400px] h-[400px] bg-slate-200/30 dark:bg-slate-700/8 rounded-full blur-3xl animate-orb-float animation-delay-2000"></div>
+    <!-- Fondo: líneas diagonales animadas -->
+    <div class="absolute inset-0 pointer-events-none overflow-hidden">
+      <!-- Stripes que se deslizan suavemente -->
+      <div class="contact-stripes absolute inset-0"></div>
+      <!-- Vignette radial para enfocar el contenido central -->
+      <div class="absolute inset-0 bg-radial-vignette"></div>
     </div>
 
     <!-- Section number -->
@@ -95,17 +89,17 @@ const handleSubmit = async () => {
           class="text-xs font-semibold tracking-widest uppercase text-slate-400 dark:text-slate-500 mb-4 transition-[opacity,transform] duration-500"
           :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
         >
-          Hablemos
+          {{ t('contact.eyebrow') }}
         </p>
         <h2 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4">
-          <SplitText text="Trabajemos Juntos" :visible="isVisible" :delay="100" />
+          <SplitText :text="t('contact.heading')" :visible="isVisible" :delay="100" />
         </h2>
         <p
           class="text-slate-600 dark:text-slate-400 max-w-xl mx-auto transition-[opacity,transform] duration-500"
           :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
           style="transition-delay: 300ms"
         >
-          ¿Tienes un proyecto en mente o una oportunidad que compartir?
+          {{ t('contact.subtitle') }}
         </p>
       </div>
 
@@ -117,12 +111,12 @@ const handleSubmit = async () => {
           style="transition-delay: 350ms"
         >
           <p class="text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">
-            Cuéntame sobre tu proyecto, idea o posición. Reviso cada mensaje y respondo en menos de 24 horas.
+            {{ t('contact.intro') }}
           </p>
 
           <div class="space-y-4 mb-8">
             <div>
-              <p class="text-xs font-semibold tracking-widest uppercase text-slate-400 dark:text-slate-500 mb-1">Email</p>
+              <p class="text-xs font-semibold tracking-widest uppercase text-slate-400 dark:text-slate-500 mb-1">{{ t('contact.email_label') }}</p>
               <a
                 :href="`mailto:${profile?.email || 'vjestayvaldivia@gmail.com'}`"
                 class="text-slate-900 dark:text-white hover:opacity-70 transition-opacity"
@@ -131,7 +125,7 @@ const handleSubmit = async () => {
               </a>
             </div>
             <div>
-              <p class="text-xs font-semibold tracking-widest uppercase text-slate-400 dark:text-slate-500 mb-1">Ubicación</p>
+              <p class="text-xs font-semibold tracking-widest uppercase text-slate-400 dark:text-slate-500 mb-1">{{ t('contact.location_label') }}</p>
               <p class="text-slate-900 dark:text-white">{{ profile?.location || 'Chile' }}</p>
             </div>
           </div>
@@ -183,7 +177,7 @@ const handleSubmit = async () => {
                        peer-focus:top-1.5 peer-focus:text-[10px] peer-focus:font-semibold peer-focus:tracking-wider peer-focus:uppercase peer-focus:text-slate-500 dark:peer-focus:text-slate-400
                        top-1.5 text-[10px] font-semibold tracking-wider uppercase"
               >
-                Nombre
+                {{ t('contact.name_placeholder') }}
               </label>
             </div>
 
@@ -204,7 +198,7 @@ const handleSubmit = async () => {
                        peer-focus:top-1.5 peer-focus:text-[10px] peer-focus:font-semibold peer-focus:tracking-wider peer-focus:uppercase peer-focus:text-slate-500 dark:peer-focus:text-slate-400
                        top-1.5 text-[10px] font-semibold tracking-wider uppercase"
               >
-                Email
+                {{ t('contact.email_placeholder') }}
               </label>
             </div>
 
@@ -225,7 +219,7 @@ const handleSubmit = async () => {
                        peer-focus:top-1.5 peer-focus:text-[10px] peer-focus:font-semibold peer-focus:tracking-wider peer-focus:uppercase peer-focus:text-slate-500 dark:peer-focus:text-slate-400
                        top-1.5 text-[10px] font-semibold tracking-wider uppercase"
               >
-                Mensaje
+                {{ t('contact.message_placeholder') }}
               </label>
             </div>
 
@@ -234,8 +228,8 @@ const handleSubmit = async () => {
               :disabled="isSubmitting"
               class="w-full py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-sm font-medium rounded-lg hover:bg-slate-800 dark:hover:bg-slate-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <span v-if="isSubmitting">Enviando...</span>
-              <span v-else>Enviar mensaje</span>
+              <span v-if="isSubmitting">{{ t('contact.submitting') }}</span>
+              <span v-else>{{ t('contact.submit') }}</span>
             </button>
           </form>
 
@@ -267,38 +261,42 @@ const handleSubmit = async () => {
 </template>
 
 <style scoped>
-.particles-container {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
+/* Líneas diagonales animadas */
+.contact-stripes {
+  background-image: repeating-linear-gradient(
+    -55deg,
+    transparent 0px,
+    transparent 34px,
+    rgba(0, 0, 0, 0.04) 34px,
+    rgba(0, 0, 0, 0.04) 35px
+  );
+  background-size: 50px 50px;
+  animation: stripe-drift 30s linear infinite;
 }
 
-.particle {
-  position: absolute;
-  background: currentColor;
-  border-radius: 50%;
-  opacity: var(--particle-opacity, 0.2);
-  animation: rise linear infinite;
-  will-change: transform, opacity;
+:global(.dark) .contact-stripes {
+  background-image: repeating-linear-gradient(
+    -55deg,
+    transparent 0px,
+    transparent 34px,
+    rgba(255, 255, 255, 0.04) 34px,
+    rgba(255, 255, 255, 0.04) 35px
+  );
 }
 
-.dark .particle { color: rgba(148, 163, 184, 0.5); }
-.particle { color: rgba(100, 116, 139, 0.3); }
-
-@keyframes rise {
-  0% { transform: translateY(100%) translateX(0) scale(0.5); opacity: 0; }
-  15% { opacity: var(--particle-opacity, 0.3); transform: translateY(80%) translateX(8px) scale(1); }
-  85% { opacity: var(--particle-opacity, 0.3); }
-  100% { transform: translateY(-50px) translateX(20px) scale(0.7); opacity: 0; }
+@keyframes stripe-drift {
+  from { background-position: 0 0; }
+  to   { background-position: 50px 50px; }
 }
 
-@keyframes orb-float {
-  0%, 100% { transform: translateY(0) translateX(0); }
-  50% { transform: translateY(-40px) translateX(30px); }
+/* Viñeta radial para enfocar el centro */
+.bg-radial-vignette {
+  background: radial-gradient(ellipse 75% 85% at 50% 50%, transparent 35%, rgb(248 250 252) 90%);
 }
 
-.animate-orb-float { animation: orb-float 15s ease-in-out infinite; }
-.animation-delay-2000 { animation-delay: 2s; }
+:global(.dark) .bg-radial-vignette {
+  background: radial-gradient(ellipse 75% 85% at 50% 50%, transparent 35%, rgb(15 23 42) 90%);
+}
 
 /* Toast transition */
 .toast-enter-active, .toast-leave-active { transition: all 0.3s ease; }

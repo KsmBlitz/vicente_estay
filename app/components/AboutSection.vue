@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import type { Profile, Project } from '~/types'
 
+const { t } = useI18n()
+const { lf } = useLocaleField()
+
 defineProps<{
   profile?: Profile | null,
   projects?: Project[] | null
@@ -23,17 +26,17 @@ const { isVisible, sectionRef } = useScrollReveal({ threshold: 0.15 })
           class="text-xs font-semibold tracking-widest uppercase text-slate-400 dark:text-slate-500 mb-4 transition-[opacity,transform] duration-500"
           :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
         >
-          Conóceme
+          {{ t('about.eyebrow') }}
         </p>
         <h2 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4">
-          <SplitText text="Sobre Mí" :visible="isVisible" :delay="100" />
+          <SplitText :text="t('about.heading')" :visible="isVisible" :delay="100" />
         </h2>
         <p
           class="text-slate-600 dark:text-slate-400 max-w-xl mx-auto transition-[opacity,transform] duration-500"
           :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
           style="transition-delay: 300ms"
         >
-          Conoce un poco más sobre quién soy y qué hago
+          {{ t('about.subtitle') }}
         </p>
       </div>
 
@@ -70,7 +73,7 @@ const { isVisible, sectionRef } = useScrollReveal({ threshold: 0.15 })
 
           <div class="space-y-4 text-slate-600 dark:text-slate-400 leading-relaxed mb-8">
             <p>
-              {{ profile?.longBio || 'Desarrollador con experiencia en el ecosistema JavaScript moderno. Me especializo en construir aplicaciones web escalables y de alto rendimiento.' }}
+              {{ lf(profile, 'longBio') || 'Desarrollador con experiencia en el ecosistema JavaScript moderno. Me especializo en construir aplicaciones web escalables y de alto rendimiento.' }}
             </p>
           </div>
 
@@ -82,7 +85,7 @@ const { isVisible, sectionRef } = useScrollReveal({ threshold: 0.15 })
               style="transition-delay: 400ms"
             >
               <div class="text-3xl font-bold text-slate-900 dark:text-white">{{ profile?.yearsExperience || 1 }}</div>
-              <div class="text-sm text-slate-500 dark:text-slate-400 mt-1">Años Exp.</div>
+              <div class="text-sm text-slate-500 dark:text-slate-400 mt-1">{{ t('about.years_label') }}</div>
             </div>
             <div
               class="text-center transition-[opacity,transform] duration-500"
@@ -90,7 +93,7 @@ const { isVisible, sectionRef } = useScrollReveal({ threshold: 0.15 })
               style="transition-delay: 500ms"
             >
               <div class="text-3xl font-bold text-slate-900 dark:text-white">{{ projects?.length || 0 }}</div>
-              <div class="text-sm text-slate-500 dark:text-slate-400 mt-1">Proyectos</div>
+              <div class="text-sm text-slate-500 dark:text-slate-400 mt-1">{{ t('about.projects_label') }}</div>
             </div>
           </div>
         </div>

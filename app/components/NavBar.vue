@@ -10,16 +10,44 @@ const isScrolled = ref(false)
 const isMobileMenuOpen = ref(false)
 const activeSection = ref('hero')
 
+const { t } = useI18n()
 const { scrollTo } = useScrollTo()
 
-const navLinks = [
-  { name: 'Inicio', href: '#hero', id: 'hero' },
-  { name: 'Sobre Mí', href: '#about', id: 'about' },
-  { name: 'Habilidades', href: '#skills', id: 'skills' },
-  { name: 'Proyectos', href: '#projects', id: 'projects' },
-  { name: 'Certificaciones', href: '#certifications', id: 'certifications' },
-  { name: 'Contacto', href: '#contact', id: 'contact' }
-]
+const switchLocalePath = useSwitchLocalePath()
+const { locale, locales } = useI18n()
+
+// Language switcher state
+const isLangOpen = ref(false)
+const langButtonRef = ref<HTMLElement | null>(null)
+
+const availableLocales = computed(() =>
+  (locales.value as { code: string; name: string }[]).filter(l => l.code !== locale.value)
+)
+
+const currentLocaleName = computed(() => {
+  const all = locales.value as { code: string; name: string }[]
+  return all.find(l => l.code === locale.value)?.name ?? locale.value.toUpperCase()
+})
+
+const toggleLang = () => { isLangOpen.value = !isLangOpen.value }
+
+const closeLang = (e: MouseEvent) => {
+  if (langButtonRef.value && !langButtonRef.value.contains(e.target as Node)) {
+    isLangOpen.value = false
+  }
+}
+
+onMounted(() => document.addEventListener('click', closeLang))
+onUnmounted(() => document.removeEventListener('click', closeLang))
+
+const navLinks = computed(() => [
+  { name: t('nav.home'), href: '#hero', id: 'hero' },
+  { name: t('nav.about'), href: '#about', id: 'about' },
+  { name: t('nav.skills'), href: '#skills', id: 'skills' },
+  { name: t('nav.projects'), href: '#projects', id: 'projects' },
+  { name: t('nav.certifications'), href: '#certifications', id: 'certifications' },
+  { name: t('nav.contact'), href: '#contact', id: 'contact' }
+])
 
 // Pill indicator
 const navLinksContainer = ref<HTMLElement | null>(null)
@@ -62,13 +90,13 @@ const handleScroll = () => {
 }
 
 const updateActiveSection = () => {
-  const sections = navLinks.map(link => document.querySelector(link.href) as HTMLElement | null)
+  const sections = navLinks.value.map(link => document.querySelector(link.href) as HTMLElement | null)
   const scrollPosition = window.scrollY + 100
 
   for (let i = sections.length - 1; i >= 0; i--) {
     const section = sections[i]
     if (section && section.offsetTop <= scrollPosition) {
-      activeSection.value = navLinks[i].id
+      activeSection.value = navLinks.value[i].id
       break
     }
   }
@@ -110,7 +138,7 @@ const handleNavClick = (href: string) => {
 
           <a
             v-for="link in navLinks"
-            :key="link.name"
+            :key="link.id"
             :ref="(el) => setNavLinkRef(el, link.id)"
             :href="link.href"
             @click.prevent="handleNavClick(link.href)"
@@ -126,10 +154,8 @@ const handleNavClick = (href: string) => {
           <button
             @click="toggleTheme"
             class="relative w-16 h-8 rounded-full transition-all duration-500 overflow-hidden ml-4"
-            :class="isDark
-              ? 'bg-slate-800 shadow-inner'
-              : 'bg-blue-400 shadow-inner'"
-            :aria-label="isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'"
+            :class="isDark ? 'bg-slate-800 shadow-inner' : 'bg-blue-400 shadow-inner'"
+            :aria-label="isDark ? t('common.theme_light') : t('common.theme_dark')"
           >
             <div
               class="absolute inset-0 transition-opacity duration-500"
@@ -149,14 +175,68 @@ const handleNavClick = (href: string) => {
             </div>
             <div
               class="absolute top-1 w-6 h-6 rounded-full transition-all duration-500 flex items-center justify-center shadow-md"
-              :class="isDark
-                ? 'translate-x-9 bg-slate-200'
-                : 'translate-x-1 bg-yellow-300'"
+              :class="isDark ? 'translate-x-9 bg-slate-200' : 'translate-x-1 bg-yellow-300'"
             >
               <div v-if="!isDark" class="absolute inset-0 rounded-full bg-yellow-200"></div>
               <div v-if="isDark" class="absolute w-5 h-5 bg-slate-800 rounded-full -translate-x-1.5"></div>
             </div>
           </button>
+
+          <!-- Language Switcher -->
+          <div ref="langButtonRef" class="relative ml-3">
+            <button
+              @click="toggleLang"
+              class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 transition-colors"
+              :aria-label="t('common.lang_label')"
+            >
+              <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+              </svg>
+              <span class="uppercase tracking-wide text-xs">{{ locale }}</span>
+              <svg
+                class="w-3 h-3 transition-transform duration-200"
+                :class="isLangOpen ? 'rotate-180' : ''"
+                fill="none" stroke="currentColor" viewBox="0 0 24 24"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+
+            <!-- Dropdown -->
+            <Transition
+              enter-active-class="transition-all duration-200 ease-out"
+              enter-from-class="opacity-0 scale-95 -translate-y-1"
+              enter-to-class="opacity-100 scale-100 translate-y-0"
+              leave-active-class="transition-all duration-150 ease-in"
+              leave-from-class="opacity-100 scale-100 translate-y-0"
+              leave-to-class="opacity-0 scale-95 -translate-y-1"
+            >
+              <div
+                v-if="isLangOpen"
+                class="absolute right-0 top-full mt-2 w-36 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-xl overflow-hidden z-10"
+              >
+                <!-- Current locale (disabled) -->
+                <div class="flex items-center gap-2 px-3 py-2 text-sm bg-slate-50 dark:bg-slate-700/50">
+                  <span class="w-2 h-2 bg-emerald-500 rounded-full"></span>
+                  <span class="font-medium text-slate-900 dark:text-white">{{ currentLocaleName }}</span>
+                </div>
+                <div class="h-px bg-slate-100 dark:bg-slate-700"></div>
+                <!-- Other locales -->
+                <NuxtLink
+                  v-for="loc in availableLocales"
+                  :key="loc.code"
+                  :to="switchLocalePath(loc.code)"
+                  @click="isLangOpen = false"
+                  class="flex items-center gap-2 px-3 py-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:text-slate-900 dark:hover:text-white transition-colors"
+                >
+                  <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+                  </svg>
+                  {{ loc.name }}
+                </NuxtLink>
+              </div>
+            </Transition>
+          </div>
         </div>
 
         <!-- Mobile Menu Button -->
@@ -184,13 +264,15 @@ const handleNavClick = (href: string) => {
           <div class="flex flex-col gap-2">
             <a
               v-for="link in navLinks"
-              :key="link.name"
+              :key="link.id"
               :href="link.href"
               @click.prevent="handleNavClick(link.href)"
               class="px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
             >
               {{ link.name }}
             </a>
+
+            <!-- Mobile theme toggle -->
             <button
               @click="toggleTheme"
               class="px-4 py-2 rounded-lg text-left text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors flex items-center gap-3"
@@ -201,13 +283,32 @@ const handleNavClick = (href: string) => {
               >
                 <div
                   class="absolute top-0.5 w-5 h-5 rounded-full transition-all duration-500 shadow"
-                  :class="isDark
-                    ? 'translate-x-6 bg-slate-200'
-                    : 'translate-x-0.5 bg-yellow-300'"
+                  :class="isDark ? 'translate-x-6 bg-slate-200' : 'translate-x-0.5 bg-yellow-300'"
                 ></div>
               </div>
-              <span>{{ isDark ? 'Modo Claro' : 'Modo Oscuro' }}</span>
+              <span>{{ isDark ? t('common.mode_light') : t('common.mode_dark') }}</span>
             </button>
+
+            <!-- Mobile language switcher -->
+            <div class="px-4 pt-1 pb-1">
+              <p class="text-xs font-semibold tracking-widest uppercase text-slate-400 dark:text-slate-500 mb-2">
+                {{ t('common.lang_label') }}
+              </p>
+              <div class="flex gap-2 flex-wrap">
+                <NuxtLink
+                  v-for="loc in (locales as { code: string; name: string }[])"
+                  :key="loc.code"
+                  :to="switchLocalePath(loc.code)"
+                  @click="isMobileMenuOpen = false"
+                  class="px-3 py-1.5 rounded-lg text-sm transition-colors border"
+                  :class="loc.code === locale
+                    ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 border-transparent'
+                    : 'text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800'"
+                >
+                  {{ loc.name }}
+                </NuxtLink>
+              </div>
+            </div>
           </div>
         </div>
       </Transition>

@@ -7,9 +7,19 @@ export const project = defineType({
   fields: [
     defineField({
       name: 'title',
-      title: 'Título del Proyecto',
+      title: 'Título del Proyecto (ES)',
       type: 'string',
       validation: Rule => Rule.required(),
+    }),
+    defineField({
+      name: 'title_en',
+      title: 'Project Title (EN)',
+      type: 'string',
+    }),
+    defineField({
+      name: 'title_de',
+      title: 'Projekttitel (DE)',
+      type: 'string',
     }),
     defineField({
       name: 'slug',
@@ -31,7 +41,19 @@ export const project = defineType({
     }),
     defineField({
       name: 'description',
-      title: 'Descripción Corta',
+      title: 'Descripción Corta (ES)',
+      type: 'text',
+      rows: 3,
+    }),
+    defineField({
+      name: 'description_en',
+      title: 'Short Description (EN)',
+      type: 'text',
+      rows: 3,
+    }),
+    defineField({
+      name: 'description_de',
+      title: 'Kurzbeschreibung (DE)',
       type: 'text',
       rows: 3,
     }),

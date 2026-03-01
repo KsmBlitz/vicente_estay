@@ -7,9 +7,19 @@ export const certification = defineType({
   fields: [
     defineField({
       name: 'name',
-      title: 'Nombre del Certificado',
+      title: 'Nombre del Certificado (ES)',
       type: 'string',
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'name_en',
+      title: 'Certificate Name (EN)',
+      type: 'string',
+    }),
+    defineField({
+      name: 'name_de',
+      title: 'Zertifikatsname (DE)',
+      type: 'string',
     }),
     defineField({
       name: 'institution',

@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import type { Certification } from '~/types'
 
-defineProps<{
+const props = defineProps<{
   certifications: Certification[] | null
 }>()
 
 const { isVisible, sectionRef } = useScrollReveal({ threshold: 0.08 })
+const { t } = useI18n()
+const { lf } = useLocaleField()
 
 const formatDate = (dateStr: string) => {
   const [year, month] = dateStr.split('-')
@@ -37,17 +39,17 @@ const getFileName = (cert: Certification) =>
           class="text-xs font-semibold tracking-widest uppercase text-slate-400 dark:text-slate-500 mb-4 transition-[opacity,transform] duration-500"
           :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
         >
-          Formación
+          {{ t('certifications.eyebrow') }}
         </p>
         <h2 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4">
-          <SplitText text="Certificaciones" :visible="isVisible" :delay="100" />
+          <SplitText :text="t('certifications.heading')" :visible="isVisible" :delay="100" />
         </h2>
         <p
           class="text-slate-600 dark:text-slate-400 max-w-xl mx-auto transition-[opacity,transform] duration-500"
           :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
           style="transition-delay: 300ms"
         >
-          Cursos y certificaciones completados. Descarga el certificado directamente.
+          {{ t('certifications.subtitle') }}
         </p>
       </div>
 
@@ -74,7 +76,7 @@ const getFileName = (cert: Certification) =>
 
             <div class="flex-1 min-w-0">
               <h3 class="font-semibold text-slate-900 dark:text-white text-sm leading-snug line-clamp-2">
-                {{ cert.name }}
+                {{ lf(cert, 'name') || cert.name }}
               </h3>
               <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 line-clamp-1">
                 {{ cert.institution }}
@@ -91,7 +93,7 @@ const getFileName = (cert: Certification) =>
                 class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-500/10 text-xs font-semibold text-emerald-600 dark:text-emerald-400"
               >
                 <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
-                En curso
+                {{ t('certifications.in_progress_badge') }}
               </span>
               <span
                 v-if="cert.hours"
@@ -126,7 +128,7 @@ const getFileName = (cert: Certification) =>
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
-              Descargar certificado
+              {{ t('certifications.download') }}
             </a>
             <div
               v-else-if="cert.inProgress"
@@ -135,7 +137,7 @@ const getFileName = (cert: Certification) =>
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
               </svg>
-              Certificado pendiente
+              {{ t('certifications.in_progress_btn') }}
             </div>
             <div
               v-else
@@ -144,7 +146,7 @@ const getFileName = (cert: Certification) =>
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
               </svg>
-              Sin archivo adjunto
+              {{ t('certifications.no_file') }}
             </div>
           </div>
           </div><!-- /badges + botón -->
@@ -152,11 +154,11 @@ const getFileName = (cert: Certification) =>
       </div>
 
       <!-- Loading State -->
-      <LoadingSpinner v-else-if="!certifications" label="Cargando certificaciones..." />
+      <LoadingSpinner v-else-if="!certifications" :label="t('certifications.loading')" />
 
       <!-- Empty State -->
       <div v-else class="text-center py-20">
-        <p class="text-slate-500 dark:text-slate-400">No hay certificaciones disponibles</p>
+        <p class="text-slate-500 dark:text-slate-400">{{ t('certifications.empty') }}</p>
       </div>
     </div>
   </section>

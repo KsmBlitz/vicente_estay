@@ -1,0 +1,115 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "about": "Sobre Mí",
+    "skills": "Skills",
+    "projects": "Proyectos",
+    "certifications": "Certificaciones",
+    "contact": "Contacto"
+  },
+  "hero": {
+    "badge": "Disponible para trabajar",
+    "cta_projects": "Ver proyectos",
+    "cta_cv": "Descargar CV",
+    "cta_contact": "Contacto",
+    "stat_years": "Años exp.",
+    "stat_projects": "Proyectos",
+    "stat_tech": "Tecnologías"
+  },
+  "about": {
+    "eyebrow": "Conóceme",
+    "heading": "Sobre Mí",
+    "subtitle": "Conoce un poco más sobre quién soy y qué hago",
+    "years_label": "Años Exp.",
+    "projects_label": "Proyectos"
+  },
+  "skills": {
+    "eyebrow": "Lo que uso",
+    "heading": "Stack Técnico",
+    "subtitle": "Tecnologías, herramientas y habilidades que utilizo",
+    "cat": {
+      "languages": "Lenguajes",
+      "frameworks": "Frameworks & Librerías",
+      "databases": "Bases de Datos",
+      "devops": "Cloud & DevOps",
+      "tools": "Herramientas",
+      "skills": "Habilidades"
+    },
+    "learning": {
+      "title": "Aprendiendo actualmente",
+      "badge": "En curso",
+      "ai": {
+        "name": "Inteligencia Artificial",
+        "desc": "LLMs, embeddings y modelos generativos aplicados a productos reales."
+      },
+      "agents": {
+        "name": "Agentes IA",
+        "desc": "Diseño de agentes autónomos con herramientas, memoria y razonamiento multi-paso."
+      },
+      "rag": {
+        "name": "RAG",
+        "desc": "Retrieval-Augmented Generation: búsqueda semántica y vectores para enriquecer respuestas de LLMs."
+      },
+      "security": {
+        "name": "Ciberseguridad",
+        "desc": "Fundamentos de seguridad ofensiva y defensiva, análisis de vulnerabilidades y hardening."
+      }
+    },
+    "soft": {
+      "teamwork": "Trabajo en equipo",
+      "problem_solving": "Resolución de problemas",
+      "it_maintenance": "Mantenimiento TI",
+      "networking": "Redes",
+      "responsibility": "Responsabilidad",
+      "time_management": "Manejo del tiempo"
+    }
+  },
+  "projects": {
+    "eyebrow": "Mi trabajo",
+    "heading": "Proyectos",
+    "demo": "Ver demo",
+    "code": "Ver código",
+    "loading": "Cargando proyectos...",
+    "empty": "No hay proyectos disponibles"
+  },
+  "certifications": {
+    "eyebrow": "Formación",
+    "heading": "Certificaciones",
+    "subtitle": "Cursos y certificaciones completados. Descarga el certificado directamente.",
+    "download": "Descargar certificado",
+    "in_progress_badge": "En curso",
+    "in_progress_btn": "Certificado pendiente",
+    "no_file": "Sin archivo adjunto",
+    "loading": "Cargando certificaciones...",
+    "empty": "No hay certificaciones disponibles",
+    "hours": "horas"
+  },
+  "contact": {
+    "eyebrow": "Hablemos",
+    "heading": "Trabajemos Juntos",
+    "subtitle": "¿Tienes un proyecto en mente o una oportunidad que compartir?",
+    "intro": "Cuéntame sobre tu proyecto, idea o posición. Reviso cada mensaje y respondo en menos de 24 horas.",
+    "email_label": "Email",
+    "location_label": "Ubicación",
+    "name_placeholder": "Nombre",
+    "email_placeholder": "Email",
+    "message_placeholder": "Mensaje",
+    "submit": "Enviar mensaje",
+    "submitting": "Enviando...",
+    "success": "¡Mensaje enviado! Te responderé pronto.",
+    "error": "Hubo un error al enviar. Intenta nuevamente."
+  },
+  "footer": {
+    "tagline": "Construyendo el futuro digital",
+    "back_to_top": "Volver arriba"
+  },
+  "common": {
+    "sanity_error": "Error al conectar con Sanity. Mostrando contenido de respaldo.",
+    "scroll_to_top": "Volver arriba",
+    "theme_light": "Cambiar a modo claro",
+    "theme_dark": "Cambiar a modo oscuro",
+    "mode_light": "Modo Claro",
+    "mode_dark": "Modo Oscuro",
+    "lang_label": "Idioma"
+  }
+}

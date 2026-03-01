@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import type { Project } from '~/types'
 
-defineProps<{
+const props = defineProps<{
   projects: Project[] | null
 }>()
 
 const { isVisible, sectionRef } = useScrollReveal({ threshold: 0.08 })
+const { t } = useI18n()
+const { lf } = useLocaleField()
 
 const techUrls: Record<string, string> = {
   'React': 'https://react.dev', 'Vue': 'https://vuejs.org', 'Vue.js': 'https://vuejs.org',
@@ -66,18 +68,11 @@ const handleCardLeave = (e: MouseEvent) => {
           class="text-xs font-semibold tracking-widest uppercase text-slate-400 dark:text-slate-500 mb-4 transition-[opacity,transform] duration-500"
           :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
         >
-          Mi trabajo
+          {{ t('projects.eyebrow') }}
         </p>
         <h2 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4">
-          <SplitText text="Proyectos" :visible="isVisible" :delay="100" />
+          <SplitText :text="t('projects.heading')" :visible="isVisible" :delay="100" />
         </h2>
-        <p
-          class="text-slate-600 dark:text-slate-400 max-w-xl mx-auto transition-[opacity,transform] duration-500"
-          :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
-          style="transition-delay: 300ms"
-        >
-          Algunos proyectos en los que he trabajado
-        </p>
       </div>
 
       <!-- Projects Grid -->
@@ -131,11 +126,11 @@ const handleCardLeave = (e: MouseEvent) => {
           <!-- Content -->
           <div class="p-6">
             <h3 class="text-xl font-semibold text-slate-900 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
-              {{ project.title }}
+              {{ lf(project, 'title') || project.title }}
             </h3>
 
             <p v-if="project.description" class="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed text-sm">
-              {{ project.description }}
+              {{ lf(project, 'description') || project.description }}
             </p>
 
             <div v-if="project.technologies && project.technologies.length > 0" class="flex flex-wrap gap-2 mb-5">
@@ -160,7 +155,7 @@ const handleCardLeave = (e: MouseEvent) => {
                 rel="noopener noreferrer"
                 class="inline-flex items-center gap-2 text-sm font-medium text-slate-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
               >
-                Ver proyecto
+                {{ t('projects.demo') }}
                 <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                 </svg>
@@ -172,7 +167,7 @@ const handleCardLeave = (e: MouseEvent) => {
                 rel="noopener noreferrer"
                 class="inline-flex items-center gap-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
               >
-                Repositorio
+                {{ t('projects.code') }}
                 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                 </svg>
@@ -183,11 +178,11 @@ const handleCardLeave = (e: MouseEvent) => {
       </div>
 
       <!-- Loading State -->
-      <LoadingSpinner v-else-if="!projects" label="Cargando proyectos..." />
+      <LoadingSpinner v-else-if="!projects" :label="t('projects.loading')" />
 
       <!-- Empty State -->
       <div v-else class="text-center py-20">
-        <p class="text-slate-500">No hay proyectos disponibles</p>
+        <p class="text-slate-500">{{ t('projects.empty') }}</p>
       </div>
     </div>
   </section>
