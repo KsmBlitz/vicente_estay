@@ -7,8 +7,14 @@ const props = defineProps<{
 }>()
 
 const { scrollTo } = useScrollTo()
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const { lf } = useLocaleField()
+
+const cvFile = computed(() =>
+  locale.value === 'es'
+    ? { href: '/Curriculum_Vitae_Vicente_Estay_2026.pdf',    download: 'Vicente_Estay_CV_ES.pdf' }
+    : { href: '/Curriculum_Vitae_Vicente_Estay_2026_EN.pdf', download: 'Vicente_Estay_CV_EN.pdf' }
+)
 
 // Animated counter
 const yearsExp = ref(0)
@@ -174,8 +180,8 @@ const handleMagneticLeave = (e: MouseEvent) => {
             </button>
 
             <a
-              href="/cv.pdf"
-              download="Vicente_Estay_CV.pdf"
+              :href="cvFile.href"
+              :download="cvFile.download"
               @mousemove="handleMagneticMove"
               @mouseleave="handleMagneticLeave"
               class="group inline-block px-6 py-3 text-slate-900 dark:text-white text-sm font-medium rounded-lg border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800/50 will-change-transform"
