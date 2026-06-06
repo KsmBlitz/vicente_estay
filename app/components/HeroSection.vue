@@ -12,8 +12,8 @@ const { lf } = useLocaleField()
 
 const cvFile = computed(() =>
   locale.value === 'es'
-    ? { href: '/Curriculum_Vitae_Vicente_Estay_2026.pdf',    download: 'Vicente_Estay_CV_ES.pdf' }
-    : { href: '/Curriculum_Vitae_Vicente_Estay_2026_EN.pdf', download: 'Vicente_Estay_CV_EN.pdf' }
+    ? { href: '/CV_Vicente_Estay.pdf',    download: 'Vicente_Estay_CV_ES.pdf' }
+    : { href: '/CV_Vicente_Estay_EN.pdf', download: 'Vicente_Estay_CV_EN.pdf' }
 )
 
 // Animated counter
