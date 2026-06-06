@@ -29,39 +29,46 @@
     "subtitle": "Technologies, tools and skills I work with",
     "cat": {
       "languages": "Languages",
-      "frameworks": "Frameworks & Libraries",
+      "frameworks": "Frameworks & Backend",
       "databases": "Databases",
       "devops": "Cloud & DevOps",
+      "iot": "IoT & Hardware",
       "tools": "Tools",
-      "skills": "Skills"
+      "skills": "Skills",
+      "methods": "Work Methodologies",
+      "ai": "AI & Security"
     },
-    "learning": {
-      "title": "Currently learning",
-      "badge": "In progress",
-      "ai": {
-        "name": "Artificial Intelligence",
-        "desc": "LLMs, embeddings and generative models applied to real products."
-      },
-      "agents": {
-        "name": "AI Agents",
-        "desc": "Design of autonomous agents with tools, memory and multi-step reasoning."
-      },
+    "active_learning": "Currently pursuing",
+    "ai": {
       "rag": {
         "name": "RAG",
         "desc": "Retrieval-Augmented Generation: semantic search and vectors to enrich LLM responses."
       },
-      "security": {
-        "name": "Cybersecurity",
-        "desc": "Fundamentals of offensive and defensive security, vulnerability analysis and hardening."
+      "llms": {
+        "name": "LLMs",
+        "desc": "Integration of large language models into real-world applications."
+      },
+      "ollama": {
+        "name": "Ollama",
+        "desc": "Running local AI models for private and efficient on-device inference."
+      },
+      "qwen": {
+        "name": "Qwen",
+        "desc": "Language model used in production for RAG-based chatbots."
+      },
+      "owasp": {
+        "name": "OWASP Top 10",
+        "desc": "Web security best practices applied across all development projects."
       }
     },
     "soft": {
       "teamwork": "Teamwork",
       "problem_solving": "Problem Solving",
-      "it_maintenance": "IT Maintenance",
-      "networking": "Networking",
+      "it_maintenance": "API Design",
+      "networking": "Systems Architecture",
       "responsibility": "Responsibility",
-      "time_management": "Time Management"
+      "time_management": "Time Management",
+      "innovation": "Innovation & Entrepreneurship"
     }
   },
   "projects": {

@@ -241,6 +241,8 @@ const handleMagneticLeave = (e: MouseEvent) => {
                 :src="profile.photoUrl"
                 :alt="profile.name"
                 class="w-full h-full object-cover"
+                fetchpriority="high"
+                loading="eager"
               />
               <div v-else class="w-full h-full bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-700 flex items-center justify-center">
                 <div class="text-7xl lg:text-8xl font-bold text-slate-300 dark:text-slate-600">VE</div>

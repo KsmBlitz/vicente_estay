@@ -29,39 +29,46 @@
     "subtitle": "Technologien, Werkzeuge und Fähigkeiten, die ich einsetze",
     "cat": {
       "languages": "Sprachen",
-      "frameworks": "Frameworks & Bibliotheken",
+      "frameworks": "Frameworks & Backend",
       "databases": "Datenbanken",
       "devops": "Cloud & DevOps",
+      "iot": "IoT & Hardware",
       "tools": "Werkzeuge",
-      "skills": "Fähigkeiten"
+      "skills": "Fähigkeiten",
+      "methods": "Arbeitsmethoden",
+      "ai": "KI & Sicherheit"
     },
-    "learning": {
-      "title": "Aktuell in Lernphase",
-      "badge": "Aktiv",
-      "ai": {
-        "name": "Künstliche Intelligenz",
-        "desc": "LLMs, Embeddings und generative Modelle in echten Produkten eingesetzt."
-      },
-      "agents": {
-        "name": "KI-Agenten",
-        "desc": "Entwurf autonomer Agenten mit Werkzeugen, Gedächtnis und mehrstufigem Reasoning."
-      },
+    "active_learning": "Aktuell in Ausbildung",
+    "ai": {
       "rag": {
         "name": "RAG",
         "desc": "Retrieval-Augmented Generation: semantische Suche und Vektoren zur Anreicherung von LLM-Antworten."
       },
-      "security": {
-        "name": "Cybersicherheit",
-        "desc": "Grundlagen offensiver und defensiver Sicherheit, Schwachstellenanalyse und Härtung."
+      "llms": {
+        "name": "LLMs",
+        "desc": "Integration großer Sprachmodelle in reale Anwendungen."
+      },
+      "ollama": {
+        "name": "Ollama",
+        "desc": "Lokale KI-Modelle für private und effiziente Inferenz."
+      },
+      "qwen": {
+        "name": "Qwen",
+        "desc": "Sprachmodell im Produktionseinsatz für RAG-basierte Chatbots."
+      },
+      "owasp": {
+        "name": "OWASP Top 10",
+        "desc": "Web-Sicherheitspraktiken in allen Entwicklungsprojekten angewendet."
       }
     },
     "soft": {
       "teamwork": "Teamarbeit",
       "problem_solving": "Problemlösung",
-      "it_maintenance": "IT-Wartung",
-      "networking": "Netzwerke",
+      "it_maintenance": "API-Design",
+      "networking": "Systemarchitektur",
       "responsibility": "Verantwortung",
-      "time_management": "Zeitmanagement"
+      "time_management": "Zeitmanagement",
+      "innovation": "Innovation & Unternehmertum"
     }
   },
   "projects": {

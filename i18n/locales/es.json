@@ -29,39 +29,46 @@
     "subtitle": "Tecnologías, herramientas y habilidades que utilizo",
     "cat": {
       "languages": "Lenguajes",
-      "frameworks": "Frameworks & Librerías",
+      "frameworks": "Frameworks & Backend",
       "databases": "Bases de Datos",
       "devops": "Cloud & DevOps",
+      "iot": "IoT & Hardware",
       "tools": "Herramientas",
-      "skills": "Habilidades"
+      "skills": "Habilidades",
+      "methods": "Metodologías de trabajo",
+      "ai": "IA & Seguridad"
     },
-    "learning": {
-      "title": "Aprendiendo actualmente",
-      "badge": "En curso",
-      "ai": {
-        "name": "Inteligencia Artificial",
-        "desc": "LLMs, embeddings y modelos generativos aplicados a productos reales."
-      },
-      "agents": {
-        "name": "Agentes IA",
-        "desc": "Diseño de agentes autónomos con herramientas, memoria y razonamiento multi-paso."
-      },
+    "active_learning": "En formación activa",
+    "ai": {
       "rag": {
         "name": "RAG",
         "desc": "Retrieval-Augmented Generation: búsqueda semántica y vectores para enriquecer respuestas de LLMs."
       },
-      "security": {
-        "name": "Ciberseguridad",
-        "desc": "Fundamentos de seguridad ofensiva y defensiva, análisis de vulnerabilidades y hardening."
+      "llms": {
+        "name": "LLMs",
+        "desc": "Uso e integración de modelos de lenguaje a gran escala en aplicaciones reales."
+      },
+      "ollama": {
+        "name": "Ollama",
+        "desc": "Ejecución de modelos de IA locales para inferencia privada y eficiente."
+      },
+      "qwen": {
+        "name": "Qwen",
+        "desc": "Modelo de lenguaje utilizado en producción para chatbots con RAG."
+      },
+      "owasp": {
+        "name": "OWASP Top 10",
+        "desc": "Buenas prácticas de seguridad web aplicadas en todos los desarrollos."
       }
     },
     "soft": {
       "teamwork": "Trabajo en equipo",
       "problem_solving": "Resolución de problemas",
-      "it_maintenance": "Mantenimiento TI",
-      "networking": "Redes",
+      "it_maintenance": "Diseño de APIs",
+      "networking": "Arquitectura de sistemas",
       "responsibility": "Responsabilidad",
-      "time_management": "Manejo del tiempo"
+      "time_management": "Manejo del tiempo",
+      "innovation": "Innovación y Emprendimiento"
     }
   },
   "projects": {

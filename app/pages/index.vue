@@ -64,17 +64,36 @@ const currentLocaleUrl = computed(() =>
   locale.value === 'es' ? siteUrl : `${siteUrl}/${locale.value}`
 )
 
+const jsonLd = computed(() => ({
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: profile.value?.name || 'Vicente Estay',
+  jobTitle: lf(profile.value, 'title') || 'Desarrollador Full Stack',
+  description: lf(profile.value, 'shortBio') || 'Desarrollador Full Stack especializado en Vue.js, Python y FastAPI.',
+  url: siteUrl,
+  image: ogImage.value,
+  email: profile.value?.email || 'vjestayvaldivia@gmail.com',
+  sameAs: [
+    profile.value?.github || 'https://github.com/KsmBlitz',
+    profile.value?.linkedin || 'https://www.linkedin.com/in/vicente-estay/',
+  ],
+  knowsAbout: ['Python', 'TypeScript', 'SQL', 'Vue.js', 'FastAPI', 'Node.js', 'PostgreSQL', 'MongoDB', 'Docker', 'AWS', 'ESP32', 'MQTT', 'RAG', 'LLMs', 'OWASP Top 10'],
+}))
+
 useHead({
   title: () => siteTitle.value,
+  htmlAttrs: { lang: () => locale.value },
   meta: [
     { name: 'description', content: () => siteDescription.value },
     { name: 'author', content: () => profile.value?.name || 'Vicente Estay' },
-    { name: 'keywords', content: 'Vue.js, Nuxt, Python, FastAPI, TypeScript, Desarrollador Full Stack, Portfolio' },
+    { name: 'keywords', content: 'Vue.js, Python, FastAPI, TypeScript, Desarrollador Full Stack, Portfolio, PostgreSQL, Docker, AWS' },
+    { name: 'robots', content: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: () => currentLocaleUrl.value },
     { property: 'og:title', content: () => siteTitle.value },
     { property: 'og:description', content: () => siteDescription.value },
     { property: 'og:image', content: () => ogImage.value },
+    { property: 'og:locale', content: () => locale.value === 'es' ? 'es_CL' : locale.value === 'en' ? 'en_US' : 'de_DE' },
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:url', content: () => currentLocaleUrl.value },
     { name: 'twitter:title', content: () => siteTitle.value },
@@ -84,7 +103,17 @@ useHead({
   link: [
     { rel: 'icon', type: 'image/png', href: '/icon.png' },
     { rel: 'canonical', href: () => currentLocaleUrl.value },
-  ]
+    { rel: 'preconnect', href: 'https://cdn.jsdelivr.net' },
+    { rel: 'preconnect', href: 'https://cdn.sanity.io' },
+    { rel: 'dns-prefetch', href: 'https://cdn.jsdelivr.net' },
+    { rel: 'dns-prefetch', href: 'https://cdn.sanity.io' },
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: () => JSON.stringify(jsonLd.value),
+    },
+  ],
 })
 </script>
 
