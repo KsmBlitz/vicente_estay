@@ -43,6 +43,7 @@ onUnmounted(() => document.removeEventListener('click', closeLang))
 const navLinks = computed(() => [
   { name: t('nav.home'), href: '#hero', id: 'hero' },
   { name: t('nav.about'), href: '#about', id: 'about' },
+  { name: t('nav.experience'), href: '#experience', id: 'experience' },
   { name: t('nav.skills'), href: '#skills', id: 'skills' },
   { name: t('nav.projects'), href: '#projects', id: 'projects' },
   { name: t('nav.certifications'), href: '#certifications', id: 'certifications' },

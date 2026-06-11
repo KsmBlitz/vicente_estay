@@ -24,6 +24,21 @@ const techUrls: Record<string, string> = {
 
 const getTechUrl = (tech: string) => techUrls[tech] || undefined
 
+// ── Filtros por tecnología ─────────────────────────────────────────────────
+const activeFilter = ref<string | null>(null)
+
+const uniqueTechs = computed(() => {
+  if (!props.projects) return []
+  const all = props.projects.flatMap(p => p.technologies ?? [])
+  return [...new Set(all)].sort()
+})
+
+const filteredProjects = computed(() =>
+  activeFilter.value
+    ? (props.projects ?? []).filter(p => p.technologies?.includes(activeFilter.value!))
+    : (props.projects ?? [])
+)
+
 // Real 3D mouse tracking per card
 const handleCardMove = (e: MouseEvent) => {
   const card = e.currentTarget as HTMLElement
@@ -75,10 +90,39 @@ const handleCardLeave = (e: MouseEvent) => {
         </h2>
       </div>
 
+      <!-- Tech filters -->
+      <div
+        v-if="uniqueTechs.length > 0"
+        class="flex flex-wrap justify-center gap-2 mb-10 transition-[opacity,transform] duration-500"
+        :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
+        style="transition-delay: 200ms"
+      >
+        <button
+          @click="activeFilter = null"
+          class="px-3 py-1.5 rounded-full text-xs font-medium transition-colors duration-200"
+          :class="activeFilter === null
+            ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900'
+            : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'"
+        >
+          {{ t('projects.filter_all') }}
+        </button>
+        <button
+          v-for="tech in uniqueTechs"
+          :key="tech"
+          @click="activeFilter = activeFilter === tech ? null : tech"
+          class="px-3 py-1.5 rounded-full text-xs font-medium transition-colors duration-200"
+          :class="activeFilter === tech
+            ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900'
+            : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'"
+        >
+          {{ tech }}
+        </button>
+      </div>
+
       <!-- Projects Grid -->
       <div v-if="projects && projects.length > 0" class="grid md:grid-cols-2 gap-8">
         <article
-          v-for="(project, index) in projects"
+          v-for="(project, index) in filteredProjects"
           :key="project.title"
           class="project-card group relative bg-slate-50 dark:bg-slate-800/50 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 will-change-transform"
           :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'"
@@ -175,6 +219,14 @@ const handleCardLeave = (e: MouseEvent) => {
             </div>
           </div>
         </article>
+
+        <!-- Empty filter state -->
+        <div
+          v-if="filteredProjects.length === 0"
+          class="col-span-2 text-center py-16 text-slate-400 dark:text-slate-500 text-sm"
+        >
+          {{ t('projects.filter_empty') }}
+        </div>
       </div>
 
       <!-- Loading State -->
@@ -208,4 +260,5 @@ const handleCardLeave = (e: MouseEvent) => {
 
 .project-card:hover::before { opacity: 1; }
 .dark .project-card::before { background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, transparent 50%); }
+
 </style>

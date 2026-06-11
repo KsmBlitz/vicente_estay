@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Project, Profile, Certification } from '~/types'
+import type { Project, Profile, Certification, Experience } from '~/types'
 
 const { t, locale } = useI18n()
 const { public: { siteUrl } } = useRuntimeConfig()
@@ -26,7 +26,21 @@ const profileQuery = `*[_type == "profile"][0]{
   location,
   email,
   github,
-  linkedin
+  linkedin,
+  "cvUrl": cv.asset->url,
+  "cvUrl_en": cv_en.asset->url
+}`
+
+const experienceQuery = `*[_type == "experience"] | order(order asc, startDate desc) {
+  company,
+  position, position_en, position_de,
+  description, description_en, description_de,
+  startDate,
+  endDate,
+  current,
+  technologies,
+  location,
+  companyUrl
 }`
 
 const certificationsQuery = `*[_type == "certification"] | order(inProgress desc, issueDate desc) {
@@ -40,6 +54,7 @@ const certificationsQuery = `*[_type == "certification"] | order(inProgress desc
 
 const { data: projects } = await useSanityQuery<Project[]>(projectsQuery, 'projects')
 const { data: profile } = await useSanityQuery<Profile>(profileQuery, 'profile')
+const { data: experiences } = await useSanityQuery<Experience[]>(experienceQuery, 'experiences')
 const { data: certifications } = await useSanityQuery<Certification[]>(certificationsQuery, 'certifications')
 
 // Sanity connection check
@@ -134,6 +149,7 @@ useHead({
 
     <HeroSection :profile="profile" :projects="projects" />
     <AboutSection :profile="profile" :projects="projects" />
+    <ExperienceSection :experiences="experiences ?? null" />
     <SkillsSection />
     <ProjectsSection :projects="projects ?? null" />
     <CertificationsSection :certifications="certifications ?? null" />

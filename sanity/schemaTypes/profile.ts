@@ -116,6 +116,20 @@ export const profile = defineType({
       name: 'linkedin',
       title: 'LinkedIn URL',
       type: 'url'
+    }),
+    defineField({
+      name: 'cv',
+      title: 'CV en Español (PDF)',
+      type: 'file',
+      options: { accept: '.pdf' },
+      description: 'Curriculum Vitae en español. Si se sube aquí, reemplaza el archivo estático.'
+    }),
+    defineField({
+      name: 'cv_en',
+      title: 'CV en Inglés (PDF)',
+      type: 'file',
+      options: { accept: '.pdf' },
+      description: 'Curriculum Vitae in English. Replaces the static file if uploaded.'
     })
   ],
   preview: {

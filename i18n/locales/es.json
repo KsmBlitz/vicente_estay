@@ -2,6 +2,7 @@
   "nav": {
     "home": "Inicio",
     "about": "Sobre Mí",
+    "experience": "Experiencia",
     "skills": "Skills",
     "projects": "Proyectos",
     "certifications": "Certificaciones",
@@ -21,7 +22,22 @@
     "heading": "Sobre Mí",
     "subtitle": "Conoce un poco más sobre quién soy y qué hago",
     "years_label": "Años Exp.",
-    "projects_label": "Proyectos"
+    "projects_label": "Proyectos",
+    "soft_skills_label": "Habilidades"
+  },
+  "experience": {
+    "eyebrow": "Trayectoria",
+    "heading": "Experiencia Laboral",
+    "subtitle": "Empresas y proyectos en los que he participado",
+    "current": "Actual",
+    "present": "Presente",
+    "year": "año",
+    "years": "años",
+    "month": "mes",
+    "months": "meses",
+    "less_than_month": "Menos de un mes",
+    "loading": "Cargando experiencia...",
+    "empty": "No hay experiencia disponible"
   },
   "skills": {
     "eyebrow": "Lo que uso",
@@ -76,6 +92,8 @@
     "heading": "Proyectos",
     "demo": "Ver demo",
     "code": "Ver código",
+    "filter_all": "Todos",
+    "filter_empty": "No hay proyectos con esta tecnología",
     "loading": "Cargando proyectos...",
     "empty": "No hay proyectos disponibles"
   },

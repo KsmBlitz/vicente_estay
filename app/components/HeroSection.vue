@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Profile, Project } from '~/types'
+import { TECH_COUNT } from '~/utils/skillsData'
 
 const props = defineProps<{
   profile?: Profile | null,
@@ -10,11 +11,18 @@ const { scrollTo } = useScrollTo()
 const { t, locale } = useI18n()
 const { lf } = useLocaleField()
 
-const cvFile = computed(() =>
-  locale.value === 'es'
-    ? { href: '/CV_Vicente_Estay.pdf',    download: 'Vicente_Estay_CV_ES.pdf' }
-    : { href: '/CV_Vicente_Estay_EN.pdf', download: 'Vicente_Estay_CV_EN.pdf' }
-)
+const cvFile = computed(() => {
+  if (locale.value === 'es') {
+    return {
+      href: props.profile?.cvUrl || '/CV_Vicente_Estay.pdf',
+      download: 'Vicente_Estay_CV_ES.pdf'
+    }
+  }
+  return {
+    href: props.profile?.cvUrl_en || '/CV_Vicente_Estay_EN.pdf',
+    download: 'Vicente_Estay_CV_EN.pdf'
+  }
+})
 
 // Animated counter
 const yearsExp = ref(0)
@@ -42,9 +50,9 @@ onMounted(() => {
       entries.forEach((entry) => {
         if (entry.isIntersecting && !isCounterVisible.value) {
           isCounterVisible.value = true
-          animateCounter(1, yearsExp, 1500)
+          animateCounter(props.profile?.yearsExperience || 1, yearsExp, 1500)
           animateCounter(props.projects?.length || 3, projectsCount, 2000)
-          animateCounter(18, techCount, 2500)
+          animateCounter(TECH_COUNT, techCount, 2500)
         }
       })
     },

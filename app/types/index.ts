@@ -30,6 +30,24 @@ export interface Profile {
   email?: string
   github?: string
   linkedin?: string
+  cvUrl?: string
+  cvUrl_en?: string
+}
+
+export interface Experience {
+  company: string
+  position: string
+  position_en?: string
+  position_de?: string
+  description?: string
+  description_en?: string
+  description_de?: string
+  startDate: string
+  endDate?: string
+  current?: boolean
+  technologies?: string[]
+  location?: string
+  companyUrl?: string
 }
 
 export interface Certification {
