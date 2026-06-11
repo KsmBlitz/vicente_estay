@@ -10,6 +10,22 @@ const { scrollTo } = useScrollTo()
 const scrollToTop = () => scrollTo(0)
 const { t } = useI18n()
 
+// Easter egg: 5 clics en el logo abren Sanity Studio
+const logoClickCount = ref(0)
+const logoClickTimer = ref<ReturnType<typeof setTimeout> | null>(null)
+
+const handleLogoClick = () => {
+  logoClickCount.value++
+
+  if (logoClickTimer.value) clearTimeout(logoClickTimer.value)
+  logoClickTimer.value = setTimeout(() => { logoClickCount.value = 0 }, 2000)
+
+  if (logoClickCount.value >= 5) {
+    logoClickCount.value = 0
+    window.open('https://vicenteestay.sanity.studio/', '_blank', 'noopener,noreferrer')
+  }
+}
+
 const socialLinks = computed(() => [
   { 
     name: 'GitHub', 
@@ -35,7 +51,7 @@ const socialLinks = computed(() => [
       <div class="grid md:grid-cols-3 gap-8 items-center">
         <!-- Logo & tagline -->
         <div class="text-center md:text-left flex flex-col items-center md:items-start">
-          <img src="/icon.png" alt="VE" class="h-12 w-12 mb-2" />
+          <img src="/icon.png" alt="VE" class="h-12 w-12 mb-2 cursor-pointer select-none" @click="handleLogoClick" />
           <p class="text-sm text-slate-500 dark:text-slate-400">{{ t('footer.tagline') }}</p>
         </div>
 
