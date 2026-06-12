@@ -118,6 +118,14 @@ export const profile = defineType({
       type: 'url'
     }),
     defineField({
+      name: 'currentlyLearning',
+      title: 'En Formación Activa',
+      type: 'array',
+      of: [{ type: 'string' }],
+      options: { layout: 'tags' },
+      description: 'Tecnologías o certificaciones que estás estudiando actualmente (aparecen en la sección Skills)'
+    }),
+    defineField({
       name: 'cv',
       title: 'CV en Español (PDF)',
       type: 'file',

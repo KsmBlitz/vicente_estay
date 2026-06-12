@@ -28,7 +28,8 @@ const profileQuery = `*[_type == "profile"][0]{
   github,
   linkedin,
   "cvUrl": cv.asset->url,
-  "cvUrl_en": cv_en.asset->url
+  "cvUrl_en": cv_en.asset->url,
+  currentlyLearning
 }`
 
 const experienceQuery = `*[_type == "experience"] | order(order asc, startDate desc) {
@@ -150,7 +151,7 @@ useHead({
     <HeroSection :profile="profile" :projects="projects" />
     <AboutSection :profile="profile" :projects="projects" />
     <ExperienceSection :experiences="experiences ?? null" />
-    <SkillsSection />
+    <SkillsSection :currently-learning="profile?.currentlyLearning ?? null" />
     <ProjectsSection :projects="projects ?? null" />
     <CertificationsSection :certifications="certifications ?? null" />
     <ContactSection :profile="profile" />

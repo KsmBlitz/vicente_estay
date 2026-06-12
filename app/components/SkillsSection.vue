@@ -1,8 +1,20 @@
 <script setup lang="ts">
 import { languages, frameworks, databases, devops, iot, tools } from '~/utils/skillsData'
 
+const props = defineProps<{
+  currentlyLearning?: string[] | null
+}>()
+
 const { isVisible, sectionRef } = useScrollReveal({ threshold: 0.05, rootMargin: '0px 0px -40px 0px' })
 const { t } = useI18n()
+
+const FALLBACK_LEARNING = ['AWS Cloud Practitioner', 'Terraform']
+
+const learningItems = computed(() =>
+  props.currentlyLearning && props.currentlyLearning.length > 0
+    ? props.currentlyLearning
+    : FALLBACK_LEARNING
+)
 
 interface LearningItem {
   name: string
@@ -274,7 +286,7 @@ const getWaveDelay = (index: number, cols: number, baseDelay: number = 0) => {
           </div>
           <div class="flex flex-wrap gap-2">
             <span
-              v-for="item in ['AWS Cloud Practitioner', 'Terraform', 'Python avanzado']"
+              v-for="item in learningItems"
               :key="item"
               class="px-3 py-1.5 text-sm font-medium rounded-lg bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-emerald-200 dark:border-emerald-500/30 shadow-sm"
             >{{ item }}</span>

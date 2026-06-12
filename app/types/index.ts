@@ -32,6 +32,7 @@ export interface Profile {
   linkedin?: string
   cvUrl?: string
   cvUrl_en?: string
+  currentlyLearning?: string[]
 }
 
 export interface Experience {
