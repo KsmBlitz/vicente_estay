@@ -69,6 +69,4 @@ cv:
 # "En formación activa" (sección Skills)
 currentlyLearning:
   - AWS Cloud Practitioner
-  - DB2
-  - SQL
-  - API´s
+  
