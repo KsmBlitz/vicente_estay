@@ -154,7 +154,9 @@ const stats = computed(() => [
       </div>
 
       <div data-hero style="--reveal-delay: 180ms" class="w-full max-w-xs justify-self-center sm:max-w-sm lg:max-w-none lg:justify-self-end">
-        <figure class="group relative mx-auto aspect-[3/4] w-full max-w-sm overflow-hidden rounded-3xl bg-zinc-100 ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-800">
+        <div class="photo-wrap group relative mx-auto w-full max-w-sm">
+        <div class="photo-frame" aria-hidden="true"></div>
+        <figure class="photo-fig relative aspect-[3/4] w-full overflow-hidden rounded-3xl bg-zinc-100 ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-800">
           <img
             v-if="profile.photo"
             :src="profile.photo"
@@ -171,12 +173,30 @@ const stats = computed(() => [
             {{ profile.location }}
           </figcaption>
         </figure>
+        </div>
       </div>
     </div>
   </section>
 </template>
 
 <style scoped>
+/* Marco de acento detrás de la foto: se separa un poco al pasar el cursor */
+.photo-frame {
+  position: absolute;
+  inset: 0;
+  border-radius: 1.5rem;
+  border: 1px solid rgb(var(--accent) / 0.4);
+  background: linear-gradient(135deg, rgb(var(--accent) / 0.1), transparent 60%);
+  transform: translate3d(14px, 14px, 0);
+  transition: transform 0.8s var(--ease);
+}
+.photo-wrap:hover .photo-frame {
+  transform: translate3d(24px, 24px, 0);
+}
+.photo-fig {
+  box-shadow: 0 40px 90px -40px rgb(var(--accent) / 0.55);
+}
+
 .hero-bg {
   overflow: hidden;
   /* Posiciones sin depender de la altura del hero: evita que un cambio de fuente cuente como layout shift */

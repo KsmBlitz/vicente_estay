@@ -53,7 +53,7 @@ const filterClass = (active: boolean) => [
               :href="project.link"
               :target="project.link ? '_blank' : undefined"
               :rel="project.link ? 'noopener noreferrer' : undefined"
-              class="block aspect-[16/10] overflow-hidden rounded-2xl bg-zinc-100 ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-800"
+              class="relative block aspect-[16/10] overflow-hidden rounded-2xl bg-zinc-100 ring-1 ring-zinc-200 transition-[box-shadow,--tw-ring-color] duration-500 ease-out-expo group-hover:shadow-[0_30px_70px_-30px_rgb(var(--accent)/0.45)] group-hover:ring-accent/40 dark:bg-zinc-900 dark:ring-zinc-800"
               :aria-label="project.link ? lf(project.title) : undefined"
             >
               <img
@@ -64,10 +64,16 @@ const filterClass = (active: boolean) => [
                 decoding="async"
                 class="h-full w-full object-cover object-top transition-transform duration-[900ms] ease-out-expo group-hover:scale-[1.04]"
               />
+              <template v-if="project.link">
+                <span class="pointer-events-none absolute inset-0 bg-gradient-to-t from-zinc-950/45 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" aria-hidden="true"></span>
+                <span class="pointer-events-none absolute bottom-4 right-4 flex h-11 w-11 translate-y-2 items-center justify-center rounded-full bg-white text-zinc-950 opacity-0 shadow-lg transition-[opacity,transform] duration-500 ease-out-expo group-hover:translate-y-0 group-hover:opacity-100" aria-hidden="true">
+                  <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17 17 7m0 0H8m9 0v9" /></svg>
+                </span>
+              </template>
             </component>
 
             <div class="mt-6">
-              <h3 class="text-xl font-semibold tracking-tight">{{ lf(project.title) }}</h3>
+              <h3 class="text-xl font-semibold tracking-tight transition-colors duration-300 group-hover:text-accent">{{ lf(project.title) }}</h3>
               <p v-if="project.description" class="mt-3 line-clamp-4 text-[0.95rem] leading-relaxed">
                 {{ lf(project.description) }}
               </p>
