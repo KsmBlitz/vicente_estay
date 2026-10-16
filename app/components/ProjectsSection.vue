@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import type { Project } from '~/types'
-
-const props = defineProps<{
-  projects: Project[] | null
-}>()
+const { projects } = useContent()
 
 const { isVisible, sectionRef } = useScrollReveal({ threshold: 0.08 })
 const { t } = useI18n()
@@ -28,15 +24,14 @@ const getTechUrl = (tech: string) => techUrls[tech] || undefined
 const activeFilter = ref<string | null>(null)
 
 const uniqueTechs = computed(() => {
-  if (!props.projects) return []
-  const all = props.projects.flatMap(p => p.technologies ?? [])
+  const all = projects.flatMap(p => p.technologies ?? [])
   return [...new Set(all)].sort()
 })
 
 const filteredProjects = computed(() =>
   activeFilter.value
-    ? (props.projects ?? []).filter(p => p.technologies?.includes(activeFilter.value!))
-    : (props.projects ?? [])
+    ? projects.filter(p => p.technologies?.includes(activeFilter.value!))
+    : projects
 )
 
 // Real 3D mouse tracking per card
@@ -120,10 +115,10 @@ const handleCardLeave = (e: MouseEvent) => {
       </div>
 
       <!-- Projects Grid -->
-      <div v-if="projects && projects.length > 0" class="grid md:grid-cols-2 gap-8">
+      <div v-if="projects.length > 0" class="grid md:grid-cols-2 gap-8">
         <article
           v-for="(project, index) in filteredProjects"
-          :key="project.title"
+          :key="lf(project.title)"
           class="project-card group relative bg-slate-50 dark:bg-slate-800/50 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 will-change-transform"
           :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'"
           :style="{ transitionDelay: `${200 + index * 120}ms`, transitionDuration: '0.6s' }"
@@ -142,9 +137,9 @@ const handleCardLeave = (e: MouseEvent) => {
             class="block aspect-video bg-slate-100 dark:bg-slate-800 overflow-hidden cursor-pointer"
           >
             <img
-              v-if="project.imageUrl"
-              :src="project.imageUrl"
-              :alt="project.title"
+              v-if="project.image"
+              :src="project.image"
+              :alt="lf(project.title)"
               class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
             />
             <div v-else class="w-full h-full flex items-center justify-center text-slate-300 dark:text-slate-600">
@@ -155,9 +150,9 @@ const handleCardLeave = (e: MouseEvent) => {
           </a>
           <div v-else class="aspect-video bg-slate-100 dark:bg-slate-800 overflow-hidden">
             <img
-              v-if="project.imageUrl"
-              :src="project.imageUrl"
-              :alt="project.title"
+              v-if="project.image"
+              :src="project.image"
+              :alt="lf(project.title)"
               class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
             />
             <div v-else class="w-full h-full flex items-center justify-center text-slate-300 dark:text-slate-600">
@@ -170,11 +165,11 @@ const handleCardLeave = (e: MouseEvent) => {
           <!-- Content -->
           <div class="p-6">
             <h3 class="text-xl font-semibold text-slate-900 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
-              {{ lf(project, 'title') || project.title }}
+              {{ lf(project.title) }}
             </h3>
 
             <p v-if="project.description" class="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed text-sm">
-              {{ lf(project, 'description') || project.description }}
+              {{ lf(project.description) }}
             </p>
 
             <div v-if="project.technologies && project.technologies.length > 0" class="flex flex-wrap gap-2 mb-5">
@@ -228,9 +223,6 @@ const handleCardLeave = (e: MouseEvent) => {
           {{ t('projects.filter_empty') }}
         </div>
       </div>
-
-      <!-- Loading State -->
-      <LoadingSpinner v-else-if="!projects" :label="t('projects.loading')" />
 
       <!-- Empty State -->
       <div v-else class="text-center py-20">

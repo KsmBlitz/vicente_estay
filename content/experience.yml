@@ -1,0 +1,77 @@
+# Experiencia laboral — se muestra en el orden de este archivo (pon la más reciente arriba).
+# Fechas en formato "AAAA-MM" y entre comillas. Si es tu trabajo actual: current: true y sin end.
+
+- company: Universidad Andrés Bello
+  companyUrl: https://www.unab.cl/
+  position:
+    es: Desarrollador Full Stack — Práctica Profesional
+    en: Full Stack Developer — Professional Internship
+    de: Full-Stack-Entwickler — Berufspraktikum
+  description:
+    es: >-
+      Desarrollo de plataforma anti-plagio integrada en Canvas (LMS) para evaluaciones de programación. Cada sesión corre
+      en un contenedor Docker aislado por estudiante, orquestado en AWS EC2 y Lambda. Sistema de trazabilidad en tiempo
+      real que registra y bloquea intentos de copiar/pegar/cortar y cambios de pestaña. Evaluaciones configurables en
+      pantalla completa con cierre automático al salir. Chatbot RAG con Ollama + Qwen en servidor dedicado. Landing page
+      en Astro desplegada en Vercel. Todo el código orientado a cumplir OWASP Top 10. Metodología Scrum con Taiga.
+    en: >-
+      Developed an anti-plagiarism platform integrated into Canvas (LMS) for programming assessments. Each session runs
+      in an isolated Docker container per student, orchestrated on AWS EC2 and Lambda. Real-time traceability system
+      logging and blocking copy/paste/cut attempts and tab switches. Fullscreen-enforced assessments with automatic
+      closure on exit. RAG chatbot built on Ollama + Qwen on a dedicated server. Landing page built with Astro and
+      deployed on Vercel. All code aligned with OWASP Top 10. Scrum methodology using Taiga.
+    de: >-
+      Entwicklung einer Anti-Plagiat-Plattform, integriert in Canvas (LMS) für Programmierprüfungen. Jede Sitzung läuft
+      in einem isolierten Docker-Container pro Student, orchestriert auf AWS EC2 und Lambda. Echtzeit-Rückverfolgungssystem
+      für Kopier- und Tab-Wechsel-Versuche. Scrum-Methodik mit Taiga.
+  start: "2026-01"
+  end: "2026-02"
+  location: Viña del Mar, Valparaíso, Chile
+  technologies: [Python, FastAPI, Vue.js, PostgreSQL, Docker, AWS, Ollama, Rag, Astro, Vercel, OWASP]
+
+- company: Universidad Andrés Bello
+  companyUrl: https://www.unab.cl/
+  position:
+    es: Desarrollador Full Stack — Proyecto de Titulación
+    en: Full Stack Developer — Capstone Project
+    de: Full-Stack-Entwickler — Abschlussprojekt
+  description:
+    es: >-
+      Lideré el diseño y desarrollo de un sistema IoT de monitoreo hídrico en tiempo real para cultivos de arándanos.
+      2 nodos solares con sensores de pH, electroconductividad y temperatura. Pipeline completo desde sensores físicos
+      hasta dashboard web. Alertas multinivel por email y WhatsApp (Twilio). Predicciones ML con regresión lineal.
+      2.º lugar entre 20 proyectos en ExpoSmart 2025 por innovación y viabilidad técnica.
+    en: >-
+      Led the design and development of a real-time IoT water monitoring system for blueberry crops. 2 solar-powered
+      nodes with pH, electrical conductivity, and temperature sensors. Full pipeline from physical sensors to web
+      dashboard. Multilevel alerts via email and WhatsApp (Twilio). ML predictions using linear regression. 2nd place
+      out of 20 projects at ExpoSmart 2025 for innovation and technical viability.
+    de: >-
+      Leitung des Entwurfs und der Entwicklung eines IoT-Wasserüberwachungssystems in Echtzeit für Blaubeerplantagen.
+      2 solarbetriebene Knoten mit pH-, Leitfähigkeits- und Temperatursensoren. 2. Platz unter 20 Projekten bei
+      ExpoSmart 2025.
+  start: "2025-08"
+  end: "2025-12"
+  location: Viña del Mar, Valparaíso, Chile
+  technologies: [Python, FastAPI, Vue.js, MongoDB, Docker, AWS, MQTT, ESP32, IoT, Redis, Twilio]
+
+- company: DreamCo SpA
+  companyUrl: https://dreamco.cl/
+  position:
+    es: Practicante — Desarrollo Móvil
+    en: Mobile Development Intern
+    de: Praktikant — Mobile-Entwicklung
+  description:
+    es: >-
+      Desarrollo de 5 vistas principales de app móvil con FlutterFlow y Firebase. QA en entorno de producción.
+      Integración de API de OpenAI y sistema de llamada a números de emergencia en app Test Drive.
+    en: >-
+      Developed 5 main views of a mobile app using FlutterFlow and Firebase. QA in production environment.
+      Integrated OpenAI API and emergency call system into the Test Drive app.
+    de: >-
+      Entwicklung von 5 Hauptansichten einer mobilen App mit FlutterFlow und Firebase. QA in der Produktionsumgebung.
+      Integration der OpenAI API und eines Notrufsystems in die Test Drive App.
+  start: "2024-01"
+  end: "2024-02"
+  location: Remoto
+  technologies: [FlutterFlow, Firebase, OpenAI API, Dart]

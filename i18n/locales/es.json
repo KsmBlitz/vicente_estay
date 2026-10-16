@@ -36,7 +36,6 @@
     "month": "mes",
     "months": "meses",
     "less_than_month": "Menos de un mes",
-    "loading": "Cargando experiencia...",
     "empty": "No hay experiencia disponible"
   },
   "skills": {
@@ -94,7 +93,6 @@
     "code": "Ver código",
     "filter_all": "Todos",
     "filter_empty": "No hay proyectos con esta tecnología",
-    "loading": "Cargando proyectos...",
     "empty": "No hay proyectos disponibles"
   },
   "certifications": {
@@ -105,7 +103,6 @@
     "in_progress_badge": "En curso",
     "in_progress_btn": "Certificado pendiente",
     "no_file": "Sin archivo adjunto",
-    "loading": "Cargando certificaciones...",
     "empty": "No hay certificaciones disponibles",
     "hours": "horas"
   },
@@ -129,7 +126,6 @@
     "back_to_top": "Volver arriba"
   },
   "common": {
-    "sanity_error": "Error al conectar con Sanity. Mostrando contenido de respaldo.",
     "scroll_to_top": "Volver arriba",
     "theme_light": "Cambiar a modo claro",
     "theme_dark": "Cambiar a modo oscuro",

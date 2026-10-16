@@ -36,7 +36,6 @@
     "month": "Monat",
     "months": "Monate",
     "less_than_month": "Weniger als ein Monat",
-    "loading": "Erfahrung wird geladen...",
     "empty": "Keine Berufserfahrung verfügbar"
   },
   "skills": {
@@ -94,7 +93,6 @@
     "code": "Code ansehen",
     "filter_all": "Alle",
     "filter_empty": "Keine Projekte mit dieser Technologie",
-    "loading": "Projekte werden geladen...",
     "empty": "Keine Projekte verfügbar"
   },
   "certifications": {
@@ -105,7 +103,6 @@
     "in_progress_badge": "Aktiv",
     "in_progress_btn": "Zertifikat ausstehend",
     "no_file": "Keine Datei angehängt",
-    "loading": "Zertifikate werden geladen...",
     "empty": "Keine Zertifikate verfügbar",
     "hours": "Stunden"
   },
@@ -129,7 +126,6 @@
     "back_to_top": "Nach oben"
   },
   "common": {
-    "sanity_error": "Verbindung zu Sanity fehlgeschlagen. Fallback-Inhalt wird angezeigt.",
     "scroll_to_top": "Nach oben",
     "theme_light": "Zum hellen Modus wechseln",
     "theme_dark": "Zum dunklen Modus wechseln",

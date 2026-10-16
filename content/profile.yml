@@ -1,0 +1,63 @@
+# Perfil — datos que aparecen en Hero, Sobre mí, Contacto, Footer y SEO.
+#
+# Textos traducibles: se escriben con es / en / de.
+#   - Si falta un idioma, se muestra el español.
+#   - Si el texto es igual en todos los idiomas, basta con escribirlo directo (título: AquaStat).
+# Textos largos: van después de ">-" (un párrafo) o "|-" (varios párrafos separados por una línea en blanco).
+# Imágenes y PDF: se guardan en /public y se referencian desde la raíz (/images/..., /CV_...pdf).
+
+name: Vicente Estay Valdivia
+
+title:
+  es: Ing. En Computación e Informática
+  en: Computer and Informatics Engineering
+  de: Computer- und Informatikingenieurwesen
+
+# Bio corta (Hero y meta descripción)
+shortBio:
+  es: >-
+    Software Engineer | Full-Stack Developer | Python Dev | IoT Enthusiast
+  en: >-
+    Graduate engineer interested in Cloud Computing, Cybersecurity, and Process Automation.
+    Motivated by constant challenges and acquiring diverse experience to enrich his knowledge across various areas.
+  de: >-
+    Absolvierter Ingenieur mit Interesse an Cloud Computing, Cybersicherheit und Prozessautomatisierung.
+    Motiviert durch ständige Herausforderungen und das Sammeln vielfältiger Erfahrungen, um sein Wissen in verschiedenen Bereichen zu erweitern.
+
+# Bio larga (Sobre mí). Cada bloque separado por una línea en blanco es un párrafo.
+longBio:
+  es: |-
+    Ingeniero en Computación e Informática (UNAB, PPA 6.4/7.0, Mejor Estudiante 2024) con experiencia en desarrollo Full Stack, Cloud AWS, IoT y aplicaciones móviles con plataformas Low Code.
+
+    2º lugar ExpoSmart 2025 con proyecto AquaStat. Certificado en ciberseguridad (Google) y ciencia de datos (IBM). Destacado por el liderazgo técnico, resolución analítica de problemas y adaptabilidad en metodologías ágiles. En formación activa en IA generativa, Infraestructura Cloud y Python.
+
+    Pasatiempos como hacer Trekking, Gaming, Leer y Cocinar definen mi día a día.
+  en: |-
+    Computer and Informatics Engineering (UNAB, Best Student 2024). Practical experience in Full Stack development, IoT, and mobile applications, highlighted by winning 2nd place at ExpoSmart 2025 with the AquaStat project. Network certifications (Cisco) and a strong interest in cybersecurity and Cloud Computing. Proactive and results-oriented, seeking opportunities to apply knowledge in software development or Cloud infrastructure.
+
+    Hobbies such as trekking, gaming, reading, and cooking define my day-to-day life.
+  de: |-
+    Computer- und Informatikingenieurwesen (UNAB, Bester Student 2024). Praktische Erfahrung in Full-Stack-Entwicklung, IoT und mobilen Anwendungen, ausgezeichnet mit dem 2. Platz bei der ExpoSmart 2025 für das Projekt AquaStat. Netzwerkzertifizierungen (Cisco) und starkes Interesse an Cybersicherheit und Cloud Computing. Proaktiv und ergebnisorientiert, auf der Suche nach Möglichkeiten, sein Wissen in der Softwareentwicklung oder Cloud-Infrastruktur anzuwenden.
+
+    Hobbys wie Trekking, Gaming, Lesen und Kochen bestimmen meinen Alltag.
+
+photo: /images/profile.webp       # foto del Hero
+aboutPhoto: /images/about.webp    # foto de "Sobre mí"
+
+yearsExperience: 1
+location: Viña del Mar, Valparaíso, Chile
+email: vjestayvaldivia@gmail.com
+github: https://github.com/KsmBlitz
+linkedin: https://www.linkedin.com/in/vicente-estay/
+
+# CV descargable. En alemán se usa el de inglés.
+cv:
+  es: /CV_Vicente_Estay.pdf
+  en: /CV_Vicente_Estay_EN.pdf
+
+# "En formación activa" (sección Skills)
+currentlyLearning:
+  - AWS Cloud Practitioner
+  - DB2
+  - SQL
+  - API´s

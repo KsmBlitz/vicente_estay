@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import type { Experience } from '~/types'
-
-defineProps<{
-  experiences: Experience[] | null
-}>()
+const { experiences } = useContent()
 
 const { isVisible, sectionRef } = useScrollReveal({ threshold: 0.08 })
 const { t } = useI18n()
@@ -69,7 +65,7 @@ const getDuration = (startDate: string, endDate?: string, current?: boolean) => 
 
       <!-- Timeline -->
       <div
-        v-if="experiences && experiences.length > 0"
+        v-if="experiences.length > 0"
         class="relative"
       >
         <!-- Vertical line -->
@@ -81,7 +77,7 @@ const getDuration = (startDate: string, endDate?: string, current?: boolean) => 
         <div class="space-y-10">
           <div
             v-for="(exp, index) in experiences"
-            :key="`${exp.company}-${exp.startDate}`"
+            :key="`${exp.company}-${exp.start}`"
             class="relative pl-16 md:pl-20 transition-[opacity,transform] duration-500"
             :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'"
             :style="{ transitionDelay: `${200 + index * 120}ms` }"
@@ -130,7 +126,7 @@ const getDuration = (startDate: string, endDate?: string, current?: boolean) => 
                   </div>
                   <!-- Position -->
                   <p class="text-base font-semibold text-slate-600 dark:text-slate-300">
-                    {{ lf(exp, 'position') || exp.position }}
+                    {{ lf(exp.position) }}
                   </p>
                 </div>
 
@@ -144,10 +140,10 @@ const getDuration = (startDate: string, endDate?: string, current?: boolean) => 
                     {{ t('experience.current') }}
                   </span>
                   <span class="text-xs text-slate-400 dark:text-slate-500 font-medium">
-                    {{ formatDate(exp.startDate) }} — {{ exp.current ? t('experience.present') : (exp.endDate ? formatDate(exp.endDate) : '') }}
+                    {{ formatDate(exp.start) }} — {{ exp.current ? t('experience.present') : (exp.end ? formatDate(exp.end) : '') }}
                   </span>
                   <span class="text-xs text-slate-400 dark:text-slate-500">
-                    {{ getDuration(exp.startDate, exp.endDate, exp.current) }}
+                    {{ getDuration(exp.start, exp.end, exp.current) }}
                   </span>
                 </div>
               </div>
@@ -163,10 +159,10 @@ const getDuration = (startDate: string, endDate?: string, current?: boolean) => 
 
               <!-- Description -->
               <p
-                v-if="lf(exp, 'description') || exp.description"
+                v-if="exp.description"
                 class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4"
               >
-                {{ lf(exp, 'description') || exp.description }}
+                {{ lf(exp.description) }}
               </p>
 
               <!-- Technologies -->
@@ -183,9 +179,6 @@ const getDuration = (startDate: string, endDate?: string, current?: boolean) => 
           </div>
         </div>
       </div>
-
-      <!-- Loading -->
-      <LoadingSpinner v-else-if="!experiences" :label="t('experience.loading')" />
 
       <!-- Empty -->
       <div v-else class="text-center py-20">

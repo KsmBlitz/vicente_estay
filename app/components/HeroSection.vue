@@ -1,28 +1,17 @@
 <script setup lang="ts">
-import type { Profile, Project } from '~/types'
 import { TECH_COUNT } from '~/utils/skillsData'
 
-const props = defineProps<{
-  profile?: Profile | null,
-  projects?: Project[] | null
-}>()
+const { profile, projects } = useContent()
 
 const { scrollTo } = useScrollTo()
 const { t, locale } = useI18n()
 const { lf } = useLocaleField()
 
-const cvFile = computed(() => {
-  if (locale.value === 'es') {
-    return {
-      href: props.profile?.cvUrl || '/CV_Vicente_Estay.pdf',
-      download: 'Vicente_Estay_CV_ES.pdf'
-    }
-  }
-  return {
-    href: props.profile?.cvUrl_en || '/CV_Vicente_Estay_EN.pdf',
-    download: 'Vicente_Estay_CV_EN.pdf'
-  }
-})
+const cvFile = computed(() =>
+  locale.value === 'es'
+    ? { href: profile.cv.es, download: 'Vicente_Estay_CV_ES.pdf' }
+    : { href: profile.cv.en, download: 'Vicente_Estay_CV_EN.pdf' }
+)
 
 // Animated counter
 const yearsExp = ref(0)
@@ -50,8 +39,8 @@ onMounted(() => {
       entries.forEach((entry) => {
         if (entry.isIntersecting && !isCounterVisible.value) {
           isCounterVisible.value = true
-          animateCounter(props.profile?.yearsExperience || 1, yearsExp, 1500)
-          animateCounter(props.projects?.length || 3, projectsCount, 2000)
+          animateCounter(profile.yearsExperience, yearsExp, 1500)
+          animateCounter(projects.length, projectsCount, 2000)
           animateCounter(TECH_COUNT, techCount, 2500)
         }
       })
@@ -64,7 +53,7 @@ onMounted(() => {
 
 // Typing effect
 const displayedTitle = ref('')
-const fullTitle = computed(() => lf(props.profile, 'title') || 'Desarrollador Full Stack')
+const fullTitle = computed(() => lf(profile.title))
 const isTyping = ref(false)
 const isAnimating = ref(true)
 
@@ -156,7 +145,7 @@ const handleMagneticLeave = (e: MouseEvent) => {
 
           <!-- Name -->
           <h1 class="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-slate-900 dark:text-white mb-6 tracking-tight animate-fade-in-up animation-delay-100">
-            {{ profile?.name || 'Vicente Estay' }}
+            {{ profile.name }}
           </h1>
 
           <!-- Title with typing effect -->
@@ -167,7 +156,7 @@ const handleMagneticLeave = (e: MouseEvent) => {
 
           <!-- Description -->
           <p class="text-lg lg:text-xl text-slate-600 dark:text-slate-400 max-w-2xl mb-10 leading-relaxed animate-fade-in-up animation-delay-300">
-            {{ lf(profile, 'shortBio') || 'Construyo aplicaciones web modernas con foco en rendimiento, accesibilidad y experiencia de usuario.' }}
+            {{ lf(profile.shortBio) }}
           </p>
 
           <!-- CTA Buttons — magnetic effect -->
@@ -245,8 +234,8 @@ const handleMagneticLeave = (e: MouseEvent) => {
               :style="{ transform: `translateY(${parallaxOffset}px)` }"
             >
               <img
-                v-if="profile?.photoUrl"
-                :src="profile.photoUrl"
+                v-if="profile.photo"
+                :src="profile.photo"
                 :alt="profile.name"
                 class="w-full h-full object-cover"
                 fetchpriority="high"

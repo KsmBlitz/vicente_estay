@@ -1,6 +1,6 @@
 # Vicente Estay — Portfolio Personal
 
-Portafolio personal construido con Nuxt 4, Vue 3 y Tailwind CSS, con contenido gestionado mediante Sanity CMS y desplegado en Vercel.
+Portafolio personal construido con Nuxt 4, Vue 3 y Tailwind CSS. El contenido vive en archivos YAML dentro del repo y el sitio se despliega en Vercel.
 
 ---
 
@@ -8,12 +8,40 @@ Portafolio personal construido con Nuxt 4, Vue 3 y Tailwind CSS, con contenido g
 
 | Capa | Tecnologia |
 |---|---|
-| Framework | Nuxt 4 (modo SPA) |
+| Framework | Nuxt 4 (SSR) |
 | UI | Vue 3 + Composition API |
 | Estilos | Tailwind CSS v3 |
-| CMS | Sanity v5 |
+| Contenido | Archivos YAML en `content/` |
+| i18n | `@nuxtjs/i18n` (es, en, de) |
+| Formulario | Formspree |
 | Analytics | Vercel Analytics |
 | Despliegue | Vercel |
+
+---
+
+## Editar el contenido
+
+Todo el texto del sitio está en `content/`:
+
+| Archivo | Qué contiene |
+|---|---|
+| `content/profile.yml` | Nombre, título, bios, fotos, redes, CV, "en formación activa" |
+| `content/projects.yml` | Proyectos |
+| `content/experience.yml` | Experiencia laboral |
+| `content/certifications.yml` | Certificaciones |
+
+1. Abre el archivo y cambia el texto. Cada archivo explica su formato en los comentarios del inicio.
+2. Si agregas una imagen o PDF, ponlo en `public/images/` o `public/certificados/` y escribe su ruta (`/images/mi-foto.webp`).
+3. Revisa con `npm run dev` y haz push a `main`: Vercel publica solo.
+
+Los textos traducibles se escriben así; si falta un idioma, se muestra el español:
+
+```yaml
+title:
+  es: Portafolio Personal
+  en: Personal Portfolio
+  de: Persönliches Portfolio
+```
 
 ---
 
@@ -21,131 +49,53 @@ Portafolio personal construido con Nuxt 4, Vue 3 y Tailwind CSS, con contenido g
 
 ```
 /
+├── content/                 # ← contenido editable (YAML)
 ├── app/
-│   ├── app.vue                  # Entrada principal, queries a Sanity y SEO
-│   └── components/
-│       ├── NavBar.vue
-│       ├── HeroSection.vue
-│       ├── AboutSection.vue
-│       ├── SkillsSection.vue
-│       ├── ProjectsSection.vue
-│       ├── ContactSection.vue
-│       └── FooterSection.vue
-├── sanity/
-│   ├── sanity.config.ts         # Configuracion del estudio
-│   └── schemaTypes/             # Schemas de contenido (profile, project)
-├── nuxt.config.ts
-├── tailwind.config.ts
-└── package.json
-```
-
----
-
-## Requisitos Previos
-
-- Node.js >= 18
-- npm >= 9
-- Cuenta en [Sanity.io](https://www.sanity.io) con acceso al proyecto `2il0jzpa`
-
----
-
-## Instalacion
-
-### 1. Instalar dependencias de la app
-
-```bash
-npm install
-```
-
-### 2. Instalar dependencias de Sanity Studio
-
-```bash
-cd sanity
-npm install
+│   ├── app.vue              # Layout: navbar, barra de progreso, botón volver arriba
+│   ├── pages/index.vue      # Página única: SEO y composición de secciones
+│   ├── components/          # Una sección por componente
+│   ├── composables/         # useContent, useLocaleField, useScrollReveal, useScrollTo
+│   ├── utils/skillsData.ts  # Stack técnico de la sección Skills
+│   └── types/               # Tipos del contenido
+├── i18n/locales/            # Textos de la interfaz (es, en, de)
+├── public/                  # Imágenes, CV, certificados, robots.txt, sitemap.xml
+└── nuxt.config.ts
 ```
 
 ---
 
 ## Desarrollo Local
 
-### Levantar la app (Nuxt)
-
-Desde la raiz del proyecto:
+Requisitos: Node.js >= 20.
 
 ```bash
-npm run dev
+npm install
+npm run dev        # http://localhost:3000
 ```
-
-La aplicacion estara disponible en `http://localhost:3000`.
-
-### Levantar Sanity Studio
-
-Desde la carpeta `sanity/`:
-
-```bash
-cd sanity
-npm run dev
-```
-
-El estudio estara disponible en `http://localhost:3333`.
-
-> Para desarrollo completo se recomienda correr ambos servicios en terminales separadas.
-
----
-
-## Scripts Disponibles
-
-### App (raiz del proyecto)
 
 | Comando | Descripcion |
 |---|---|
 | `npm run dev` | Servidor de desarrollo con hot-reload |
 | `npm run build` | Build de produccion |
-| `npm run generate` | Generacion estatica (SSG) |
 | `npm run preview` | Vista previa del build |
-
-### Sanity Studio (`/sanity`)
-
-| Comando | Descripcion |
-|---|---|
-| `npm run dev` | Estudio local en modo desarrollo |
-| `npm run build` | Build del estudio |
-| `npm run deploy` | Deploy del estudio a Sanity hosting |
+| `npm run typecheck` | Chequeo de tipos |
 
 ---
 
 ## Variables de Entorno
 
-Las variables de Sanity estan configuradas directamente en `nuxt.config.ts` dentro de `runtimeConfig.public`. No se requiere archivo `.env` para el desarrollo local.
+Opcionales; tienen valores por defecto en `nuxt.config.ts`.
 
-| Variable | Valor |
+| Variable | Uso |
 |---|---|
-| `sanityProjectId` | `2il0jzpa` |
-| `sanityDataset` | `production` |
-| `sanityApiVersion` | `2024-03-20` |
-
----
-
-## Contenido Gestionado con Sanity
-
-El portafolio consume dos tipos de documentos desde el dataset `production`:
-
-- **`profile`** — Nombre, titulo, bio, foto, redes sociales, estadisticas
-- **`project`** — Titulo, imagen, descripcion, tecnologias, links
-
-Para editar el contenido, acceder al Sanity Studio en local (`http://localhost:3333`) o al estudio desplegado.
-
----
-
-## Despliegue
-
-La app esta configurada para despliegue automatico en Vercel al hacer push a `main`. No se requiere configuracion adicional; las variables de `runtimeConfig` se inyectan en build time.
+| `NUXT_PUBLIC_SITE_URL` | URL canónica del sitio (SEO) |
+| `NUXT_PUBLIC_FORMSPREE_URL` | Endpoint del formulario de contacto |
 
 ---
 
 ## Convenciones de Commits
 
-Este proyecto sigue [Conventional Commits](https://www.conventionalcommits.org/) con scope obligatorio:
+[Conventional Commits](https://www.conventionalcommits.org/) con scope obligatorio:
 
 ```
 type(scope): descripcion en minusculas
@@ -153,4 +103,4 @@ type(scope): descripcion en minusculas
 
 Tipos: `feat`, `fix`, `docs`, `chore`, `refactor`, `style`
 
-Scopes: `hero`, `skills`, `projects`, `about`, `contact`, `nav`, `footer`, `app`, `deps`, `sanity`
+Scopes: `hero`, `about`, `experience`, `skills`, `projects`, `certifications`, `contact`, `nav`, `footer`, `app`, `content`, `seo`, `i18n`, `deps`

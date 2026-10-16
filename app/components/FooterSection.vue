@@ -1,48 +1,28 @@
 <script setup lang="ts">
-import type { Profile } from '~/types'
-
-const props = defineProps<{
-  profile?: Profile | null
-}>()
+const { profile } = useContent()
 
 const currentYear = new Date().getFullYear()
 const { scrollTo } = useScrollTo()
 const scrollToTop = () => scrollTo(0)
 const { t } = useI18n()
 
-// Easter egg: 5 clics en el logo abren Sanity Studio
-const logoClickCount = ref(0)
-const logoClickTimer = ref<ReturnType<typeof setTimeout> | null>(null)
-
-const handleLogoClick = () => {
-  logoClickCount.value++
-
-  if (logoClickTimer.value) clearTimeout(logoClickTimer.value)
-  logoClickTimer.value = setTimeout(() => { logoClickCount.value = 0 }, 2000)
-
-  if (logoClickCount.value >= 5) {
-    logoClickCount.value = 0
-    window.open('https://vicenteestay.sanity.studio/', '_blank', 'noopener,noreferrer')
-  }
-}
-
-const socialLinks = computed(() => [
+const socialLinks = [
   { 
     name: 'GitHub', 
-    url: props.profile?.github || 'https://github.com/KsmBlitz',
+    url: profile.github,
     icon: 'github'
   },
   { 
     name: 'LinkedIn', 
-    url: props.profile?.linkedin || 'https://www.linkedin.com/in/vicente-estay/',
+    url: profile.linkedin,
     icon: 'linkedin'
   },
   { 
     name: 'Email', 
-    url: `mailto:${props.profile?.email || 'vjestayvaldivia@gmail.com'}`,
+    url: `mailto:${profile.email}`,
     icon: 'email'
   }
-])
+]
 </script>
 
 <template>
@@ -51,7 +31,7 @@ const socialLinks = computed(() => [
       <div class="grid md:grid-cols-3 gap-8 items-center">
         <!-- Logo & tagline -->
         <div class="text-center md:text-left flex flex-col items-center md:items-start">
-          <img src="/icon.png" alt="VE" class="h-12 w-12 mb-2 cursor-pointer select-none" @click="handleLogoClick" />
+          <img src="/icon.png" alt="VE" class="h-12 w-12 mb-2 select-none" />
           <p class="text-sm text-slate-500 dark:text-slate-400">{{ t('footer.tagline') }}</p>
         </div>
 
@@ -91,7 +71,7 @@ const socialLinks = computed(() => [
             </svg>
           </button>
           <p class="text-slate-400 dark:text-slate-500 text-sm">
-            © {{ currentYear }} {{ profile?.name || 'Vicente Estay' }}
+            © {{ currentYear }} {{ profile.name }}
           </p>
         </div>
       </div>

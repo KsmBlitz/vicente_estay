@@ -1,0 +1,54 @@
+# Certificaciones — se muestran en el orden de este archivo (las en curso y las más recientes arriba).
+# date en formato "AAAA-MM" y entre comillas. file: PDF en /public/certificados (opcional).
+# Si está en curso: inProgress: true (no muestra fecha ni botón de descarga).
+
+- name: Python Certification
+  institution: freeCodeCamp
+  hours: 300
+  date: "2026-06"
+  file: /certificados/freecodecamp-python.pdf
+
+- name: B1 English for Developers
+  institution: freeCodeCamp
+  hours: 300
+  date: "2026-06"
+  file: /certificados/freecodecamp-b1-english.pdf
+
+- name:
+    es: Certificado profesional de Ciberseguridad de Google
+    en: Google Cybersecurity Professional Certificate
+    de: Google Cybersecurity (berufsbezogenes Zertifikat)
+  institution: Coursera
+  hours: 133
+  date: "2026-03"
+  file: /certificados/google-ciberseguridad.pdf
+
+- name: Introduction to Cybersecurity
+  institution: Cisco Networking Academy
+  hours: 6
+  date: "2025-11"
+  file: /certificados/cisco-intro-ciberseguridad.pdf
+
+- name: IBM Data Science
+  institution: Coursera
+  hours: 160
+  date: "2025-04"
+  file: /certificados/ibm-data-science.pdf
+
+- name: Dispositivos de Red y Configuración Inicial
+  institution: Cisco Networking Academy
+  hours: 22
+  date: "2024-07"
+  file: /certificados/cisco-dispositivos-de-red.pdf
+
+- name: Conceptos básicos de redes
+  institution: Cisco Networking Academy
+  hours: 22
+  date: "2024-07"
+  file: /certificados/cisco-conceptos-redes.pdf
+
+- name: "Big Data: el impacto de los datos masivos en la sociedad actual"
+  institution: Universidad Autónoma de Barcelona
+  hours: 7
+  date: "2024-04"
+  file: /certificados/uab-big-data.pdf

@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import type { Profile } from '~/types'
-
-const props = defineProps<{
-  profile?: Profile | null
-}>()
+const { profile } = useContent()
 
 const { public: { formspreeUrl } } = useRuntimeConfig()
 const { isVisible, sectionRef } = useScrollReveal({ threshold: 0.15 })
@@ -16,26 +12,26 @@ const showToast = ref(false)
 const toastMessage = ref('')
 const toastType = ref<'success' | 'error'>('success')
 
-const socialLinks = computed(() => [
+const socialLinks = [
   {
     name: 'GitHub',
     icon: 'github',
-    url: props.profile?.github || 'https://github.com/KsmBlitz',
+    url: profile.github,
     color: 'hover:text-slate-800 dark:hover:text-white'
   },
   {
     name: 'LinkedIn',
     icon: 'linkedin',
-    url: props.profile?.linkedin || 'https://www.linkedin.com/in/vicente-estay/',
+    url: profile.linkedin,
     color: 'hover:text-blue-600'
   },
   {
     name: 'Email',
     icon: 'email',
-    url: `mailto:${props.profile?.email || 'vjestayvaldivia@gmail.com'}`,
+    url: `mailto:${profile.email}`,
     color: 'hover:text-red-500'
   }
-])
+]
 
 
 const handleSubmit = async () => {
@@ -115,15 +111,15 @@ const handleSubmit = async () => {
             <div>
               <p class="text-xs font-semibold tracking-widest uppercase text-slate-400 dark:text-slate-500 mb-1">{{ t('contact.email_label') }}</p>
               <a
-                :href="`mailto:${profile?.email || 'vjestayvaldivia@gmail.com'}`"
+                :href="`mailto:${profile.email}`"
                 class="text-slate-900 dark:text-white hover:opacity-70 transition-opacity"
               >
-                {{ profile?.email || 'vjestayvaldivia@gmail.com' }}
+                {{ profile.email }}
               </a>
             </div>
             <div>
               <p class="text-xs font-semibold tracking-widest uppercase text-slate-400 dark:text-slate-500 mb-1">{{ t('contact.location_label') }}</p>
-              <p class="text-slate-900 dark:text-white">{{ profile?.location || 'Chile' }}</p>
+              <p class="text-slate-900 dark:text-white">{{ profile.location }}</p>
             </div>
           </div>
 

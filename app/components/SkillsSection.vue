@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { languages, frameworks, databases, devops, iot, tools } from '~/utils/skillsData'
 
-const props = defineProps<{
-  currentlyLearning?: string[] | null
-}>()
+const { profile } = useContent()
 
 const { isVisible, sectionRef } = useScrollReveal({ threshold: 0.05, rootMargin: '0px 0px -40px 0px' })
 const { t } = useI18n()
@@ -11,8 +9,8 @@ const { t } = useI18n()
 const FALLBACK_LEARNING = ['AWS Cloud Practitioner', 'Terraform']
 
 const learningItems = computed(() =>
-  props.currentlyLearning && props.currentlyLearning.length > 0
-    ? props.currentlyLearning
+  profile.currentlyLearning && profile.currentlyLearning.length > 0
+    ? profile.currentlyLearning
     : FALLBACK_LEARNING
 )
 

@@ -36,7 +36,6 @@
     "month": "month",
     "months": "months",
     "less_than_month": "Less than a month",
-    "loading": "Loading experience...",
     "empty": "No work experience available"
   },
   "skills": {
@@ -94,7 +93,6 @@
     "code": "View code",
     "filter_all": "All",
     "filter_empty": "No projects use this technology",
-    "loading": "Loading projects...",
     "empty": "No projects available"
   },
   "certifications": {
@@ -105,7 +103,6 @@
     "in_progress_badge": "In progress",
     "in_progress_btn": "Certificate pending",
     "no_file": "No file attached",
-    "loading": "Loading certifications...",
     "empty": "No certifications available",
     "hours": "hours"
   },
@@ -129,7 +126,6 @@
     "back_to_top": "Back to top"
   },
   "common": {
-    "sanity_error": "Error connecting to Sanity. Showing fallback content.",
     "scroll_to_top": "Back to top",
     "theme_light": "Switch to light mode",
     "theme_dark": "Switch to dark mode",

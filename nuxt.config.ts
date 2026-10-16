@@ -1,4 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import yaml from '@rollup/plugin-yaml'
+
 export default defineNuxtConfig({
   modules: ['@nuxtjs/tailwindcss', '@nuxtjs/color-mode', '@nuxtjs/i18n'],
 
@@ -42,11 +44,13 @@ export default defineNuxtConfig({
     storageKey: 'nuxt-color-mode'
   },
 
+  // El contenido vive en /content/*.yml y se importa como módulo
+  vite: {
+    plugins: [yaml()],
+  },
+
   runtimeConfig: {
     public: {
-      sanityProjectId: '2il0jzpa',
-      sanityDataset: 'production',
-      sanityApiVersion: '2024-03-20',
       // Sobreescribir con NUXT_PUBLIC_SITE_URL en producción
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://vicenteestay.vercel.app',
       // Sobreescribir con NUXT_PUBLIC_FORMSPREE_URL en producción

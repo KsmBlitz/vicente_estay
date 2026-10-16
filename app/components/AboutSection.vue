@@ -1,13 +1,10 @@
 <script setup lang="ts">
-import type { Profile, Project } from '~/types'
-
 const { t } = useI18n()
 const { lf } = useLocaleField()
+const { profile } = useContent()
 
-defineProps<{
-  profile?: Profile | null,
-  projects?: Project[] | null
-}>()
+// Cada bloque separado por una línea en blanco en el YAML es un párrafo
+const bioParagraphs = computed(() => lf(profile.longBio).split(/\n\s*\n/))
 
 const { isVisible, sectionRef } = useScrollReveal({ threshold: 0.15 })
 
@@ -58,8 +55,8 @@ const softSkillIcons = [
         >
           <div class="aspect-square bg-slate-100 dark:bg-slate-800 rounded-2xl overflow-hidden">
             <img
-              v-if="profile?.aboutPhotoUrl"
-              :src="profile.aboutPhotoUrl"
+              v-if="profile.aboutPhoto"
+              :src="profile.aboutPhoto"
               :alt="profile.name"
               class="w-full h-full object-cover"
             />
@@ -88,13 +85,11 @@ const softSkillIcons = [
           </div>
 
           <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">
-            {{ profile?.name || 'Vicente Estay' }}
+            {{ profile.name }}
           </h3>
 
           <div class="space-y-4 text-slate-600 dark:text-slate-400 leading-relaxed mb-8">
-            <p>
-              {{ lf(profile, 'longBio') || 'Desarrollador con experiencia en el ecosistema JavaScript moderno. Me especializo en construir aplicaciones web escalables y de alto rendimiento.' }}
-            </p>
+            <p v-for="(paragraph, i) in bioParagraphs" :key="i">{{ paragraph }}</p>
           </div>
 
           <!-- Soft skills pills -->

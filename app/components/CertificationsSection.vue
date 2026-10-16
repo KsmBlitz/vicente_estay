@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import type { Certification } from '~/types'
 
-const props = defineProps<{
-  certifications: Certification[] | null
-}>()
+const { certifications } = useContent()
 
 const { isVisible, sectionRef } = useScrollReveal({ threshold: 0.08 })
 const { t } = useI18n()
@@ -16,7 +14,7 @@ const formatDate = (dateStr: string) => {
 }
 
 const getFileName = (cert: Certification) =>
-  `${cert.name.replace(/\s+/g, '_')}_${cert.institution.replace(/\s+/g, '_')}.pdf`
+  `${lf(cert.name).replace(/\s+/g, '_')}_${cert.institution.replace(/\s+/g, '_')}.pdf`
 </script>
 
 <template>
@@ -55,12 +53,12 @@ const getFileName = (cert: Certification) =>
 
       <!-- Certifications list -->
       <div
-        v-if="certifications && certifications.length > 0"
+        v-if="certifications.length > 0"
         class="grid md:grid-cols-2 lg:grid-cols-3 gap-4"
       >
         <div
           v-for="(cert, index) in certifications"
-          :key="cert.name"
+          :key="lf(cert.name)"
           class="cert-card group relative flex flex-col p-5 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-slate-300 dark:hover:border-slate-600"
           :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'"
           :style="{ transitionDelay: `${200 + index * 80}ms` }"
@@ -76,7 +74,7 @@ const getFileName = (cert: Certification) =>
 
             <div class="flex-1 min-w-0">
               <h3 class="font-semibold text-slate-900 dark:text-white text-sm leading-snug line-clamp-2">
-                {{ lf(cert, 'name') || cert.name }}
+                {{ lf(cert.name) }}
               </h3>
               <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 line-clamp-1">
                 {{ cert.institution }}
@@ -105,21 +103,21 @@ const getFileName = (cert: Certification) =>
                 {{ cert.hours }}h
               </span>
               <span
-                v-if="cert.issueDate && !cert.inProgress"
+                v-if="cert.date && !cert.inProgress"
                 class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700 text-xs font-medium text-slate-600 dark:text-slate-300"
               >
                 <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
-                {{ formatDate(cert.issueDate) }}
+                {{ formatDate(cert.date) }}
               </span>
             </div>
 
           <!-- Download button -->
           <div>
             <a
-              v-if="cert.fileUrl && !cert.inProgress"
-              :href="cert.fileUrl"
+              v-if="cert.file && !cert.inProgress"
+              :href="cert.file"
               :download="getFileName(cert)"
               target="_blank"
               rel="noopener noreferrer"
@@ -152,9 +150,6 @@ const getFileName = (cert: Certification) =>
           </div><!-- /badges + botón -->
         </div>
       </div>
-
-      <!-- Loading State -->
-      <LoadingSpinner v-else-if="!certifications" :label="t('certifications.loading')" />
 
       <!-- Empty State -->
       <div v-else class="text-center py-20">

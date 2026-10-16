@@ -1,0 +1,84 @@
+# Proyectos — se muestran en el orden de este archivo.
+# Campos: title, description (traducibles), image (en /public/images/projects), link, github, technologies.
+# link y github son opcionales.
+
+- title: Test Drive
+  description:
+    es: >-
+      Aplicación para preparar el examen de conducción en Chile. Encargado del QA y desarrollo de funcionalidades de la APP,
+      algunas como integración con OpenAI API, Sistema de llamado para número de emergencias, entre otros.
+    en: >-
+      Application to prepare for the driving test in Chile. In charge of QA and development of app features,
+      such as integration with the OpenAI API and an emergency number calling system, among others.
+    de: >-
+      Anwendung zur Vorbereitung auf die Fahrprüfung in Chile. Zuständig für QA und die Entwicklung von App-Funktionen,
+      darunter die Integration der OpenAI-API und ein Notrufsystem.
+  image: /images/projects/test-drive.webp
+  link: https://dreamco.cl/
+  technologies: [Flutterflow, Firebase, OpenAI]
+
+- title: Banubot
+  description:
+    es: >-
+      BanuBot es un robot educativo basado en el sistema de código abierto Escornabot. Está diseñado para entregar
+      retroalimentación mediante luces, sonidos y movimientos mientras los estudiantes interactúan con mapas temáticos.
+      El sitio web funciona como el portal principal donde se encuentra la aplicación web y tutoriales para docentes y alumnos.
+    en: >-
+      BanuBot is an educational robot based on the open-source Escornabot system. It is designed to provide feedback
+      through lights, sounds, and movements while students interact with thematic maps. The website serves as the main
+      portal housing the web application and tutorials for teachers and students.
+    de: >-
+      BanuBot ist ein Lernroboter, der auf dem Open-Source-System Escornabot basiert. Er wurde entwickelt, um durch
+      Lichter, Geräusche und Bewegungen Feedback zu geben, während Schüler mit thematischen Karten interagieren. Die
+      Website dient als Hauptportal, auf dem die Webanwendung sowie Tutorials für Lehrkräfte und Schüler zu finden sind.
+  image: /images/projects/banubot.webp
+  link: https://facultades.unab.cl/ingenieria/carrera/ingenieria-en-computacion-e-informatica/
+  github: https://github.com/UNAB-ISW2/lectobot
+  technologies: [MongoDB, Docker, React, Vite, Node.js, FastAPI]
+
+- title: Edurun App
+  description:
+    es: >-
+      Plataforma educativa que detecta plagio con IA, ejecuta código de forma segura en contenedores Docker,
+      y proporciona trazabilidad completa del proceso de desarrollo.
+    en: >-
+      Educational platform that detects plagiarism using AI, securely executes code in Docker containers,
+      and provides full traceability of the development process.
+    de: >-
+      Bildungsplattform, die Plagiate mit KI erkennt, Code sicher in Docker-Containern ausführt
+      und eine vollständige Rückverfolgbarkeit des Entwicklungsprozesses bietet.
+  image: /images/projects/edurun.webp
+  link: https://edurunapp-landingpage.vercel.app/
+  technologies: [Docker, WSL2, AWS, FastAPI, Vue, Lambda, Ollama, RAG]
+
+- title: AquaStat
+  description:
+    es: >-
+      AquaStat es una solución tecnológica diseñada para optimizar el uso de recursos hídricos en el cultivo de
+      arándanos en Chile. Su propósito es transitar de una gestión hídrica reactiva a una proactiva basada en datos en
+      tiempo real, permitiendo reducir costos operativos de energía y agua.
+    en: >-
+      AquaStat is a technological solution designed to optimize water resource use in Chilean blueberry farming. Its
+      purpose is to transition from reactive to proactive water management based on real-time data, allowing for
+      reduced energy and water operational costs.
+    de: >-
+      AquaStat ist eine technologische Lösung zur Optimierung der Wassernutzung im chilenischen Blaubeeranbau. Ihr Ziel
+      ist der Übergang von einem reaktiven zu einem proaktiven Wassermanagement auf Basis von Echtzeitdaten, um die
+      Betriebskosten für Energie und Wasser zu senken.
+  image: /images/projects/aquastat.webp
+  link: https://aquastat.exposmart.cl/
+  github: https://github.com/KsmBlitz/UNAB-ProyectoDeTitulo
+  technologies: [ESP32, MQTT, AWS, FastAPI, Vue.js, Mongo Atlas, Docker]
+
+- title:
+    es: Portafolio Personal
+    en: Personal Portfolio
+    de: Persönliches Portfolio
+  description:
+    es: Mi primer portafolio, explorando Frameworks y herramientas nuevas para exponer mi trabajo.
+    en: Personal Portfolio. My first portfolio, exploring new frameworks and tools to showcase my work.
+    de: Mein erstes Portfolio, bei dem ich neue Frameworks und Tools erkunde, um meine Arbeit zu präsentieren.
+  image: /images/projects/portfolio.webp
+  link: https://main.d1u29v1g2s04zo.amplifyapp.com
+  github: https://github.com/KsmBlitz/PersonalPortfolio
+  technologies: [Nuxt, Sanity, AWS, VSCode, WSL2]
