@@ -1,132 +1,64 @@
 <script setup lang="ts">
 const { t } = useI18n()
+const { scrollTo } = useScrollTo()
 
-// Scroll progress bar + scroll-to-top button
+// Habilita los estilos de animación solo si hay JS (sin JS todo se ve igual)
+useHead({
+  script: [{ innerHTML: "document.documentElement.dataset.js='1'", tagPosition: 'head' }],
+})
+
+const progressEl = ref<HTMLElement | null>(null)
 const showScrollTop = ref(false)
-const scrollProgress = ref(0)
+let ticking = false
 
-const handleScroll = () => {
-  showScrollTop.value = window.scrollY > 500
+const update = () => {
+  ticking = false
   const doc = document.documentElement
-  scrollProgress.value = (window.scrollY / (doc.scrollHeight - doc.clientHeight)) * 100
+  const max = doc.scrollHeight - doc.clientHeight
+  progressEl.value?.style.setProperty('transform', `scaleX(${max > 0 ? window.scrollY / max : 0})`)
+  showScrollTop.value = window.scrollY > 600
 }
 
-onMounted(() => window.addEventListener('scroll', handleScroll, { passive: true }))
-onUnmounted(() => window.removeEventListener('scroll', handleScroll))
+const onScroll = () => {
+  if (ticking) return
+  ticking = true
+  requestAnimationFrame(update)
+}
 
-const { scrollTo } = useScrollTo()
-const scrollToTop = () => scrollTo(0)
+onMounted(() => {
+  update()
+  window.addEventListener('scroll', onScroll, { passive: true })
+})
+onUnmounted(() => window.removeEventListener('scroll', onScroll))
 </script>
 
 <template>
-  <div class="min-h-screen bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 transition-colors duration-150">
-    <!-- Scroll progress bar -->
+  <div class="min-h-screen">
     <div
-      class="fixed top-0 left-0 z-[200] h-[2px] bg-slate-900 dark:bg-white origin-left"
-      :style="{ transform: `scaleX(${scrollProgress / 100})` }"
+      ref="progressEl"
+      class="fixed left-0 top-0 z-[60] h-[2px] w-full origin-left scale-x-0 bg-accent"
+      aria-hidden="true"
     ></div>
 
-    <!-- Navigation -->
     <NavBar />
-
-    <!-- Page content (renders pages/index.vue) -->
     <NuxtPage />
 
-    <!-- Scroll to Top Button -->
-    <Transition name="fade">
+    <Transition
+      enter-active-class="transition duration-500 ease-out-expo"
+      enter-from-class="translate-y-4 opacity-0"
+      leave-active-class="transition duration-300 ease-out-expo"
+      leave-to-class="translate-y-4 opacity-0"
+    >
       <button
         v-show="showScrollTop"
-        @click="scrollToTop"
-        class="fixed bottom-8 right-8 z-50 p-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-full shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300"
+        class="fixed bottom-6 right-6 z-40 flex h-11 w-11 items-center justify-center rounded-full border border-zinc-200 bg-white/80 text-zinc-700 shadow-sm backdrop-blur transition-colors duration-300 hover:text-accent dark:border-zinc-800 dark:bg-zinc-900/80 dark:text-zinc-300"
         :aria-label="t('common.scroll_to_top')"
+        @click="scrollTo(0)"
       >
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 19V5m0 0-6 6m6-6 6 6" />
         </svg>
       </button>
     </Transition>
   </div>
 </template>
-
-<style>
-html {
-  scroll-behavior: auto;
-}
-
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.dark ::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 4px;
-}
-
-.dark ::-webkit-scrollbar-thumb {
-  background: #475569;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
-}
-
-.dark ::-webkit-scrollbar-thumb:hover {
-  background: #64748b;
-}
-
-::selection {
-  background-color: #1e293b;
-  color: white;
-}
-
-.dark ::selection {
-  background-color: #e2e8f0;
-  color: #0f172a;
-}
-
-.line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.line-clamp-3 {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.fade-enter-active, .fade-leave-active {
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.fade-enter-from, .fade-leave-to {
-  opacity: 0;
-  transform: translateY(10px);
-}
-
-.slide-down-enter-active,
-.slide-down-leave-active {
-  transition: all 0.3s ease;
-}
-
-.slide-down-enter-from {
-  opacity: 0;
-  transform: translateY(-100%);
-}
-
-.slide-down-leave-to {
-  opacity: 0;
-  transform: translateY(-100%);
-}
-</style>

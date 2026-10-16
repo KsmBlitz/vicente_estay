@@ -2,7 +2,14 @@
 import yaml from '@rollup/plugin-yaml'
 
 export default defineNuxtConfig({
-  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/color-mode', '@nuxtjs/i18n'],
+  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/color-mode', '@nuxtjs/i18n', '@nuxt/fonts'],
+
+  fonts: {
+    families: [
+      { name: 'Geist', provider: 'google', weights: [400, 500, 600] },
+      { name: 'Geist Mono', provider: 'google', weights: [400, 500] },
+    ],
+  },
 
   i18n: {
     locales: [
@@ -12,7 +19,6 @@ export default defineNuxtConfig({
     ],
     defaultLocale: 'es',
     strategy: 'prefix_except_default',
-    lazy: true,
     langDir: 'locales/',
     detectBrowserLanguage: {
       useCookie: true,
@@ -24,22 +30,12 @@ export default defineNuxtConfig({
   },
 
   tailwindcss: {
-    config: {
-      darkMode: 'class',
-      content: [
-        './components/**/*.{js,vue,ts}',
-        './layouts/**/*.vue',
-        './pages/**/*.vue',
-        './plugins/**/*.{js,ts}',
-        './app.vue',
-        './error.vue'
-      ]
-    }
+    cssPath: '~/assets/css/main.css',
   },
 
   colorMode: {
     classSuffix: '',
-    preference: 'light',
+    preference: 'system',
     fallback: 'light',
     storageKey: 'nuxt-color-mode'
   },

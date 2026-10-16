@@ -127,10 +127,8 @@
   },
   "common": {
     "scroll_to_top": "Back to top",
-    "theme_light": "Switch to light mode",
-    "theme_dark": "Switch to dark mode",
-    "mode_light": "Light Mode",
-    "mode_dark": "Dark Mode",
-    "lang_label": "Language"
+    "lang_label": "Language",
+    "toggle_theme": "Toggle theme",
+    "menu": "Menu"
   }
 }

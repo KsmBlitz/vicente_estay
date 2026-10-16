@@ -1,5 +1,7 @@
+type ScrollTarget = string | number | HTMLElement
+
 export function useScrollTo() {
-  const scrollTo = (target: string | HTMLElement, options?: { duration?: number; offset?: number }) => {
+  const scrollTo = (target: ScrollTarget, options?: { duration?: number; offset?: number }) => {
     if (typeof window === 'undefined') return
 
     const nuxtApp = useNuxtApp() as Record<string, unknown>
@@ -10,10 +12,15 @@ export function useScrollTo() {
         duration: options?.duration ?? 1.2,
         offset: options?.offset ?? 0,
       })
-    } else {
-      const el = typeof target === 'string' ? document.querySelector(target) : target
-      el?.scrollIntoView({ behavior: 'smooth' })
+      return
     }
+
+    if (typeof target === 'number') {
+      window.scrollTo({ top: target, behavior: 'smooth' })
+      return
+    }
+    const el = typeof target === 'string' ? document.querySelector(target) : target
+    el?.scrollIntoView({ behavior: 'smooth' })
   }
 
   return { scrollTo }

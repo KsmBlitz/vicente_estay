@@ -127,10 +127,8 @@
   },
   "common": {
     "scroll_to_top": "Nach oben",
-    "theme_light": "Zum hellen Modus wechseln",
-    "theme_dark": "Zum dunklen Modus wechseln",
-    "mode_light": "Heller Modus",
-    "mode_dark": "Dunkler Modus",
-    "lang_label": "Sprache"
+    "lang_label": "Sprache",
+    "toggle_theme": "Design wechseln",
+    "menu": "Menü"
   }
 }

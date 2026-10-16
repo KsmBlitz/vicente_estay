@@ -1,367 +1,144 @@
 <script setup lang="ts">
 import { TECH_COUNT } from '~/utils/skillsData'
 
-const { profile, projects } = useContent()
-
-const { scrollTo } = useScrollTo()
 const { t, locale } = useI18n()
 const { lf } = useLocaleField()
+const { scrollTo } = useScrollTo()
+const { profile, projects } = useContent()
 
 const cvFile = computed(() =>
   locale.value === 'es'
     ? { href: profile.cv.es, download: 'Vicente_Estay_CV_ES.pdf' }
-    : { href: profile.cv.en, download: 'Vicente_Estay_CV_EN.pdf' }
+    : { href: profile.cv.en, download: 'Vicente_Estay_CV_EN.pdf' },
 )
 
-// Animated counter
-const yearsExp = ref(0)
-const projectsCount = ref(0)
-const techCount = ref(0)
-const isCounterVisible = ref(false)
+// Los contadores parten con el valor real (SSR / buscadores) y se animan al montar
+const years = ref(profile.yearsExperience)
+const projectsCount = ref(projects.length)
+const techCount = ref(TECH_COUNT)
 
-const animateCounter = (target: number, current: Ref<number>, duration: number = 2000) => {
-  const startTime = Date.now()
-
-  const updateCounter = () => {
-    const progress = Math.min((Date.now() - startTime) / duration, 1)
-    const easeOut = 1 - Math.pow(1 - progress, 4)
-    current.value = Math.floor(easeOut * target)
-    if (progress < 1) requestAnimationFrame(updateCounter)
-    else current.value = target
+const countUp = (target: Ref<number>, to: number, duration: number) => {
+  const start = performance.now()
+  target.value = 0
+  const tick = (now: number) => {
+    const p = Math.min((now - start) / duration, 1)
+    target.value = Math.round(to * (1 - Math.pow(1 - p, 4)))
+    if (p < 1) requestAnimationFrame(tick)
   }
-
-  requestAnimationFrame(updateCounter)
+  requestAnimationFrame(tick)
 }
 
 onMounted(() => {
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting && !isCounterVisible.value) {
-          isCounterVisible.value = true
-          animateCounter(profile.yearsExperience, yearsExp, 1500)
-          animateCounter(projects.length, projectsCount, 2000)
-          animateCounter(TECH_COUNT, techCount, 2500)
-        }
-      })
-    },
-    { threshold: 0.5 }
-  )
-  const statsEl = document.querySelector('#stats')
-  if (statsEl) observer.observe(statsEl)
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+  countUp(years, profile.yearsExperience, 1400)
+  countUp(projectsCount, projects.length, 1600)
+  countUp(techCount, TECH_COUNT, 1800)
 })
 
-// Typing effect
-const displayedTitle = ref('')
-const fullTitle = computed(() => lf(profile.title))
-const isTyping = ref(false)
-const isAnimating = ref(true)
-
-onMounted(() => {
-  setTimeout(() => {
-    isTyping.value = true
-    let index = 0
-    const interval = setInterval(() => {
-      if (index < fullTitle.value.length) {
-        displayedTitle.value += fullTitle.value[index]
-        index++
-      } else {
-        clearInterval(interval)
-        setTimeout(() => { isAnimating.value = false }, 2500)
-      }
-    }, 80)
-  }, 500)
-})
-
-// Partículas — generadas vía composable
-const { particleStyles } = useParticles(30, {
-  minSize: 3, maxSize: 9,
-  minDuration: 6, maxDuration: 16,
-  minDelay: 0, maxDelay: 8,
-  minOpacity: 0.3, maxOpacity: 0.7,
-})
-
-// Parallax on hero photo
-const parallaxOffset = ref(0)
-const onParallaxScroll = () => { parallaxOffset.value = window.scrollY * 0.18 }
-onMounted(() => window.addEventListener('scroll', onParallaxScroll, { passive: true }))
-onUnmounted(() => window.removeEventListener('scroll', onParallaxScroll))
-
-// Magnetic buttons
-const handleMagneticMove = (e: MouseEvent) => {
-  const btn = e.currentTarget as HTMLElement
-  const rect = btn.getBoundingClientRect()
-  const x = (e.clientX - (rect.left + rect.width / 2)) * 0.35
-  const y = (e.clientY - (rect.top + rect.height / 2)) * 0.35
-  btn.style.transform = `translate(${x}px, ${y}px)`
-  btn.style.transition = 'transform 0.1s ease'
-}
-
-const handleMagneticLeave = (e: MouseEvent) => {
-  const btn = e.currentTarget as HTMLElement
-  btn.style.transform = 'translate(0, 0)'
-  btn.style.transition = 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)'
-}
+const stats = computed(() => [
+  { value: years.value, label: t('hero.stat_years') },
+  { value: projectsCount.value, label: t('hero.stat_projects') },
+  { value: techCount.value, label: t('hero.stat_tech') },
+])
 </script>
 
 <template>
-  <section id="hero" class="min-h-screen flex items-center justify-center relative pt-20 overflow-hidden">
-    <!-- Animated background -->
-    <div class="absolute inset-0 bg-white dark:bg-slate-900">
-      <!-- Particles (precomputed, rendered after mount) -->
-      <Transition name="fade-particles">
-        <div v-show="!isAnimating && particleStyles.length > 0" class="particles-container">
-          <div
-            v-for="(style, i) in particleStyles"
-            :key="i"
-            class="particle"
-            :style="style"
-          ></div>
-        </div>
-      </Transition>
+  <section id="hero" class="relative flex min-h-[100svh] items-center overflow-hidden pb-20 pt-28">
+    <div class="hero-backdrop pointer-events-none absolute inset-0" aria-hidden="true"></div>
 
-      <!-- Grid lines -->
-      <div class="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
+    <div class="container-x relative grid items-center gap-14 lg:grid-cols-[1.2fr_0.8fr] lg:gap-20">
+      <div>
+        <p
+          data-reveal
+          class="mb-8 inline-flex items-center gap-2.5 rounded-full border border-zinc-200 px-3.5 py-1.5 text-xs text-zinc-600 dark:border-zinc-800 dark:text-zinc-400"
+        >
+          <span class="relative flex h-1.5 w-1.5">
+            <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-60"></span>
+            <span class="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+          </span>
+          {{ t('hero.badge') }}
+        </p>
 
-      <!-- Gradient orbs -->
-      <div class="absolute top-20 left-10 w-96 h-96 bg-blue-300/30 dark:bg-blue-500/10 rounded-full blur-3xl animate-orb-float"></div>
-      <div class="absolute bottom-20 right-10 w-[500px] h-[500px] bg-slate-300/40 dark:bg-slate-600/15 rounded-full blur-3xl animate-orb-float animation-delay-2000"></div>
-      <div class="absolute top-1/2 left-1/3 w-80 h-80 bg-indigo-200/20 dark:bg-indigo-500/5 rounded-full blur-3xl animate-orb-pulse"></div>
+        <h1 class="text-5xl font-semibold leading-[1.02] tracking-tight sm:text-6xl lg:text-7xl">
+          <SplitText :text="profile.name" :delay="150" :step="90" />
+        </h1>
 
-      <!-- Floating geometric shapes -->
-      <div class="absolute top-1/4 right-1/4 w-4 h-4 border-2 border-slate-300 dark:border-slate-600 rotate-45 animate-float-slow opacity-40"></div>
-      <div class="absolute bottom-1/3 left-1/5 w-6 h-6 border-2 border-slate-300 dark:border-slate-600 rounded-full animate-float-slow animation-delay-1000 opacity-30"></div>
-      <div class="absolute top-2/3 right-1/5 w-3 h-3 bg-slate-400/30 dark:bg-slate-500/20 rotate-45 animate-float-slow animation-delay-3000"></div>
-    </div>
+        <p
+          data-reveal
+          style="--reveal-delay: 450ms"
+          class="mt-6 text-xl text-zinc-500 dark:text-zinc-400 md:text-2xl"
+        >
+          {{ lf(profile.title) }}
+        </p>
 
-    <div class="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-12 py-12">
-      <div class="grid lg:grid-cols-2 gap-16 xl:gap-24 items-center">
-        <!-- Content -->
-        <div class="animate-fade-in order-2 lg:order-1">
-          <div class="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-800 rounded-full mb-8 animate-fade-in-up">
-            <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
-            <span class="text-sm font-medium text-slate-600 dark:text-slate-400">{{ t('hero.badge') }}</span>
-          </div>
+        <p
+          data-reveal
+          style="--reveal-delay: 550ms"
+          class="mt-6 max-w-xl text-base leading-relaxed text-zinc-600 dark:text-zinc-400 md:text-lg"
+        >
+          {{ lf(profile.shortBio) }}
+        </p>
 
-          <!-- Name -->
-          <h1 class="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-slate-900 dark:text-white mb-6 tracking-tight animate-fade-in-up animation-delay-100">
-            {{ profile.name }}
-          </h1>
-
-          <!-- Title with typing effect -->
-          <h2 class="text-2xl md:text-3xl lg:text-4xl font-semibold bg-gradient-to-r from-slate-600 via-slate-500 to-slate-400 dark:from-slate-300 dark:via-slate-400 dark:to-slate-500 bg-clip-text text-transparent mb-8 animate-fade-in-up animation-delay-200 min-h-[3rem] flex items-center">
-            <span>{{ displayedTitle }}</span>
-            <span v-if="isTyping && displayedTitle.length < fullTitle.length" class="inline-block w-0.5 h-8 bg-slate-500 dark:bg-slate-400 ml-1 animate-blink"></span>
-          </h2>
-
-          <!-- Description -->
-          <p class="text-lg lg:text-xl text-slate-600 dark:text-slate-400 max-w-2xl mb-10 leading-relaxed animate-fade-in-up animation-delay-300">
-            {{ lf(profile.shortBio) }}
-          </p>
-
-          <!-- CTA Buttons — magnetic effect -->
-          <div class="flex flex-wrap gap-4 animate-fade-in-up animation-delay-400">
-            <button
-              @click="scrollTo('#projects')"
-              @mousemove="handleMagneticMove"
-              @mouseleave="handleMagneticLeave"
-              class="group px-6 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-sm font-medium rounded-lg hover:bg-slate-800 dark:hover:bg-slate-100 hover:shadow-lg hover:shadow-slate-900/20 dark:hover:shadow-white/20 will-change-transform"
-              style="transition: background-color 0.2s, box-shadow 0.2s"
-            >
-              <span class="flex items-center gap-2">
-                {{ t('hero.cta_projects') }}
-                <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </span>
-            </button>
-
-            <a
-              :href="cvFile.href"
-              :download="cvFile.download"
-              @mousemove="handleMagneticMove"
-              @mouseleave="handleMagneticLeave"
-              class="group inline-block px-6 py-3 text-slate-900 dark:text-white text-sm font-medium rounded-lg border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800/50 will-change-transform"
-              style="transition: background-color 0.2s, border-color 0.2s"
-            >
-              <span class="flex items-center gap-2">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                {{ t('hero.cta_cv') }}
-              </span>
-            </a>
-
-            <button
-              @click="scrollTo('#contact')"
-              @mousemove="handleMagneticMove"
-              @mouseleave="handleMagneticLeave"
-              class="px-6 py-3 text-slate-600 dark:text-slate-400 text-sm font-medium rounded-lg border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800/50 will-change-transform"
-              style="transition: background-color 0.2s, border-color 0.2s"
-            >
-              {{ t('hero.cta_contact') }}
-            </button>
-          </div>
-
-          <!-- Quick stats -->
-          <div id="stats" class="flex gap-10 lg:gap-12 mt-12 pt-10 border-t border-slate-200 dark:border-slate-800 animate-fade-in-up animation-delay-400">
-            <div>
-              <div class="text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white">{{ yearsExp }}</div>
-              <div class="text-sm lg:text-base text-slate-500 dark:text-slate-400">{{ t('hero.stat_years') }}</div>
-            </div>
-            <div>
-              <div class="text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white">{{ projectsCount }}</div>
-              <div class="text-sm lg:text-base text-slate-500 dark:text-slate-400">{{ t('hero.stat_projects') }}</div>
-            </div>
-            <div>
-              <div class="text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white">{{ techCount }}</div>
-              <div class="text-sm lg:text-base text-slate-500 dark:text-slate-400">{{ t('hero.stat_tech') }}</div>
-            </div>
-          </div>
+        <div data-reveal style="--reveal-delay: 650ms" class="mt-10 flex flex-wrap items-center gap-3">
+          <button class="btn btn-primary group" @click="scrollTo('#projects')">
+            {{ t('hero.cta_projects') }}
+            <svg class="h-4 w-4 transition-transform duration-300 ease-out-expo group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m0 0-6-6m6 6-6 6" />
+            </svg>
+          </button>
+          <a :href="cvFile.href" :download="cvFile.download" class="btn btn-outline">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v11m0 0-4-4m4 4 4-4M5 20h14" />
+            </svg>
+            {{ t('hero.cta_cv') }}
+          </a>
+          <button class="btn text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white" @click="scrollTo('#contact')">
+            {{ t('hero.cta_contact') }}
+          </button>
         </div>
 
-        <!-- Photo / Visual -->
-        <div class="order-1 lg:order-2 flex justify-center animate-fade-in animation-delay-200">
-          <div class="relative">
-            <!-- Decorative blur blobs -->
-            <div class="absolute -inset-8 bg-gradient-to-br from-slate-200 via-slate-100 to-transparent dark:from-slate-700 dark:via-slate-800 dark:to-transparent rounded-3xl blur-3xl opacity-60"></div>
-            <div class="absolute -top-8 -right-8 w-32 h-32 bg-slate-200/50 dark:bg-slate-700/30 rounded-full blur-xl animate-pulse-slow"></div>
-            <div class="absolute -bottom-8 -left-8 w-40 h-40 bg-slate-300/40 dark:bg-slate-600/20 rounded-full blur-xl animate-pulse-slow animation-delay-1000"></div>
-
-            <!-- Photo container with parallax -->
-            <div
-              class="relative w-80 h-80 md:w-96 md:h-96 lg:w-[400px] lg:h-[400px] xl:w-[450px] xl:h-[450px] rounded-2xl overflow-hidden border-2 border-slate-200 dark:border-slate-700 shadow-2xl shadow-slate-900/10 dark:shadow-black/30"
-              :style="{ transform: `translateY(${parallaxOffset}px)` }"
-            >
-              <img
-                v-if="profile.photo"
-                :src="profile.photo"
-                :alt="profile.name"
-                class="w-full h-full object-cover"
-                fetchpriority="high"
-                loading="eager"
-              />
-              <div v-else class="w-full h-full bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-700 flex items-center justify-center">
-                <div class="text-7xl lg:text-8xl font-bold text-slate-300 dark:text-slate-600">VE</div>
-              </div>
-            </div>
-
-            <!-- Floating badges -->
-            <div class="absolute -right-4 top-1/4 bg-white dark:bg-slate-800 rounded-xl p-3 shadow-lg border border-slate-200 dark:border-slate-700 animate-float">
-              <div class="flex items-center gap-2">
-                <div class="w-8 h-8 bg-blue-500/10 rounded-lg flex items-center justify-center">
-                  <svg class="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                  </svg>
-                </div>
-                <span class="text-xs font-medium text-slate-600 dark:text-slate-300">GitHub</span>
-              </div>
-            </div>
-
-            <div class="absolute -left-4 bottom-1/4 bg-white dark:bg-slate-800 rounded-xl p-3 shadow-lg border border-slate-200 dark:border-slate-700 animate-float animation-delay-1000">
-              <div class="flex items-center gap-2">
-                <div class="w-8 h-8 bg-emerald-500/10 rounded-lg flex items-center justify-center">
-                  <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                  </svg>
-                </div>
-                <span class="text-xs font-medium text-slate-600 dark:text-slate-300">Code</span>
-              </div>
-            </div>
+        <dl
+          data-reveal
+          style="--reveal-delay: 800ms"
+          class="mt-14 grid max-w-md grid-cols-3 gap-6 border-t border-zinc-200 pt-8 dark:border-zinc-800"
+        >
+          <div v-for="stat in stats" :key="stat.label">
+            <dd class="font-mono text-3xl font-medium tabular-nums text-zinc-950 dark:text-white">{{ stat.value }}</dd>
+            <dt class="mt-1 text-xs text-zinc-500">{{ stat.label }}</dt>
           </div>
-        </div>
+        </dl>
+      </div>
+
+      <div data-reveal style="--reveal-delay: 300ms" class="w-full max-w-xs justify-self-center sm:max-w-sm lg:max-w-none lg:justify-self-end">
+        <figure class="group relative mx-auto aspect-[3/4] w-full max-w-sm overflow-hidden rounded-3xl bg-zinc-100 ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-800">
+          <img
+            v-if="profile.photo"
+            :src="profile.photo"
+            :alt="profile.name"
+            width="683"
+            height="913"
+            fetchpriority="high"
+            class="h-full w-full object-cover object-top transition-transform duration-[1200ms] ease-out-expo group-hover:scale-[1.03]"
+          />
+          <figcaption class="absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full bg-white/80 px-3 py-1.5 text-xs text-zinc-700 backdrop-blur dark:bg-zinc-950/70 dark:text-zinc-300">
+            <svg class="h-3.5 w-3.5 text-accent" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z" />
+            </svg>
+            {{ profile.location }}
+          </figcaption>
+        </figure>
       </div>
     </div>
   </section>
 </template>
 
 <style scoped>
-@keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+/* Fondo estático: puntos tenues + un halo de acento, difuminados hacia los bordes */
+.hero-backdrop {
+  background-image:
+    radial-gradient(ellipse 50% 45% at 75% 30%, rgb(var(--accent) / 0.1), transparent 70%),
+    radial-gradient(circle at 1px 1px, rgb(113 113 122 / 0.22) 1px, transparent 0);
+  background-size: 100% 100%, 28px 28px;
+  mask-image: radial-gradient(ellipse 85% 75% at 50% 35%, #000 35%, transparent 80%);
 }
-
-@keyframes fade-in-up {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
-.animate-fade-in { animation: fade-in 0.6s ease-out forwards; }
-.animate-fade-in-up { opacity: 0; animation: fade-in-up 0.6s ease-out forwards; }
-.animate-float { animation: float 3s ease-in-out infinite; }
-
-/* Particles */
-.particles-container {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-}
-
-.particle {
-  position: absolute;
-  background: currentColor;
-  border-radius: 50%;
-  opacity: var(--particle-opacity, 0.4);
-  animation: rise linear infinite;
-  box-shadow: 0 0 6px currentColor;
-  will-change: transform, opacity;
-}
-
-.dark .particle { color: rgba(148, 163, 184, 0.7); }
-.particle { color: rgba(100, 116, 139, 0.5); }
-
-@keyframes rise {
-  0% { transform: translateY(100vh) translateX(0) scale(0.5); opacity: 0; }
-  15% { opacity: var(--particle-opacity, 0.5); transform: translateY(80vh) translateX(10px) scale(1); }
-  85% { opacity: var(--particle-opacity, 0.5); }
-  100% { transform: translateY(-50px) translateX(30px) scale(0.8); opacity: 0; }
-}
-
-@keyframes orb-float {
-  0%, 100% { transform: translateY(0) translateX(0) scale(1); }
-  33% { transform: translateY(-30px) translateX(20px) scale(1.05); }
-  66% { transform: translateY(20px) translateX(-15px) scale(0.95); }
-}
-
-@keyframes orb-pulse {
-  0%, 100% { transform: scale(1); opacity: 0.3; }
-  50% { transform: scale(1.2); opacity: 0.5; }
-}
-
-@keyframes float-slow {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-20px) rotate(180deg); }
-}
-
-@keyframes pulse-slow {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 0.7; }
-}
-
-@keyframes blink {
-  0%, 50% { opacity: 1; }
-  51%, 100% { opacity: 0; }
-}
-
-.animate-orb-float { animation: orb-float 12s ease-in-out infinite; }
-.animate-orb-pulse { animation: orb-pulse 8s ease-in-out infinite; }
-.animate-float-slow { animation: float-slow 6s ease-in-out infinite; }
-.animate-pulse-slow { animation: pulse-slow 4s ease-in-out infinite; }
-.animate-blink { animation: blink 1s step-end infinite; }
-
-.fade-particles-enter-active, .fade-particles-leave-active { transition: opacity 1.5s ease; }
-.fade-particles-enter-from, .fade-particles-leave-to { opacity: 0; }
-
-.animation-delay-100 { animation-delay: 0.1s; }
-.animation-delay-200 { animation-delay: 0.2s; }
-.animation-delay-300 { animation-delay: 0.3s; }
-.animation-delay-400 { animation-delay: 0.4s; }
-.animation-delay-1000 { animation-delay: 1s; }
-.animation-delay-2000 { animation-delay: 2s; }
-.animation-delay-3000 { animation-delay: 3s; }
 </style>

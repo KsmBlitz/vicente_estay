@@ -1,0 +1,140 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Tokens ──────────────────────────────────────────────────────────────
+   Un solo color de acento (canales RGB). Cambiarlo aquí cambia todo el sitio. */
+:root {
+  --accent: 67 56 202; /* indigo-700 */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+.dark {
+  --accent: 129 140 248; /* indigo-400 */
+}
+
+@layer base {
+  html {
+    scroll-behavior: auto;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-white font-sans text-zinc-600 antialiased dark:bg-zinc-950 dark:text-zinc-400;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3 {
+    @apply text-zinc-950 dark:text-zinc-50;
+  }
+
+  ::selection {
+    background: rgb(var(--accent) / 0.2);
+  }
+
+  :focus-visible {
+    outline: 2px solid rgb(var(--accent));
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { @apply rounded bg-zinc-300 dark:bg-zinc-700; }
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-6xl px-6;
+  }
+
+  .section {
+    @apply border-t border-zinc-200/80 py-24 dark:border-zinc-800/80 md:py-32;
+  }
+
+  .eyebrow {
+    @apply font-mono text-xs uppercase tracking-[0.14em] text-zinc-500 dark:text-zinc-500;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium
+      transition-[background-color,border-color,color,transform] duration-300 ease-out-expo active:scale-[0.97];
+  }
+  .btn-primary {
+    @apply bg-zinc-950 text-white hover:bg-zinc-700 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-300;
+  }
+  .btn-outline {
+    @apply border border-zinc-300 text-zinc-900 hover:border-zinc-400 hover:bg-zinc-50
+      dark:border-zinc-700 dark:text-zinc-100 dark:hover:border-zinc-500 dark:hover:bg-zinc-900;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-2 rounded-full border border-zinc-200 px-3 py-1.5 text-sm text-zinc-700
+      transition-colors duration-300 dark:border-zinc-800 dark:text-zinc-300;
+  }
+  a.chip {
+    @apply hover:border-zinc-400 hover:text-zinc-950 dark:hover:border-zinc-600 dark:hover:text-white;
+  }
+  .chip-mono {
+    @apply rounded-md bg-zinc-100 px-2 py-1 font-mono text-[0.7rem] text-zinc-600 dark:bg-zinc-900 dark:text-zinc-400;
+  }
+
+  .field {
+    @apply w-full rounded-lg border border-zinc-300 bg-transparent px-4 py-3 text-sm text-zinc-900
+      placeholder:text-zinc-400 transition-[border-color,box-shadow] duration-300
+      focus:border-accent focus:outline-none focus:ring-4 focus:ring-accent/10
+      dark:border-zinc-700 dark:text-zinc-100 dark:placeholder:text-zinc-600;
+  }
+
+  .link-arrow {
+    @apply inline-flex items-center gap-1.5 text-sm font-medium text-zinc-900 transition-colors duration-300
+      hover:text-accent dark:text-zinc-100;
+  }
+  .link-arrow svg {
+    @apply transition-transform duration-300 ease-out-expo;
+  }
+  .link-arrow:hover svg {
+    transform: translate(2px, -2px);
+  }
+}
+
+/* ── Animaciones de entrada ──────────────────────────────────────────────
+   Se activan solo si hay JS (html[data-js]); sin JS todo es visible.
+   plugins/reveal.client.ts agrega data-in al entrar en pantalla.
+   Regla: [data-reveal] va en un contenedor, no en el elemento con hover/transform propio. */
+[data-reveal] {
+  transition:
+    opacity 0.8s var(--ease),
+    transform 0.8s var(--ease);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+html[data-js] [data-reveal]:not([data-in]) {
+  opacity: 0;
+  transform: translate3d(0, 16px, 0);
+}
+
+.split-outer {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+.split-inner {
+  display: inline-block;
+  transition: transform 0.9s var(--ease);
+}
+html[data-js] [data-reveal-split]:not([data-in]) .split-inner {
+  transform: translate3d(0, 110%, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal],
+  .split-inner {
+    transition: none !important;
+  }
+  html[data-js] [data-reveal]:not([data-in]),
+  html[data-js] [data-reveal-split]:not([data-in]) .split-inner {
+    opacity: 1;
+    transform: none;
+  }
+}

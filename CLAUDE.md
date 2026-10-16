@@ -8,7 +8,7 @@ Portafolio personal de Vicente Estay. Una sola página (one-page) con SSR, en 3 
 npm install          # postinstall corre `nuxt prepare`
 npm run dev          # http://localhost:3000 (los cambios en content/*.yml se recargan solos)
 npm run build        # build SSR (lo mismo que hace Vercel)
-npm run typecheck    # vue-tsc; hoy arrastra errores previos en app.vue, NavBar, SkillsSection y nuxt.config
+npm run typecheck    # vue-tsc (debe terminar sin errores)
 ```
 
 No hay tests ni ESLint. Para validar un cambio: `npm run build` y revisar en el navegador con `npm run dev`.
@@ -40,6 +40,7 @@ Todo el contenido está en `content/` y se importa en build vía `@rollup/plugin
   - `useLocaleField` → `lf(valor)`: resuelve un `Localized` al locale activo con fallback a `es`.
   - `useScrollReveal`: IntersectionObserver que expone `isVisible` + `sectionRef` para las animaciones de entrada.
   - `useScrollTo`: usa Lenis (`$lenis`, plugin `lenis.client.ts`) si existe; si no, `scrollIntoView`.
+- `app/utils/date.ts`: `formatMonth` (fechas según locale) y `monthsBetween`.
 - `app/utils/skillsData.ts`: el stack técnico (logos de la sección Skills) está en TypeScript, no en YAML. `TECH_COUNT` alimenta el contador del Hero.
 - Formulario de contacto: POST a Formspree (`runtimeConfig.public.formspreeUrl`).
 - Analytics: `@vercel/analytics` vía `plugins/analytics.client.ts`.
@@ -51,13 +52,23 @@ Todo el contenido está en `content/` y se importa en build vía `@rollup/plugin
 - Textos de UI en `i18n/locales/{es,en,de}.json`. **Toda clave nueva va en los tres archivos.** Nada de strings en español hardcodeados en los componentes: usar `t('...')`.
 - Para fechas, usar el locale activo (no arrays de meses en español).
 
+## Diseño y animaciones
+
+Estilo minimalista: tipografía Geist / Geist Mono (`@nuxt/fonts`), grises `zinc`, **un solo acento** y mucho espacio en blanco. Evitar volver a agregar efectos decorativos (partículas, orbes, tilt 3D, parallax, números gigantes de fondo).
+
+- **Tokens y clases reutilizables** en `app/assets/css/main.css`: `--accent` (cambia el color de acento de todo el sitio), `.container-x`, `.section`, `.eyebrow`, `.btn` / `.btn-primary` / `.btn-outline`, `.chip` / `.chip-mono`, `.field`, `.link-arrow`. Usarlas antes de escribir clases largas de Tailwind.
+- **Tema**: sigue al sistema (`colorMode.preference: 'system'`) con toggle manual. Dar siempre variante `dark:`. Para íconos que dependen del tema usar `dark:hidden` / `hidden dark:block` en vez de estado JS (evita desajustes de hidratación).
+- **Animaciones de entrada**: poner `data-reveal` (y opcional `style="--reveal-delay: 200ms"`) en un contenedor; `plugins/reveal.client.ts` agrega `data-in` al entrar en pantalla. `SplitText` hace lo mismo palabra por palabra. Solo actúan con JS (`html[data-js]`) y se desactivan con `prefers-reduced-motion`. No poner `data-reveal` en el mismo elemento que tiene `transition`/`transform` propios (hover): usar un contenedor aparte.
+- Nuevas secciones: usar `<SectionHeader index="0X" ...>`; el número sigue el orden de la página (hoy 01–06).
+- Easing común: `ease-out-expo` (Tailwind) / `var(--ease)` (CSS). Duraciones 300–900 ms.
+- Íconos: SVG inline (Heroicons). Redes sociales: `SocialLinks`. Logos de tecnologías: devicon vía jsDelivr.
+
 ## Convenciones de código
 
 - Vue 3 `<script setup lang="ts">`, Composition API, auto-imports de Nuxt (no importar `ref`, `computed`, etc.).
-- Estilos con Tailwind (v3, `darkMode: 'class'`). Siempre dar la variante `dark:` a colores de fondo, texto y bordes.
-- Animaciones a medida en `<style scoped>` del componente. Respetar `prefers-reduced-motion` en animaciones nuevas.
-- Iconos: SVG inline (paths de Heroicons). Logos de tecnologías: devicon vía jsDelivr.
-- Contenido visible para buscadores y agentes: lo que importa (nombre, título, cifras) debe estar en el HTML del SSR, no solo aparecer tras una animación en el cliente.
+- Estilos con Tailwind v3 (`tailwind.config.ts`; el `content` lo agrega el módulo).
+- Accesibilidad: `aria-label` en botones de ícono, `aria-expanded` en menús, foco visible (ya definido en `main.css`), `role="alert"`/`status` en mensajes de formularios.
+- Contenido visible para buscadores y agentes: lo que importa (nombre, título, cifras) debe estar en el HTML del SSR, no solo aparecer tras una animación en el cliente. Los contadores del Hero parten con el valor real.
 
 ## Commits
 
