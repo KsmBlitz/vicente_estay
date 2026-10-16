@@ -35,6 +35,44 @@ onMounted(() => {
   countUp(techCount, TECH_COUNT, 1800)
 })
 
+// Fondo: el foco de luz sigue al cursor (con inercia) y las animaciones se pausan fuera de pantalla
+const heroEl = ref<HTMLElement | null>(null)
+const spotEl = ref<HTMLElement | null>(null)
+const inView = ref(true)
+
+onMounted(() => {
+  const section = heroEl.value
+  if (!section) return
+
+  const io = new IntersectionObserver(([entry]) => { inView.value = !!entry?.isIntersecting })
+  io.observe(section)
+  onBeforeUnmount(() => io.disconnect())
+
+  const canFollow = window.matchMedia('(hover: hover) and (prefers-reduced-motion: no-preference)').matches
+  if (!canFollow) return
+
+  let tx = 0, ty = 0, x = 0, y = 0, raf = 0
+  const loop = () => {
+    x += (tx - x) * 0.08
+    y += (ty - y) * 0.08
+    spotEl.value?.style.setProperty('--mx', `${x}px`)
+    spotEl.value?.style.setProperty('--my', `${y}px`)
+    raf = Math.abs(tx - x) + Math.abs(ty - y) > 0.5 ? requestAnimationFrame(loop) : 0
+  }
+  const onMove = (e: PointerEvent) => {
+    const r = section.getBoundingClientRect()
+    tx = e.clientX - r.left
+    ty = e.clientY - r.top
+    if (!raf) raf = requestAnimationFrame(loop)
+  }
+  section.addEventListener('pointermove', onMove, { passive: true })
+  spotEl.value?.classList.add('is-on')
+  onBeforeUnmount(() => {
+    section.removeEventListener('pointermove', onMove)
+    cancelAnimationFrame(raf)
+  })
+})
+
 const stats = computed(() => [
   { value: years.value, label: t('hero.stat_years') },
   { value: projectsCount.value, label: t('hero.stat_projects') },
@@ -43,8 +81,14 @@ const stats = computed(() => [
 </script>
 
 <template>
-  <section id="hero" class="relative flex min-h-[100svh] items-center overflow-hidden pb-20 pt-28">
-    <div class="hero-backdrop pointer-events-none absolute inset-0" aria-hidden="true"></div>
+  <section ref="heroEl" id="hero" class="relative flex min-h-[100svh] items-center overflow-hidden pb-20 pt-28">
+    <div class="hero-bg pointer-events-none absolute inset-0" :class="{ 'is-paused': !inView }" aria-hidden="true">
+      <div class="hero-orb hero-orb-a"></div>
+      <div class="hero-orb hero-orb-b"></div>
+      <div class="hero-orb hero-orb-c"></div>
+      <div class="hero-grid"></div>
+      <div ref="spotEl" class="hero-spot"></div>
+    </div>
 
     <div class="container-x relative grid items-center gap-14 lg:grid-cols-[1.2fr_0.8fr] lg:gap-20">
       <div>
@@ -133,12 +177,80 @@ const stats = computed(() => [
 </template>
 
 <style scoped>
-/* Fondo estático: puntos tenues + un halo de acento, difuminados hacia los bordes */
-.hero-backdrop {
+.hero-bg {
+  overflow: hidden;
+  /* Posiciones sin depender de la altura del hero: evita que un cambio de fuente cuente como layout shift */
+  contain: layout paint;
+}
+
+/* Malla de color: tres resplandores muy suaves que derivan despacio (solo transform: no cuesta repintado) */
+.hero-orb {
+  position: absolute;
+  border-radius: 9999px;
+  will-change: transform;
+  animation: drift 26s ease-in-out infinite alternate;
+}
+.hero-orb-a {
+  top: -14rem;
+  right: -10rem;
+  width: 52rem;
+  height: 52rem;
+  background: radial-gradient(circle, rgb(var(--accent) / 0.2), transparent 64%);
+}
+.hero-orb-b {
+  top: calc(100svh - 26rem);
+  left: -14rem;
+  width: 48rem;
+  height: 48rem;
+  background: radial-gradient(circle, rgb(14 165 233 / 0.13), transparent 64%);
+  animation-duration: 32s;
+  animation-direction: alternate-reverse;
+}
+.hero-orb-c {
+  top: 14rem;
+  left: 36%;
+  width: 36rem;
+  height: 36rem;
+  background: radial-gradient(circle, rgb(168 85 247 / 0.1), transparent 66%);
+  animation-duration: 38s;
+}
+:global(.dark) .hero-orb-a { background: radial-gradient(circle, rgb(var(--accent) / 0.26), transparent 64%); }
+:global(.dark) .hero-orb-b { background: radial-gradient(circle, rgb(14 165 233 / 0.16), transparent 64%); }
+:global(.dark) .hero-orb-c { background: radial-gradient(circle, rgb(168 85 247 / 0.14), transparent 66%); }
+
+@keyframes drift {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(-5rem, 3.5rem, 0) scale(1.12); }
+}
+
+/* Rejilla fina que se desvanece hacia los bordes */
+.hero-grid {
+  position: absolute;
+  inset: 0;
   background-image:
-    radial-gradient(ellipse 50% 45% at 75% 30%, rgb(var(--accent) / 0.1), transparent 70%),
-    radial-gradient(circle at 1px 1px, rgb(113 113 122 / 0.22) 1px, transparent 0);
-  background-size: 100% 100%, 28px 28px;
-  mask-image: radial-gradient(ellipse 85% 75% at 50% 35%, #000 35%, transparent 80%);
+    linear-gradient(to right, rgb(var(--grid) / var(--grid-alpha)) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(var(--grid) / var(--grid-alpha)) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 38%, #000 25%, transparent 78%);
+}
+
+/* Foco de luz que sigue al cursor */
+.hero-spot {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.8s var(--ease);
+  background: radial-gradient(520px circle at var(--mx, 70%) var(--my, 30%), rgb(var(--accent) / 0.12), transparent 65%);
+}
+.hero-spot.is-on {
+  opacity: 1;
+}
+
+.is-paused .hero-orb {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-orb { animation: none; }
 }
 </style>

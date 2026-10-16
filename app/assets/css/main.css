@@ -6,10 +6,18 @@
    Un solo color de acento (canales RGB). Cambiarlo aquí cambia todo el sitio. */
 :root {
   --accent: 67 56 202; /* indigo-700 */
+  --line: 228 228 231; /* separadores (zinc-200) */
+  --grid: 24 24 27; /* rejilla del hero */
+  --grid-alpha: 0.055;
+  --glow-alpha: 0.075; /* resplandor de cada sección */
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 .dark {
   --accent: 129 140 248; /* indigo-400 */
+  --line: 39 39 42; /* zinc-800 */
+  --grid: 250 250 250;
+  --grid-alpha: 0.045;
+  --glow-alpha: 0.11;
 }
 
 @layer base {
@@ -25,6 +33,21 @@
 
   h1, h2, h3 {
     @apply text-zinc-950 dark:text-zinc-50;
+  }
+
+  /* Grano fino sobre todo el sitio: quita lo "plano" de los degradados (estático, sin costo de animación) */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .7 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .dark body::before {
+    opacity: 0.07;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .7 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
   ::selection {
@@ -48,7 +71,35 @@
   }
 
   .section {
-    @apply border-t border-zinc-200/80 py-24 dark:border-zinc-800/80 md:py-32;
+    @apply relative isolate py-24 md:py-32;
+  }
+  /* Resplandor de acento en la esquina superior; alterna izquierda/derecha entre secciones */
+  .section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(55% 45% at var(--glow-x, 12%) 0%, rgb(var(--accent) / var(--glow-alpha)), transparent 72%);
+  }
+  .section:nth-of-type(even)::before {
+    --glow-x: 88%;
+  }
+  /* Separador: línea tenue de lado a lado con un destello de acento al centro */
+  .section::after {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 1px;
+    background:
+      linear-gradient(90deg, transparent, rgb(var(--accent) / 0.6), transparent) center / 32% 1px no-repeat,
+      linear-gradient(90deg, transparent, rgb(var(--line)) 18%, rgb(var(--line)) 82%, transparent) center / 100% 1px no-repeat;
+  }
+  /* Cierre: la sección de contacto sube el resplandor desde abajo */
+  #contact::before {
+    background:
+      radial-gradient(60% 55% at 50% 105%, rgb(var(--accent) / calc(var(--glow-alpha) * 1.9)), transparent 70%),
+      radial-gradient(40% 35% at 12% 0%, rgb(var(--accent) / var(--glow-alpha)), transparent 72%);
   }
 
   .eyebrow {
