@@ -130,7 +130,6 @@ export const useSeo = () => {
       ...codes.value.map(c => ({ rel: 'alternate', hreflang: c, href: urlFor(c) })),
       { rel: 'alternate', hreflang: 'x-default', href: urlFor('es') },
       { rel: 'alternate', type: 'text/plain', title: 'llms.txt', href: '/llms.txt' },
-      { rel: 'preconnect', href: 'https://cdn.jsdelivr.net' },
     ],
     script: [{ type: 'application/ld+json', innerHTML: () => JSON.stringify(jsonLd.value) }],
   })

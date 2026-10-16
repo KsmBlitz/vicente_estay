@@ -127,10 +127,32 @@ html[data-js] [data-reveal-split]:not([data-in]) .split-inner {
   transform: translate3d(0, 110%, 0);
 }
 
+/* Contenido sobre el pliegue (hero): animación solo CSS, visible aunque JS tarde */
+@keyframes rise {
+  from { opacity: 0; transform: translate3d(0, 14px, 0); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes split-up {
+  from { transform: translate3d(0, 110%, 0); }
+  to { transform: none; }
+}
+[data-hero] {
+  animation: rise 0.8s var(--ease) both;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+[data-split-auto] .split-inner {
+  animation: split-up 0.9s var(--ease) both;
+  animation-delay: var(--d, 0ms);
+}
+
 @media (prefers-reduced-motion: reduce) {
   [data-reveal],
   .split-inner {
     transition: none !important;
+  }
+  [data-hero],
+  [data-split-auto] .split-inner {
+    animation: none;
   }
   html[data-js] [data-reveal]:not([data-in]),
   html[data-js] [data-reveal-split]:not([data-in]) .split-inner {

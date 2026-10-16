@@ -1,5 +1,6 @@
-import { inject } from '@vercel/analytics'
-
+// Se carga cuando el navegador está libre: no compite con el render inicial
 export default defineNuxtPlugin(() => {
-  inject()
+  const start = () => import('@vercel/analytics').then(({ inject }) => inject())
+  if ('requestIdleCallback' in window) requestIdleCallback(start, { timeout: 3000 })
+  else setTimeout(start, 1500)
 })

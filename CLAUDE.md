@@ -7,7 +7,7 @@ Portafolio personal de Vicente Estay. Una sola página (one-page) con SSR, en 3 
 ```bash
 npm install          # postinstall corre `nuxt prepare`
 npm run dev          # http://localhost:3000 (los cambios en content/*.yml se recargan solos)
-npm run build        # build SSR (lo mismo que hace Vercel)
+npm run build        # build + prerender (lo mismo que hace Vercel)
 npm run typecheck    # vue-tsc (debe terminar sin errores)
 ```
 
@@ -53,6 +53,17 @@ Todo el contenido está en `content/` y se importa en build vía `@rollup/plugin
 - Locales: `es` (por defecto, sin prefijo), `en` (`/en`), `de` (`/de`). Estrategia `prefix_except_default`.
 - Textos de UI en `i18n/locales/{es,en,de}.json`. **Toda clave nueva va en los tres archivos.** Nada de strings en español hardcodeados en los componentes: usar `t('...')`.
 - Para fechas, usar el locale activo (no arrays de meses en español).
+
+## Rendimiento y build
+
+- **Todo se prerenderiza** (`routeRules` en `nuxt.config.ts`): `/`, `/en`, `/de`, `robots.txt`, `sitemap.xml`, `llms*.txt` salen como archivos estáticos. Un contenido nuevo **no se ve hasta hacer build/deploy** (Vercel lo hace con cada push). `NUXT_PUBLIC_SITE_URL` debe estar definida en el build, no solo en runtime.
+- `experimental.payloadExtraction: false` es intencional (en Nuxt 4.2 + unstorage 1.17 rompe el prerender de `/`). No hay `useAsyncData`, así que no hace falta.
+- Redirección de idioma: `vercel.json` manda `/` → `/en` o `/de` según `Accept-Language` (si no existe la cookie `i18n_locale`). Sin eso, el cliente redirige durante la hidratación y aparece "Hydration completed but contains mismatches" (solo en navegadores no españoles).
+- i18n: **no usar** `bundle.runtimeOnly` / `dropMessageCompiler` (rompe la app con "unhandled node type"). Solo `fullInstall: false` (no usar `<i18n-t>` ni `v-t`).
+- Logos en `public/logos/*.svg` (locales, no CDN). Si agregas una tecnología con logo, descárgalo ahí y revisa que pese pocos KB. Fuentes: Geist/Geist Mono, solo subset `latin`, precargadas.
+- Contenido sobre el pliegue (hero) usa `data-hero` / `SplitText auto` (animación solo CSS): **no** usar `data-reveal` ahí, porque depende de JS y retrasa el LCP.
+- `plugins/lenis` y `analytics` se cargan en tiempo libre (`requestIdleCallback`).
+- Medir: `npm run build`, servir `.output` y correr Lighthouse móvil. Referencia actual (local, con compresión): rendimiento 97, FCP 1.7 s, LCP 2.4 s, CLS 0, ~305 KiB.
 
 ## Diseño y animaciones
 

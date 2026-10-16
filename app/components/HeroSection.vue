@@ -49,7 +49,7 @@ const stats = computed(() => [
     <div class="container-x relative grid items-center gap-14 lg:grid-cols-[1.2fr_0.8fr] lg:gap-20">
       <div>
         <p
-          data-reveal
+          data-hero
           class="mb-8 inline-flex items-center gap-2.5 rounded-full border border-zinc-200 px-3.5 py-1.5 text-xs text-zinc-600 dark:border-zinc-800 dark:text-zinc-400"
         >
           <span class="relative flex h-1.5 w-1.5">
@@ -60,26 +60,26 @@ const stats = computed(() => [
         </p>
 
         <h1 class="text-5xl font-semibold leading-[1.02] tracking-tight sm:text-6xl lg:text-7xl">
-          <SplitText :text="profile.name" :delay="150" :step="90" />
+          <SplitText :text="profile.name" auto :delay="0" :step="90" />
         </h1>
 
         <p
-          data-reveal
-          style="--reveal-delay: 450ms"
+          data-hero
+          style="--reveal-delay: 270ms"
           class="mt-6 text-xl text-zinc-500 dark:text-zinc-400 md:text-2xl"
         >
           {{ lf(profile.title) }}
         </p>
 
         <p
-          data-reveal
-          style="--reveal-delay: 550ms"
+          data-hero
+          style="--reveal-delay: 330ms"
           class="mt-6 max-w-xl text-base leading-relaxed text-zinc-600 dark:text-zinc-400 md:text-lg"
         >
           {{ lf(profile.shortBio) }}
         </p>
 
-        <div data-reveal style="--reveal-delay: 650ms" class="mt-10 flex flex-wrap items-center gap-3">
+        <div data-hero style="--reveal-delay: 390ms" class="mt-10 flex flex-wrap items-center gap-3">
           <button class="btn btn-primary group" @click="scrollTo('#projects')">
             {{ t('hero.cta_projects') }}
             <svg class="h-4 w-4 transition-transform duration-300 ease-out-expo group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
@@ -98,8 +98,8 @@ const stats = computed(() => [
         </div>
 
         <dl
-          data-reveal
-          style="--reveal-delay: 800ms"
+          data-hero
+          style="--reveal-delay: 480ms"
           class="mt-14 grid max-w-md grid-cols-3 gap-6 border-t border-zinc-200 pt-8 dark:border-zinc-800"
         >
           <div v-for="stat in stats" :key="stat.label">
@@ -109,7 +109,7 @@ const stats = computed(() => [
         </dl>
       </div>
 
-      <div data-reveal style="--reveal-delay: 300ms" class="w-full max-w-xs justify-self-center sm:max-w-sm lg:max-w-none lg:justify-self-end">
+      <div data-hero style="--reveal-delay: 180ms" class="w-full max-w-xs justify-self-center sm:max-w-sm lg:max-w-none lg:justify-self-end">
         <figure class="group relative mx-auto aspect-[3/4] w-full max-w-sm overflow-hidden rounded-3xl bg-zinc-100 ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-800">
           <img
             v-if="profile.photo"
