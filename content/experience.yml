@@ -1,6 +1,23 @@
 # Experiencia laboral — se muestra en el orden de este archivo (pon la más reciente arriba).
 # Fechas en formato "AAAA-MM" y entre comillas. Si es tu trabajo actual: current: true y sin end.
 
+- company: Evalueserve
+  companyUrl: https://www.evalueserve.com/
+  position:
+    es: Analista
+    en: Analyst
+    de: Analyst
+  description:
+    es: >-
+      Automatización de procesos de análisis con Python y optimización de procesos para reducir sus tiempos de ejecución.
+    en: >-
+      Automating analysis processes with Python and optimizing processes to reduce their execution time.
+    de: >-
+      Automatisierung von Analyseprozessen mit Python und Optimierung von Prozessen zur Verkürzung ihrer Laufzeiten.
+  start: "2026-08"
+  current: true
+  technologies: [Python]
+
 - company: Universidad Andrés Bello
   companyUrl: https://www.unab.cl/
   position:
