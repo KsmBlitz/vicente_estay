@@ -44,10 +44,22 @@ export default defineNuxtConfig({
   vite: {
     plugins: [yaml()],
   },
+  nitro: {
+    // Las rutas de servidor (llms.txt, sitemap...) también leen /content
+    rollupConfig: { plugins: [yaml()] },
+  },
+
+  routeRules: {
+    // Imágenes del sitio: caché de una semana en el navegador y la CDN
+    '/images/**': { headers: { 'cache-control': 'public, max-age=604800, stale-while-revalidate=86400' } },
+    '/og/**': { headers: { 'cache-control': 'public, max-age=604800, stale-while-revalidate=86400' } },
+  },
 
   runtimeConfig: {
     public: {
       // Sobreescribir con NUXT_PUBLIC_SITE_URL en producción
+      // Fecha del build: se usa como lastmod en sitemap y datos estructurados
+      buildDate: new Date().toISOString().slice(0, 10),
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://vicenteestay.vercel.app',
       // Sobreescribir con NUXT_PUBLIC_FORMSPREE_URL en producción
       formspreeUrl: process.env.NUXT_PUBLIC_FORMSPREE_URL || 'https://formspree.io/f/xqezorqo',

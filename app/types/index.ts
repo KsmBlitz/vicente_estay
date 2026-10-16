@@ -17,6 +17,7 @@ export interface Profile {
   name: string
   title: Localized
   shortBio: Localized
+  seoDescription: Localized
   longBio: Localized
   photo?: string
   aboutPhoto?: string
@@ -26,6 +27,7 @@ export interface Profile {
   github: string
   linkedin: string
   cv: { es: string; en: string }
+  alumniOf?: { name: string; url?: string }[]
   currentlyLearning?: string[]
 }
 

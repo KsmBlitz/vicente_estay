@@ -24,6 +24,12 @@ shortBio:
     Absolvierter Ingenieur mit Interesse an Cloud Computing, Cybersicherheit und Prozessautomatisierung.
     Motiviert durch ständige Herausforderungen und das Sammeln vielfältiger Erfahrungen, um sein Wissen in verschiedenen Bereichen zu erweitern.
 
+# Descripción para buscadores y redes sociales (ideal: menos de 160 caracteres)
+seoDescription:
+  es: Vicente Estay, ingeniero en Informática en Chile. Desarrollo Full Stack con Python, FastAPI y Vue; cloud AWS, IoT e IA aplicada (RAG, LLMs).
+  en: Vicente Estay, computer engineer in Chile. Full Stack development with Python, FastAPI and Vue; AWS cloud, IoT and applied AI (RAG, LLMs).
+  de: Vicente Estay, Informatik-Ingenieur aus Chile. Full-Stack-Entwicklung mit Python, FastAPI und Vue; AWS-Cloud, IoT und angewandte KI (RAG, LLMs).
+
 # Bio larga (Sobre mí). Cada bloque separado por una línea en blanco es un párrafo.
 longBio:
   es: |-
@@ -49,6 +55,11 @@ location: Viña del Mar, Valparaíso, Chile
 email: vjestayvaldivia@gmail.com
 github: https://github.com/KsmBlitz
 linkedin: https://www.linkedin.com/in/vicente-estay/
+
+# Instituciones donde estudiaste (se usan en los datos estructurados para buscadores)
+alumniOf:
+  - name: Universidad Andrés Bello
+    url: https://www.unab.cl/
 
 # CV descargable. En alemán se usa el de inglés.
 cv:

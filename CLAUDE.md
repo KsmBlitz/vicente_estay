@@ -19,7 +19,7 @@ Todo el contenido está en `content/` y se importa en build vía `@rollup/plugin
 
 | Archivo | Sección |
 |---|---|
-| `content/profile.yml` | Hero, Sobre mí, Contacto, Footer, SEO, CV, "En formación activa" |
+| `content/profile.yml` | Hero, Sobre mí, Contacto, Footer, SEO (`seoDescription`, `alumniOf`), CV, "En formación activa" |
 | `content/projects.yml` | Proyectos |
 | `content/experience.yml` | Experiencia |
 | `content/certifications.yml` | Certificaciones |
@@ -44,7 +44,9 @@ Todo el contenido está en `content/` y se importa en build vía `@rollup/plugin
 - `app/utils/skillsData.ts`: el stack técnico (logos de la sección Skills) está en TypeScript, no en YAML. `TECH_COUNT` alimenta el contador del Hero.
 - Formulario de contacto: POST a Formspree (`runtimeConfig.public.formspreeUrl`).
 - Analytics: `@vercel/analytics` vía `plugins/analytics.client.ts`.
-- `public/robots.txt` y `public/sitemap.xml` son estáticos (la fecha del sitemap se actualiza a mano).
+- SEO en `app/composables/useSeo.ts` (meta, Open Graph, hreflang, canónica y JSON-LD con `WebSite`, `ProfilePage`, `Person`, `ItemList`). La URL base sale de `NUXT_PUBLIC_SITE_URL`.
+- Rutas de servidor en `server/routes/` (leen `/content`, así que nunca quedan desactualizadas): `/robots.txt`, `/sitemap.xml` (lastmod = fecha del build), `/llms.txt` y `/llms-full.txt` (contenido completo en es/en/de para agentes de IA). La lógica está en `server/utils/siteContent.ts`; los crawlers de IA permitidos están en `AI_BOTS`.
+- Imágenes para redes en `public/og/og-{es,en,de}.png` (1200×630, hechas a mano con la foto y el título); si cambian el nombre o el título, regenerarlas.
 
 ## i18n de la interfaz
 
