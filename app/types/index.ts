@@ -21,7 +21,6 @@ export interface Profile {
   longBio: Localized
   photo?: string
   aboutPhoto?: string
-  yearsExperience: number
   location: string
   email: string
   github: string

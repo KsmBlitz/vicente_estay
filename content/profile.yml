@@ -38,20 +38,25 @@ longBio:
 
     2º lugar ExpoSmart 2025 con proyecto AquaStat. Certificado en ciberseguridad (Google) y ciencia de datos (IBM). Destacado por el liderazgo técnico, resolución analítica de problemas y adaptabilidad en metodologías ágiles. En formación activa en IA generativa, Infraestructura Cloud y Python.
 
+    Actualmente trabajo como Analista en Evalueserve, donde automatizo procesos de análisis con Python y optimizo procesos para reducir sus tiempos de ejecución.
+
     Pasatiempos como hacer Trekking, Gaming, Leer y Cocinar definen mi día a día.
   en: |-
     Computer and Informatics Engineering (UNAB, Best Student 2024). Practical experience in Full Stack development, IoT, and mobile applications, highlighted by winning 2nd place at ExpoSmart 2025 with the AquaStat project. Network certifications (Cisco) and a strong interest in cybersecurity and Cloud Computing. Proactive and results-oriented, seeking opportunities to apply knowledge in software development or Cloud infrastructure.
 
+    I currently work as an Analyst at Evalueserve, where I automate analysis processes with Python and optimize processes to reduce their execution time.
+
     Hobbies such as trekking, gaming, reading, and cooking define my day-to-day life.
   de: |-
     Computer- und Informatikingenieurwesen (UNAB, Bester Student 2024). Praktische Erfahrung in Full-Stack-Entwicklung, IoT und mobilen Anwendungen, ausgezeichnet mit dem 2. Platz bei der ExpoSmart 2025 für das Projekt AquaStat. Netzwerkzertifizierungen (Cisco) und starkes Interesse an Cybersicherheit und Cloud Computing. Proaktiv und ergebnisorientiert, auf der Suche nach Möglichkeiten, sein Wissen in der Softwareentwicklung oder Cloud-Infrastruktur anzuwenden.
+
+    Derzeit arbeite ich als Analyst bei Evalueserve, wo ich Analyseprozesse mit Python automatisiere und Prozesse optimiere, um ihre Laufzeiten zu verkürzen.
 
     Hobbys wie Trekking, Gaming, Lesen und Kochen bestimmen meinen Alltag.
 
 photo: /images/profile.webp       # foto del Hero
 aboutPhoto: /images/about.webp    # foto de "Sobre mí"
 
-yearsExperience: 1
 location: Viña del Mar, Valparaíso, Chile
 email: vjestayvaldivia@gmail.com
 github: https://github.com/KsmBlitz

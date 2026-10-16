@@ -36,7 +36,7 @@ Todo el contenido está en `content/` y se importa en build vía `@rollup/plugin
 - **Nuxt 4 con SSR** y srcDir `app/`. `app/pages/index.vue` es la única página: arma el SEO (`useHead`, JSON-LD) y compone las secciones.
 - `app/components/*Section.vue`: una sección por componente (Hero → About → Experience → Skills → Projects → Certifications → Contact → Footer). Cada una lee sus datos con `useContent()`; no reciben props. Cada sección tiene un `id` que usan el NavBar y `useScrollTo`.
 - Composables en `app/composables/`:
-  - `useContent`: devuelve `profile`, `projects`, `experiences`, `certifications` tipados.
+  - `useContent`: devuelve `profile`, `projects`, `experiences`, `certifications` tipados y `yearsExperience` (calculado desde la experiencia más antigua hasta hoy; se actualiza en cada build).
   - `useLocaleField` → `lf(valor)`: resuelve un `Localized` al locale activo con fallback a `es`.
   - `useScrollReveal`: IntersectionObserver que expone `isVisible` + `sectionRef` para las animaciones de entrada.
   - `useScrollTo`: usa Lenis (`$lenis`, plugin `lenis.client.ts`) si existe; si no, `scrollIntoView`.

@@ -4,7 +4,7 @@ import { TECH_COUNT } from '~/utils/skillsData'
 const { t, locale } = useI18n()
 const { lf } = useLocaleField()
 const { scrollTo } = useScrollTo()
-const { profile, projects } = useContent()
+const { profile, projects, yearsExperience } = useContent()
 
 const cvFile = computed(() =>
   locale.value === 'es'
@@ -13,7 +13,7 @@ const cvFile = computed(() =>
 )
 
 // Los contadores parten con el valor real (SSR / buscadores) y se animan al montar
-const years = ref(profile.yearsExperience)
+const years = ref(yearsExperience)
 const projectsCount = ref(projects.length)
 const techCount = ref(TECH_COUNT)
 
@@ -30,7 +30,7 @@ const countUp = (target: Ref<number>, to: number, duration: number) => {
 
 onMounted(() => {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-  countUp(years, profile.yearsExperience, 1400)
+  countUp(years, yearsExperience, 1400)
   countUp(projectsCount, projects.length, 1600)
   countUp(techCount, TECH_COUNT, 1800)
 })
